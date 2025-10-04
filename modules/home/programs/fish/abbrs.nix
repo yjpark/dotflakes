@@ -1,14 +1,9 @@
 { pkgs, ... }: {
   programs.fish.shellAbbrs = {
     g = "git";
-    gu = "gitui";
-    gm = "gitmoji";
-    gc = "gitmoji commit";
     e = "nvim";
     a = "rg --smart-case";
     f = "fd";
-    n = "nix";
-    nd = "nix develop --command fish";
     cl = "clear-buffer";
     c = "cargo";
     cb = "clear-buffer ; cargo build";
@@ -20,7 +15,6 @@
     k = "kubectl";
     kn = "kubens";
     p = "podman";
-    s = "mosh";
     j = "just";
     jl = "just -l";
     jj = "just --justfile ~/.config/justfile --working-directory .";
@@ -31,7 +25,7 @@
     il = "zellij list-sessions";
     b = "joshuto-ueberzug";
     x = "distrobox";
-    du = "dua";
+    du = "dust";
     vi = "nvim";
     vim = "nvim";
     bw = "sudo bandwhich";
@@ -39,13 +33,8 @@
     top = "btm";
     tree = "exa -T";
     dig = "dog";
-    ta = "tmux attach";
-    tt = "tmux attach -t";
-    tl = "tmux list-sessions";
-    tf = "tmux-fix-ssh-agent";
     sp = "sync-pass";
     gwp = "git-commit-wip-and-push";
     gsp = "git-commit-sync-and-push";
-    gps = "ps -ef | grep -i";
   };
 }

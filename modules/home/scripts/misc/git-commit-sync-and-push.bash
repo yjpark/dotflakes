@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# http://codeimpossible.com/2011/12/16/Stupid-Git-Trick-getting-contributor-stats/
+
+# git log --author="$1" --pretty=tformat: --numstat | \
+# grep -v public/javascripts/jquery | \
+# gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END \
+# { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' -
+
+HOST=`hostname`
+
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+if [[ "$BRANCH" =~ ^sync$ ]] ; then
+    datestr=`date "+%Y-%m-%d %H:%M:%S"`
+    git commit -m "🚚 $datestr - $HOST"
+    git push
+else
+    echo "Not sync Branch: $BRANCH"
+fi
