@@ -6,7 +6,6 @@
     direnv.nix-direnv.enable = true;
     eza.enable = true;
     jq.enable = true;
-    nushell.enable = true;
     password-store.enable = true;
   };
 }
