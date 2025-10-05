@@ -1,9 +1,0 @@
-alias l = ls
-alias ll = ls -l
-alias g = git
-alias e = vim
-alias y = yazi;
-alias z = zellij;
-alias za = zellij action;
-alias zt = zellij attach;
-alias zl = zellij list-sessions;

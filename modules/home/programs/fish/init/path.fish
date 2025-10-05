@@ -60,14 +60,6 @@ if test -d ~/.dotnet/tools
     set -x PATH ~/.dotnet/tools $PATH
 end
 
-if test -d ~/.krew/bin
-    set -x PATH ~/.krew/bin $PATH
-end
-
-if test -d ~/bin
-    set -x PATH ~/bin $PATH
-end
-
-if test -d ~/bin/host
-    set -x PATH ~/bin/host $PATH
+if test -d ~/.local/bin
+    set -x PATH ~/.local/bin $PATH
 end
