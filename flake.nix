@@ -13,6 +13,9 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "flake-parts";
+
+    # https://nixidy.dev/user_guide/getting_started/
+    nixidy.url = "github:arnarg/nixidy";
   };
 
   # Wired using https://nixos-unified.org/autowiring.html

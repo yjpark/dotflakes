@@ -2,7 +2,8 @@ local wezterm = require 'wezterm'
 local act = wezterm.action
 
 return {
-    window_decorations = 'INTEGRATED_BUTTONS|RESIZE',
+    enable_wayland = true,
+    --window_decorations = 'INTEGRATED_BUTTONS|RESIZE',
     font = wezterm.font 'FiraCode Nerd Font Mono',
     font_dirs = { '/run/current-system/sw/share/X11/fonts' },
     color_scheme = "Molokai",
@@ -31,36 +32,37 @@ return {
         { key = '0',          mods = 'CTRL|ALT',   action = act.MoveTab(9), },
         { key = 'LeftArrow',  mods = 'CTRL|ALT',   action = act.MoveTabRelative(-1) },
         { key = 'RightArrow', mods = 'CTRL|ALT',   action = act.MoveTabRelative(1) },
-        { key = 'c',
-          mods = 'CTRL',
-          action = wezterm.action_callback(function(window, pane)
-            local has_selection = window:get_selection_text_for_pane(pane) ~= ""
-            if has_selection then
-              window:perform_action(
-                wezterm.action{CopyTo="ClipboardAndPrimarySelection"},
-                pane)
-              window:perform_action("ClearSelection", pane)
-            else
-              window:perform_action(
-                wezterm.action{SendKey={key="c", mods="CTRL"}},
-                pane)
-            end
-          end),
+        {
+            key = 'c',
+            mods = 'CTRL',
+            action = wezterm.action_callback(function(window, pane)
+                local has_selection = window:get_selection_text_for_pane(pane) ~= ""
+                if has_selection then
+                    window:perform_action(
+                        wezterm.action { CopyTo = "ClipboardAndPrimarySelection" },
+                        pane)
+                    window:perform_action("ClearSelection", pane)
+                else
+                    window:perform_action(
+                        wezterm.action { SendKey = { key = "c", mods = "CTRL" } },
+                        pane)
+                end
+            end),
         },
         {
-          key="c",
-          mods="SHIFT|ALT",
-          action = wezterm.action{SendKey={key="c", mods="CTRL"}}
+            key = "c",
+            mods = "SHIFT|ALT",
+            action = wezterm.action { SendKey = { key = "c", mods = "CTRL" } }
         },
         {
-           key="v",
-           mods="CTRL",
-           action= act.PasteFrom 'Clipboard',
+            key = "v",
+            mods = "CTRL",
+            action = act.PasteFrom 'Clipboard',
         },
         {
-           key="v",
-           mods="SHIFT|ALT",
-           action=wezterm.action{SendKey={key="v", mods="CTRL"}},
+            key = "v",
+            mods = "SHIFT|ALT",
+            action = wezterm.action { SendKey = { key = "v", mods = "CTRL" } },
         },
         { key = 't', mods = 'CTRL', action = act.SpawnTab 'CurrentPaneDomain', },
     },

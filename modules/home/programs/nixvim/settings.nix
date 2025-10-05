@@ -5,7 +5,8 @@
     smartindent = true;
     tabstop = 2;
     number = true;
-    clipboard = "unnamed";
+    clipboard = "unnamedplus";
     termguicolors = true;
   };
+  clipboard.providers.wl-copy.enable = true;
 }

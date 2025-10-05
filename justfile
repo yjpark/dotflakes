@@ -5,4 +5,4 @@ show:
     om show .
 
 run *ARGS:
-    nix run . {{ARGS}}
+    nix run {{ARGS}}

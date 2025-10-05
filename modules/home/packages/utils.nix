@@ -34,5 +34,8 @@
     tig
     git-extras
     tokei                   # source line calculater
+
+    # Wayland tools
+    wl-clipboard
   ];
 }

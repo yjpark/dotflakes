@@ -31,6 +31,7 @@
     sp = "sync-pass";
     top = "btm";
     tree = "exa -T";
+    tn = "tv nix-search-tv";
     x = "distrobox";
     y = "yazi";
     z = "zellij";
