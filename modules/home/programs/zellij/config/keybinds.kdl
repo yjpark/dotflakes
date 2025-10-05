@@ -1,0 +1,45 @@
+keybinds {
+    shared_except "pane" {
+        bind "Ctrl k" { SwitchToMode "pane"; }
+    }
+    shared_except "locked" {
+        bind "Ctrl g" { SwitchToMode "locked"; }
+    }
+    shared_except "tmux" {
+        bind "Ctrl b" { SwitchToMode "tmux"; }
+    }
+    normal clear-defaults=true {
+        bind "Ctrl k" { SwitchToMode "pane"; }
+        bind "Ctrl g" { SwitchToMode "locked"; }
+        bind "Ctrl b" { SwitchToMode "tmux"; }
+    }
+    pane {
+        bind "Ctrl k" { SwitchToMode "normal"; }
+    }
+    locked {
+        bind "Ctrl g" { SwitchToMode "normal"; }
+        bind "p" { SwitchToMode "pane"; }
+        bind "t" { SwitchToMode "tab"; }
+        bind "r" { SwitchToMode "resize"; }
+        bind "m" { SwitchToMode "move"; }
+        bind "l" { SwitchToMode "scroll"; }
+        bind "s" { SwitchToMode "search"; }
+        bind "n" { SwitchToMode "session"; }
+    }
+    tmux {
+        bind "Ctrl b" { SwitchToMode "normal"; }
+        bind "1" { GoToTab 1; SwitchToMode "normal"; }
+        bind "2" { GoToTab 2; SwitchToMode "normal"; }
+        bind "3" { GoToTab 3; SwitchToMode "normal"; }
+        bind "4" { GoToTab 4; SwitchToMode "normal"; }
+        bind "5" { GoToTab 5; SwitchToMode "normal"; }
+        bind "6" { GoToTab 6; SwitchToMode "normal"; }
+        bind "7" { GoToTab 7; SwitchToMode "normal"; }
+        bind "8" { GoToTab 8; SwitchToMode "normal"; }
+        bind "9" { GoToTab 9; SwitchToMode "normal"; }
+        bind "e" { EditScrollback; SwitchToMode "normal"; }
+        bind "m" { SwitchToMode "move"; }
+        bind "r" { SwitchToMode "resize"; }
+        bind "l" { SwitchToMode "scroll"; }
+    }
+}

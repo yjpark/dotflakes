@@ -1,0 +1,15 @@
+simplified_ui false
+pane_frames false
+
+ui {
+    pane_frames {
+        rounded_corners true
+    }
+}
+
+//compact-bar location="zellij:compact-bar" {
+//    tooltip "F1"
+//}
+//default_layout "compact"
+
+default_layout "zjstatus"
