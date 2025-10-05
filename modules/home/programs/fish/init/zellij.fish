@@ -20,4 +20,3 @@ function zellij_update_tabname_cmd --on-event fish_preexec
 end
 
 zellij_update_tabname
-

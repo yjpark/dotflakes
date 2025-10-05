@@ -32,4 +32,5 @@
   home.packages = with pkgs; [
     difftastic
   ];
+  programs.lazygit.enable = true;
 }

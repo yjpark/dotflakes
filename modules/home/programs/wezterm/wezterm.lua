@@ -8,15 +8,6 @@ return {
     color_scheme = "Molokai",
     hide_tab_bar_if_only_one_tab = false,
     keys = {
-        {
-            key = 'l',
-            mods = 'CTRL',
-            --action = act.ClearScrollback 'ScrollbackAndViewport'
-            action = wezterm.action_callback(function(window, pane)
-                window:perform_action(wezterm.action { SendKey = { key = 'l', mods = 'CTRL' } }, pane)
-                window:perform_action(act.ClearScrollback 'ScrollbackOnly', pane)
-            end)
-        },
         { key = 'w',          mods = 'CTRL|SHIFT', action = act.CloseCurrentTab { confirm = false }, },
         { key = '1',          mods = 'CTRL',       action = act.ActivateTab(0), },
         { key = '2',          mods = 'CTRL',       action = act.ActivateTab(1), },
@@ -58,7 +49,7 @@ return {
         },
         {
           key="c",
-          mods="CTRL|ALT",
+          mods="SHIFT|ALT",
           action = wezterm.action{SendKey={key="c", mods="CTRL"}}
         },
         {
@@ -68,7 +59,7 @@ return {
         },
         {
            key="v",
-           mods="CTRL|ALT",
+           mods="SHIFT|ALT",
            action=wezterm.action{SendKey={key="v", mods="CTRL"}},
         },
         { key = 't', mods = 'CTRL', action = act.SpawnTab 'CurrentPaneDomain', },

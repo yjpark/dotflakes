@@ -14,5 +14,7 @@ in
   programs.nixvim = {
     enable = true;
     imports = imports;
+    viAlias = true;
+    vimAlias = true;
   };
 }
