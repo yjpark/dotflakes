@@ -4,6 +4,7 @@
     devenv
     ripgrep                 # rg
     fd
+    just
 
     # Basic utils
     sd                      # sed alternative

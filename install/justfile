@@ -1,6 +1,16 @@
 default:
   just --list
 
-install-nix_linux:
+nix-config:
+  mkdir ~/.config/nix
+  cp nix.conf ~/.config/nix
+
+linux_apt_nix-install:
+  just linux_apt_install-dependencies
+
   # https://nixos.org/download/#nix-install-linux
   sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
+
+linux_apt_install-dependencies:
+  sudo apt update
+  sudo apt install xz_utils curl just
