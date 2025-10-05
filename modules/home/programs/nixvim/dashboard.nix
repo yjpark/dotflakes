@@ -1,5 +1,5 @@
 {
-  plugins.noice = {
+  plugins.dashboard = {
     enable = true;
   };
 }

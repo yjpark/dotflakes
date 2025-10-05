@@ -1,5 +1,5 @@
 {
-  plugins.noice = {
+  plugins.which-key = {
     enable = true;
   };
 }

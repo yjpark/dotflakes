@@ -9,6 +9,7 @@
     nixos-unified.url = "github:srid/nixos-unified";
 
     # Software inputs
+    ## https://nix-community.github.io/nixvim/index.html
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "flake-parts";
