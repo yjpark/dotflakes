@@ -1,11 +1,7 @@
 { flake, pkgs, ... }:
 let
   inherit (flake) inputs;
-  imports =
-    with builtins;
-    map
-      (fn: ./${fn})
-      (filter (fn: fn != "default.nix") (attrNames (readDir ./.)));
+  imports = inputs.autowire.gatherImports ./.;
 in
 {
   imports = [

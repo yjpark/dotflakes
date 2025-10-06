@@ -11,7 +11,7 @@
     };
     apps.nixidy = {
       program = pkgs.writeShellApplication {
-        name = "activate-home";
+        name = "run-nixidy";
         meta.description = "Run nixidy";
         text = ''
           set -x

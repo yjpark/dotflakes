@@ -1,11 +1,1 @@
-{pkgs, ...}: {
-  imports =
-    with builtins;
-    map
-      (fn: ./${fn})
-      (filter (fn: fn != "default.nix") (attrNames (readDir ./.)));
-
-  programs.nushell = {
-    enable = true;
-  };
-}
+{flake, ...}: flake.inputs.autowire.default ./.
