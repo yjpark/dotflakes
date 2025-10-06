@@ -7,6 +7,7 @@
     number = true;
     clipboard = "unnamedplus";
     termguicolors = true;
+    background = "dark";
   };
   clipboard.providers.wl-copy.enable = true;
 }

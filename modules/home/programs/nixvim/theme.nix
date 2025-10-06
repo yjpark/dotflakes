@@ -1,4 +1,6 @@
 {
+  colorscheme = "kanagawa";
+
   colorschemes.catppuccin = {
     enable = true;
     settings = {
@@ -9,4 +11,8 @@
       };
     };
   };
+  colorschemes.kanagawa.enable = true;
+  colorschemes.oxocarbon.enable = true;
+  colorschemes.rose-pine.enable = true;
+  colorschemes.tokyonight.enable = true;
 }

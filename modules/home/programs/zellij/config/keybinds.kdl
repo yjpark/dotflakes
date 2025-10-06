@@ -15,9 +15,11 @@ keybinds {
     }
     pane {
         bind "Ctrl k" { SwitchToMode "normal"; }
+        bind "k" { SwitchToMode "normal"; }
     }
     locked {
         bind "Ctrl g" { SwitchToMode "normal"; }
+        bind "g" { SwitchToMode "normal"; }
         bind "p" { SwitchToMode "pane"; }
         bind "t" { SwitchToMode "tab"; }
         bind "r" { SwitchToMode "resize"; }
@@ -28,6 +30,7 @@ keybinds {
     }
     tmux {
         bind "Ctrl b" { SwitchToMode "normal"; }
+        bind "b" { SwitchToMode "normal"; }
         bind "1" { GoToTab 1; SwitchToMode "normal"; }
         bind "2" { GoToTab 2; SwitchToMode "normal"; }
         bind "3" { GoToTab 3; SwitchToMode "normal"; }

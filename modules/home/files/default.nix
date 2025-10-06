@@ -1,3 +1,7 @@
 {
-   home.file.".config/run-or-raise/shortcuts.conf".source = ./run-or-raise.shortcuts.conf;
+  imports =
+    with builtins;
+    map
+      (fn: ./${fn})
+      (filter (fn: fn != "default.nix") (attrNames (readDir ./.)));
 }

@@ -11,5 +11,4 @@ ui {
 //    tooltip "F1"
 //}
 //default_layout "compact"
-
-default_layout "zjstatus"
+//default_layout "with_status"
