@@ -12,7 +12,7 @@
       };
       ",." = {
         options.desc = "find via grep";
-        action = "live_grep";
+        action = "grep_string";
       };
       "<leader>T" = {
         options.desc = "switch colorscheme";
@@ -26,4 +26,10 @@
       fzf-native.enable = true;
     };
   };
+  keymaps = [
+    {
+      action = "<cmd>Telescope<CR>";
+      key = ",t";
+    }
+  ];
 }
