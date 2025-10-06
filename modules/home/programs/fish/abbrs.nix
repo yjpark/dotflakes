@@ -27,11 +27,11 @@
     kn = "kubens";
     lg = "lazygit";
     p = "podman";
-    r = "tv --show-remote";
+    r = "clear-buffer ; tv --show-remote";
     sp = "sync-pass";
     top = "btm";
     tree = "exa -T";
-    tn = "tv nix-search-tv";
+    tn = "clear-buffer ; tv nix-search-tv";
     x = "distrobox";
     y = "yazi";
     z = "zellij";

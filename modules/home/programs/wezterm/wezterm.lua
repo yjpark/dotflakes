@@ -4,10 +4,15 @@ local act = wezterm.action
 return {
     enable_wayland = true,
     --window_decorations = 'INTEGRATED_BUTTONS|RESIZE',
+
     font = wezterm.font 'FiraCode Nerd Font Mono',
-    font_dirs = { '/run/current-system/sw/share/X11/fonts' },
-    color_scheme = "Molokai",
+    --font_dirs = { '/run/current-system/sw/share/X11/fonts' },
+
+    --color_scheme = "Molokai",
+    color_scheme = 'Pencil Dark (Gogh)',
+
     hide_tab_bar_if_only_one_tab = false,
+
     keys = {
         { key = 'w',          mods = 'CTRL|SHIFT', action = act.CloseCurrentTab { confirm = false }, },
         { key = '1',          mods = 'CTRL',       action = act.ActivateTab(0), },
