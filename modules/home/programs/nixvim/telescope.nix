@@ -2,15 +2,15 @@
   plugins.telescope = {
     enable = true;
     keymaps = {
-      ",p" = {
+      "<A-p>" = {
         options.desc = "file finder";
         action = "find_files";
       };
-      ",r" = {
+      "<C-z>" = {
         options.desc = "recent files";
         action = "oldfiles";
       };
-      ",." = {
+      "<A-.>" = {
         options.desc = "find via grep";
         action = "grep_string";
       };
@@ -29,7 +29,7 @@
   keymaps = [
     {
       action = "<cmd>Telescope<CR>";
-      key = ",t";
+      key = "<C-r>";
     }
   ];
 }

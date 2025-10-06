@@ -32,6 +32,8 @@
     top = "btm";
     tree = "exa -T";
     tn = "clear-buffer ; tv nix-search-tv";
+    "t." = "clear-buffer ; tv text";
+    tp = "clear-buffer ; tv files";
     x = "distrobox";
     y = "yazi";
     z = "zellij";
