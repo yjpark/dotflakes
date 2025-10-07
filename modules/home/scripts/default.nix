@@ -1,1 +1,1 @@
-{flake, ...}: flake.inputs.autowire.default ./.
+{ flake, ... }: flake.inputs.autowire.default ./.

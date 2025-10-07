@@ -1,16 +1,7 @@
-
-{ lib, pkgs, ... }:
-let
-  targetDir = ./.;
-  dirContents = builtins.readDir targetDir;
-  files = builtins.filter (name: name != "default.nix") (builtins.attrNames dirContents);
-  withSources = builtins.listToAttrs (builtins.map (name: {
-    name = ".config/zellij/layouts/" + name;
-    value = {
-      source = (targetDir + "/${name}");
-    };
-  }) files);
-in
+{ flake, lib, ... }:
 {
-  home.file = withSources;
+  home.file =
+    lib.mapAttrs'
+    (flake.inputs.autowire.doPrefixName ".config/zellij/layouts/")
+    (flake.inputs.autowire.gatherFiles_kdl ./.);
 }

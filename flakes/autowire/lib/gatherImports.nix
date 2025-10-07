@@ -1,5 +1,5 @@
 folder:
-    with builtins;
-    map
-      (file: "${folder}/${file}")
-      (filter (file: file != "default.nix") (attrNames (readDir folder)))
+  with builtins;
+  map
+    (name: "${folder}/${name}")
+    (filter (name: name != "default.nix") (attrNames (readDir folder)))
