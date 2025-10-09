@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   programs.alacritty = {
     enable = true;
-    theme = "papercolor_dark";
+    # theme = "papercolor_dark";
   };
 }
