@@ -34,7 +34,7 @@
     tn = "clear-buffer ; tv nix-search-tv";
     "t." = "clear-buffer ; tv text";
     tp = "clear-buffer ; tv files";
-    x = "distrobox";
+    x = "flox";
     y = "yazi";
     z = "zellij";
     za = "zellij action";
