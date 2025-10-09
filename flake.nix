@@ -8,8 +8,8 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixos-unified.url = "github:srid/nixos-unified";
 
-    # Local inputs
-    autowire.url = "path:flakes/autowire";
+    # Tools
+    autowire.url = "github:yjpark/autowire.nix";
 
     # Software inputs
     ## https://nix-community.github.io/nixvim/index.html

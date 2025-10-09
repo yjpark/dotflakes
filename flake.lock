@@ -5,14 +5,18 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "path": "flakes/autowire",
-        "type": "path"
+        "lastModified": 1760021213,
+        "narHash": "sha256-XsknoY3jI64wikN7NymCmqchAhemMkxqNkerUCZdbjo=",
+        "owner": "yjpark",
+        "repo": "autowire.nix",
+        "rev": "487fd9f5995491ec0cc6eefb97dda0e17793ab4a",
+        "type": "github"
       },
       "original": {
-        "path": "flakes/autowire",
-        "type": "path"
-      },
-      "parent": []
+        "owner": "yjpark",
+        "repo": "autowire.nix",
+        "type": "github"
+      }
     },
     "flake-parts": {
       "inputs": {
