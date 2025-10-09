@@ -17,6 +17,9 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
+    ## https://flox.dev/docs/install-flox/install/#__tabbed_1_5
+    flox.url = "github:flox/flox/latest";
+
     # https://nixidy.dev/user_guide/getting_started/
     nixidy.url = "github:arnarg/nixidy";
   };
