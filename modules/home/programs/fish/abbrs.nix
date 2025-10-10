@@ -21,6 +21,7 @@
     h = "hx";
     j = "just";
     jl = "just -l";
+    ju = "jjui";
     k = "kubectl";
     kn = "kubens";
     lg = "lazygit";
