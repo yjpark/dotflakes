@@ -1,3 +1,1 @@
-{ flake, ... }: {
-  imports = flake.inputs.autowire.gatherImports ./.;
-}
+{ flake, ... }: { imports = flake.inputs.autowire.gatherImports ./.; }

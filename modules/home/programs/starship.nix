@@ -3,6 +3,7 @@
     enable = true;
     settings = {
       format = "$fill $time $fill $cmd_duration\n$all";
+      right_format = "\${env_var}\${custom.shadowenv}";
       add_newline = false;
       aws = {
         disabled = true;
@@ -25,6 +26,17 @@
       fill = {
         symbol = "═";
         style = "gray";
+      };
+      env_var = {
+        variable = "FLOX_PROMPT_ENVIRONMENTS";
+        format = "[$env_value]($style)";
+        default = "";
+        style = "purple bold";
+      };
+      custom.shadowenv = {
+        command = "echo -n";
+        symbol = " *";
+        when = "with-shadowenv";
       };
     };
   };

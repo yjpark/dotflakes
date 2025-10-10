@@ -1,10 +1,13 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
     # Most useful
-    devenv
     ripgrep                 # rg
     fd
     just
+    shadowenv
+
+    # Legacy, might remove later
+    devenv
 
     # Basic utils
     sd                      # sed alternative

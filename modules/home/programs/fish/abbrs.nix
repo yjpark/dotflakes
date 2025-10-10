@@ -21,13 +21,12 @@
     h = "hx";
     j = "just";
     jl = "just -l";
-    jj = "just --justfile ~/.config/justfile --working-directory .";
-    jt = "just --justfile ~/projects/edger-dev/templates/justfile";
     k = "kubectl";
     kn = "kubens";
     lg = "lazygit";
     p = "podman";
     r = "clear-buffer ; tv --show-remote";
+    s = "shadowenv";
     sp = "sync-pass";
     top = "btm";
     tree = "exa -T";
@@ -35,6 +34,8 @@
     "t." = "clear-buffer ; tv text";
     tp = "clear-buffer ; tv files";
     x = "flox";
+    xa = "flox activate";
+    xl = "flox envs";
     y = "yazi";
     z = "zellij";
     za = "zellij action";
