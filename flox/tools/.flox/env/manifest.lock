@@ -1,0 +1,263 @@
+{
+  "lockfile-version": 1,
+  "manifest": {
+    "version": 1,
+    "install": {
+      "just": {
+        "pkg-path": "just"
+      },
+      "pv": {
+        "pkg-path": "pv"
+      }
+    },
+    "hook": {},
+    "profile": {},
+    "options": {}
+  },
+  "packages": [
+    {
+      "attr_path": "just",
+      "broken": false,
+      "derivation": "/nix/store/djhhfjkigyr5786yj3rcf38gwn4bgqxw-just-1.42.4.drv",
+      "description": "Handy way to save and run project-specific commands",
+      "install_id": "just",
+      "license": "CC0-1.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "name": "just-1.42.4",
+      "pname": "just",
+      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "rev_count": 868392,
+      "rev_date": "2025-09-28T05:12:35Z",
+      "scrape_date": "2025-09-30T01:44:47.856393Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.42.4",
+      "outputs_to_install": [
+        "man",
+        "out"
+      ],
+      "outputs": {
+        "doc": "/nix/store/8xavlkm9j3xx4qllzmy5f45fzv9xfb67-just-1.42.4-doc",
+        "man": "/nix/store/ckppkxqp5ip8kaprwbr7x2d9a5qmrcwf-just-1.42.4-man",
+        "out": "/nix/store/ybxppkvhr3k3ssqhbgccmha29dkgk8f7-just-1.42.4"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "just",
+      "broken": false,
+      "derivation": "/nix/store/yaz16lrxicg2qfv8g5awv7lhs7hzgf7z-just-1.42.4.drv",
+      "description": "Handy way to save and run project-specific commands",
+      "install_id": "just",
+      "license": "CC0-1.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "name": "just-1.42.4",
+      "pname": "just",
+      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "rev_count": 868392,
+      "rev_date": "2025-09-28T05:12:35Z",
+      "scrape_date": "2025-09-30T02:14:25.299979Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.42.4",
+      "outputs_to_install": [
+        "man",
+        "out"
+      ],
+      "outputs": {
+        "doc": "/nix/store/fwfx6fh2cai9rfkfps9swh9wq593n0aa-just-1.42.4-doc",
+        "man": "/nix/store/7czcmnfirfmsh2qihr6far9jiq9a8542-just-1.42.4-man",
+        "out": "/nix/store/czphzid3fs3bp8afmq1jhidz2cvrrnsd-just-1.42.4"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "just",
+      "broken": false,
+      "derivation": "/nix/store/zsrln20jj0l5n5drqy3hbc33v7di6v46-just-1.42.4.drv",
+      "description": "Handy way to save and run project-specific commands",
+      "install_id": "just",
+      "license": "CC0-1.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "name": "just-1.42.4",
+      "pname": "just",
+      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "rev_count": 868392,
+      "rev_date": "2025-09-28T05:12:35Z",
+      "scrape_date": "2025-09-30T02:42:23.682106Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.42.4",
+      "outputs_to_install": [
+        "man",
+        "out"
+      ],
+      "outputs": {
+        "doc": "/nix/store/d97hjbj7hjawid5kslhyijkpaha4fq2l-just-1.42.4-doc",
+        "man": "/nix/store/p2jp63pc1wdlb55j11frh1r9z4fvzsp5-just-1.42.4-man",
+        "out": "/nix/store/ii2mcj182bl1y6h1qhz28rpidpi9wzhy-just-1.42.4"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "just",
+      "broken": false,
+      "derivation": "/nix/store/2xp05qr6m0ayg9kwxmww5s17kir6d4p9-just-1.42.4.drv",
+      "description": "Handy way to save and run project-specific commands",
+      "install_id": "just",
+      "license": "CC0-1.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "name": "just-1.42.4",
+      "pname": "just",
+      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "rev_count": 868392,
+      "rev_date": "2025-09-28T05:12:35Z",
+      "scrape_date": "2025-09-30T03:14:10.894183Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.42.4",
+      "outputs_to_install": [
+        "man",
+        "out"
+      ],
+      "outputs": {
+        "doc": "/nix/store/f3q8pxx7sl7nkw3p9c63j60nwvcn50rj-just-1.42.4-doc",
+        "man": "/nix/store/7qdcpikn194jivbgn84iizvr7cmpk0hb-just-1.42.4-man",
+        "out": "/nix/store/i5l66qbwry5skvwac6zxi81xq6qa3qwr-just-1.42.4"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "pv",
+      "broken": false,
+      "derivation": "/nix/store/nj6q7p9wb4d08kjbza7dpjj40nsawwhb-pv-1.9.34.drv",
+      "description": "Tool for monitoring the progress of data through a pipeline",
+      "install_id": "pv",
+      "license": "GPL-3.0-or-later",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "name": "pv-1.9.34",
+      "pname": "pv",
+      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "rev_count": 868392,
+      "rev_date": "2025-09-28T05:12:35Z",
+      "scrape_date": "2025-09-30T01:45:10.951739Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.9.34",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/0w4jgj82159jl738slsx0i463y28nhbx-pv-1.9.34"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "pv",
+      "broken": false,
+      "derivation": "/nix/store/p03xc7js8457cz60r7znvkrb1z48gv93-pv-1.9.34.drv",
+      "description": "Tool for monitoring the progress of data through a pipeline",
+      "install_id": "pv",
+      "license": "GPL-3.0-or-later",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "name": "pv-1.9.34",
+      "pname": "pv",
+      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "rev_count": 868392,
+      "rev_date": "2025-09-28T05:12:35Z",
+      "scrape_date": "2025-09-30T02:15:08.375371Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.9.34",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/hdlh6bc83f4rbd92yycx3n53jnrlk705-pv-1.9.34"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "pv",
+      "broken": false,
+      "derivation": "/nix/store/3pk225li2m7j0qsy0k7hmzvdwpam12h4-pv-1.9.34.drv",
+      "description": "Tool for monitoring the progress of data through a pipeline",
+      "install_id": "pv",
+      "license": "GPL-3.0-or-later",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "name": "pv-1.9.34",
+      "pname": "pv",
+      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "rev_count": 868392,
+      "rev_date": "2025-09-28T05:12:35Z",
+      "scrape_date": "2025-09-30T02:42:46.860957Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.9.34",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/nlxgci3n481fscy0mdl1myfiab62dfbk-pv-1.9.34"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "pv",
+      "broken": false,
+      "derivation": "/nix/store/r9dbjbyllw6nh79qpff5anpqwi1x8niq-pv-1.9.34.drv",
+      "description": "Tool for monitoring the progress of data through a pipeline",
+      "install_id": "pv",
+      "license": "GPL-3.0-or-later",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "name": "pv-1.9.34",
+      "pname": "pv",
+      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
+      "rev_count": 868392,
+      "rev_date": "2025-09-28T05:12:35Z",
+      "scrape_date": "2025-09-30T03:14:56.233223Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.9.34",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/x8nc4f2lws4m77xq0qmwbdhzc7axg24n-pv-1.9.34"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    }
+  ]
+}

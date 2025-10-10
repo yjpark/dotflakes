@@ -36,7 +36,7 @@
     tp = "clear-buffer ; tv files";
     x = "flox";
     xa = "flox activate";
-    xl = "flox envs";
+    xe = "flox envs";
     y = "yazi";
     z = "zellij";
     za = "zellij action";

@@ -1,6 +1,9 @@
 version = 1
 
+[include]
+environments = [
+  { remote = "yjpark/tools" },
+  { remote = "yjpark/python" }
+]
+
 [install]
-git.pkg-path = "git"
-coreutils.pkg-path = "coreutils"
-just.pkg-path = "just"
