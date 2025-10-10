@@ -1,0 +1,6 @@
+version = 1
+
+[install]
+git.pkg-path = "git"
+coreutils.pkg-path = "coreutils"
+just.pkg-path = "just"
