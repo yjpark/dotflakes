@@ -37,6 +37,7 @@
     x = "flox";
     xa = "flox activate";
     xe = "flox envs";
+    xl = "flox list";
     y = "yazi";
     z = "zellij";
     za = "zellij action";

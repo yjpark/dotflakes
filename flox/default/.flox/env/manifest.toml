@@ -1,9 +1,4 @@
 version = 1
 
-[include]
-environments = [
-  { remote = "yjpark/tools" },
-  { remote = "yjpark/python" }
-]
-
 [install]
+lazyjj.pkg-path = "lazyjj"

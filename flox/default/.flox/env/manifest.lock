@@ -3,580 +3,136 @@
   "manifest": {
     "version": 1,
     "install": {
-      "jq": {
-        "pkg-path": "jq"
-      },
-      "just": {
-        "pkg-path": "just"
-      },
-      "python3": {
-        "pkg-path": "python3"
-      },
-      "uv": {
-        "pkg-path": "uv"
+      "lazyjj": {
+        "pkg-path": "lazyjj"
       }
     },
-    "hook": {},
-    "profile": {},
     "options": {}
   },
   "packages": [
     {
-      "attr_path": "jq",
+      "attr_path": "lazyjj",
       "broken": false,
-      "derivation": "/nix/store/7hf5gwzdlj1y94kbh5zkl5gy5zhp9n1h-jq-1.8.1.drv",
-      "description": "Lightweight and flexible command-line JSON processor",
-      "install_id": "jq",
-      "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "jq-1.8.1",
-      "pname": "jq",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T01:44:47.757529Z",
+      "derivation": "/nix/store/y1kx0xiv41pdi0p4ygm4qf1wcr8cj7nl-lazyjj-0.6.1.drv",
+      "description": "TUI for Jujutsu/jj",
+      "install_id": "lazyjj",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e643668fd71b949c53f8626614b21ff71a07379d",
+      "name": "lazyjj-0.6.1",
+      "pname": "lazyjj",
+      "rev": "e643668fd71b949c53f8626614b21ff71a07379d",
+      "rev_count": 866707,
+      "rev_date": "2025-09-24T05:06:22Z",
+      "scrape_date": "2025-09-26T03:42:50.218017Z",
       "stabilities": [
+        "stable",
+        "staging",
         "unstable"
       ],
       "unfree": false,
-      "version": "1.8.1",
+      "version": "0.6.1",
       "outputs_to_install": [
-        "bin",
-        "man"
+        "out"
       ],
       "outputs": {
-        "bin": "/nix/store/8cadjdrc1gjc66ijgn2wnmfj6yajnxmb-jq-1.8.1-bin",
-        "dev": "/nix/store/vcjkcdi02h123i073sxma5kfhps9z2fd-jq-1.8.1-dev",
-        "doc": "/nix/store/sbr5199a3y3vpx1kaphyl4nnjlpzzzym-jq-1.8.1-doc",
-        "man": "/nix/store/11rdl4l7v5gswf5gdizk02jy39bw7bby-jq-1.8.1-man",
-        "out": "/nix/store/i8v8j94vx41c1wfzp1n69ddbrrf192pq-jq-1.8.1"
+        "out": "/nix/store/mhjqkship2j3w4vywpss94qiw28bfz55-lazyjj-0.6.1"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
       "priority": 5
     },
     {
-      "attr_path": "jq",
+      "attr_path": "lazyjj",
       "broken": false,
-      "derivation": "/nix/store/r3407x6ni6fznp3n9fpvn8rh0ybwf0g5-jq-1.8.1.drv",
-      "description": "Lightweight and flexible command-line JSON processor",
-      "install_id": "jq",
-      "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "jq-1.8.1",
-      "pname": "jq",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T02:14:25.152446Z",
+      "derivation": "/nix/store/lpsny42x7dszzdfb1ql55dn1a7slmv76-lazyjj-0.6.1.drv",
+      "description": "TUI for Jujutsu/jj",
+      "install_id": "lazyjj",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e643668fd71b949c53f8626614b21ff71a07379d",
+      "name": "lazyjj-0.6.1",
+      "pname": "lazyjj",
+      "rev": "e643668fd71b949c53f8626614b21ff71a07379d",
+      "rev_count": 866707,
+      "rev_date": "2025-09-24T05:06:22Z",
+      "scrape_date": "2025-09-26T04:11:55.045631Z",
       "stabilities": [
+        "stable",
+        "staging",
         "unstable"
       ],
       "unfree": false,
-      "version": "1.8.1",
+      "version": "0.6.1",
       "outputs_to_install": [
-        "bin",
-        "man"
+        "out"
       ],
       "outputs": {
-        "bin": "/nix/store/ync89vi4g1xnkj4fxspc63zfvs7dk8aw-jq-1.8.1-bin",
-        "dev": "/nix/store/194yri6cyqad6yvbhpqp5wswsppnsi7x-jq-1.8.1-dev",
-        "doc": "/nix/store/cjmvz6ma3qnhdvapjf2yghw28lrah0ja-jq-1.8.1-doc",
-        "man": "/nix/store/44k1613ynml3cgx5v9k6saqw994hqcl9-jq-1.8.1-man",
-        "out": "/nix/store/hz4c9q3baf434zw2y0yzb3a5kkj3rhwl-jq-1.8.1"
+        "out": "/nix/store/6qkdc408k92db10hdgn8n2wgyf697grz-lazyjj-0.6.1"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
       "priority": 5
     },
     {
-      "attr_path": "jq",
+      "attr_path": "lazyjj",
       "broken": false,
-      "derivation": "/nix/store/g23rabsw9k8igm73syz8xbwc76145cgc-jq-1.8.1.drv",
-      "description": "Lightweight and flexible command-line JSON processor",
-      "install_id": "jq",
-      "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "jq-1.8.1",
-      "pname": "jq",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T02:42:23.585062Z",
+      "derivation": "/nix/store/c13q026ia5piz2dc00hfcvi5q4baqaya-lazyjj-0.6.1.drv",
+      "description": "TUI for Jujutsu/jj",
+      "install_id": "lazyjj",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e643668fd71b949c53f8626614b21ff71a07379d",
+      "name": "lazyjj-0.6.1",
+      "pname": "lazyjj",
+      "rev": "e643668fd71b949c53f8626614b21ff71a07379d",
+      "rev_count": 866707,
+      "rev_date": "2025-09-24T05:06:22Z",
+      "scrape_date": "2025-09-26T04:39:48.281705Z",
       "stabilities": [
+        "stable",
+        "staging",
         "unstable"
       ],
       "unfree": false,
-      "version": "1.8.1",
+      "version": "0.6.1",
       "outputs_to_install": [
-        "bin",
-        "man"
+        "out"
       ],
       "outputs": {
-        "bin": "/nix/store/8kcm1dcivx14cp5z39wzma81jbrvaazs-jq-1.8.1-bin",
-        "dev": "/nix/store/wjxxw199ix3mkg8ms6k0hqfg7swxr2qv-jq-1.8.1-dev",
-        "doc": "/nix/store/17mfk267mjhnvgbm03w0scsfq82a65na-jq-1.8.1-doc",
-        "man": "/nix/store/88l2hgigy77vjgkdjps6l6vl8svxgaaa-jq-1.8.1-man",
-        "out": "/nix/store/ladmn1j7zikwdmih15d8rfh7z550y1q2-jq-1.8.1"
+        "out": "/nix/store/gs29iwamwml6hjhw01brsbxlkk4kpwcq-lazyjj-0.6.1"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
       "priority": 5
     },
     {
-      "attr_path": "jq",
+      "attr_path": "lazyjj",
       "broken": false,
-      "derivation": "/nix/store/22067a6y3jqcmwj75pd2v2a9ccizajd0-jq-1.8.1.drv",
-      "description": "Lightweight and flexible command-line JSON processor",
-      "install_id": "jq",
-      "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "jq-1.8.1",
-      "pname": "jq",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T03:14:10.752274Z",
+      "derivation": "/nix/store/41qv3wnqzihdav491a90bybh9y0wifn6-lazyjj-0.6.1.drv",
+      "description": "TUI for Jujutsu/jj",
+      "install_id": "lazyjj",
+      "license": "Apache-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=e643668fd71b949c53f8626614b21ff71a07379d",
+      "name": "lazyjj-0.6.1",
+      "pname": "lazyjj",
+      "rev": "e643668fd71b949c53f8626614b21ff71a07379d",
+      "rev_count": 866707,
+      "rev_date": "2025-09-24T05:06:22Z",
+      "scrape_date": "2025-09-26T05:10:58.424019Z",
       "stabilities": [
+        "stable",
+        "staging",
         "unstable"
       ],
       "unfree": false,
-      "version": "1.8.1",
-      "outputs_to_install": [
-        "bin",
-        "man"
-      ],
-      "outputs": {
-        "bin": "/nix/store/7jvwwz45qap70i6asxzcnbshhz88a5sv-jq-1.8.1-bin",
-        "dev": "/nix/store/5rp4imr3xn3qwwxpgmss2q9pj8bak9wy-jq-1.8.1-dev",
-        "doc": "/nix/store/j572lmsgrx4a9bim6gwlyn9mnlf67490-jq-1.8.1-doc",
-        "man": "/nix/store/laqc7c2c9j09vm1w58vmj633vc2wb3wv-jq-1.8.1-man",
-        "out": "/nix/store/byi56qh6h63rdhfjh4plnyndfcpqx13p-jq-1.8.1"
-      },
-      "system": "x86_64-linux",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "just",
-      "broken": false,
-      "derivation": "/nix/store/djhhfjkigyr5786yj3rcf38gwn4bgqxw-just-1.42.4.drv",
-      "description": "Handy way to save and run project-specific commands",
-      "install_id": "just",
-      "license": "CC0-1.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "just-1.42.4",
-      "pname": "just",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T01:44:47.856393Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "1.42.4",
-      "outputs_to_install": [
-        "man",
-        "out"
-      ],
-      "outputs": {
-        "doc": "/nix/store/8xavlkm9j3xx4qllzmy5f45fzv9xfb67-just-1.42.4-doc",
-        "man": "/nix/store/ckppkxqp5ip8kaprwbr7x2d9a5qmrcwf-just-1.42.4-man",
-        "out": "/nix/store/ybxppkvhr3k3ssqhbgccmha29dkgk8f7-just-1.42.4"
-      },
-      "system": "aarch64-darwin",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "just",
-      "broken": false,
-      "derivation": "/nix/store/yaz16lrxicg2qfv8g5awv7lhs7hzgf7z-just-1.42.4.drv",
-      "description": "Handy way to save and run project-specific commands",
-      "install_id": "just",
-      "license": "CC0-1.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "just-1.42.4",
-      "pname": "just",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T02:14:25.299979Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "1.42.4",
-      "outputs_to_install": [
-        "man",
-        "out"
-      ],
-      "outputs": {
-        "doc": "/nix/store/fwfx6fh2cai9rfkfps9swh9wq593n0aa-just-1.42.4-doc",
-        "man": "/nix/store/7czcmnfirfmsh2qihr6far9jiq9a8542-just-1.42.4-man",
-        "out": "/nix/store/czphzid3fs3bp8afmq1jhidz2cvrrnsd-just-1.42.4"
-      },
-      "system": "aarch64-linux",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "just",
-      "broken": false,
-      "derivation": "/nix/store/zsrln20jj0l5n5drqy3hbc33v7di6v46-just-1.42.4.drv",
-      "description": "Handy way to save and run project-specific commands",
-      "install_id": "just",
-      "license": "CC0-1.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "just-1.42.4",
-      "pname": "just",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T02:42:23.682106Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "1.42.4",
-      "outputs_to_install": [
-        "man",
-        "out"
-      ],
-      "outputs": {
-        "doc": "/nix/store/d97hjbj7hjawid5kslhyijkpaha4fq2l-just-1.42.4-doc",
-        "man": "/nix/store/p2jp63pc1wdlb55j11frh1r9z4fvzsp5-just-1.42.4-man",
-        "out": "/nix/store/ii2mcj182bl1y6h1qhz28rpidpi9wzhy-just-1.42.4"
-      },
-      "system": "x86_64-darwin",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "just",
-      "broken": false,
-      "derivation": "/nix/store/2xp05qr6m0ayg9kwxmww5s17kir6d4p9-just-1.42.4.drv",
-      "description": "Handy way to save and run project-specific commands",
-      "install_id": "just",
-      "license": "CC0-1.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "just-1.42.4",
-      "pname": "just",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T03:14:10.894183Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "1.42.4",
-      "outputs_to_install": [
-        "man",
-        "out"
-      ],
-      "outputs": {
-        "doc": "/nix/store/f3q8pxx7sl7nkw3p9c63j60nwvcn50rj-just-1.42.4-doc",
-        "man": "/nix/store/7qdcpikn194jivbgn84iizvr7cmpk0hb-just-1.42.4-man",
-        "out": "/nix/store/i5l66qbwry5skvwac6zxi81xq6qa3qwr-just-1.42.4"
-      },
-      "system": "x86_64-linux",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "python3",
-      "broken": false,
-      "derivation": "/nix/store/323yfw5yl4phh0sc320qvzyigvvz2clh-python3-3.13.7.drv",
-      "description": "High-level dynamically-typed programming language",
-      "install_id": "python3",
-      "license": "Python-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "python3-3.13.7",
-      "pname": "python3",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T01:45:11.090878Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "3.13.7",
+      "version": "0.6.1",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/i8r431v9g2hwh9g0kkp2lrgd426szgnq-python3-3.13.7"
-      },
-      "system": "aarch64-darwin",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "python3",
-      "broken": false,
-      "derivation": "/nix/store/5di2g881hiam4gz0swd50cx210bkrvmk-python3-3.13.7.drv",
-      "description": "High-level dynamically-typed programming language",
-      "install_id": "python3",
-      "license": "Python-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "python3-3.13.7",
-      "pname": "python3",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T02:15:08.596851Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "3.13.7",
-      "outputs_to_install": [
-        "out"
-      ],
-      "outputs": {
-        "debug": "/nix/store/kyr9qk626hvc4wk2bnlyhy5cilbc1avb-python3-3.13.7-debug",
-        "out": "/nix/store/a65r9k46dxhyx2gn60bpx7j62anjdjr7-python3-3.13.7"
-      },
-      "system": "aarch64-linux",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "python3",
-      "broken": false,
-      "derivation": "/nix/store/3b54xbqgkkfdf324xs78phys5lh52vgv-python3-3.13.7.drv",
-      "description": "High-level dynamically-typed programming language",
-      "install_id": "python3",
-      "license": "Python-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "python3-3.13.7",
-      "pname": "python3",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T02:42:46.992050Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "3.13.7",
-      "outputs_to_install": [
-        "out"
-      ],
-      "outputs": {
-        "out": "/nix/store/0my3611ibn2ps837miaz8iicnjcp7qyq-python3-3.13.7"
-      },
-      "system": "x86_64-darwin",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "python3",
-      "broken": false,
-      "derivation": "/nix/store/257k0vnqp1xjgyrpc5as1r0nl7s4yv71-python3-3.13.7.drv",
-      "description": "High-level dynamically-typed programming language",
-      "install_id": "python3",
-      "license": "Python-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "python3-3.13.7",
-      "pname": "python3",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T03:14:56.466048Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "3.13.7",
-      "outputs_to_install": [
-        "out"
-      ],
-      "outputs": {
-        "debug": "/nix/store/q9q5s8rfh932f9fv1bx2008p5ngc6g48-python3-3.13.7-debug",
-        "out": "/nix/store/829wb290i87wngxlh404klwxql5v18p4-python3-3.13.7"
-      },
-      "system": "x86_64-linux",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "uv",
-      "broken": false,
-      "derivation": "/nix/store/4lpi3v0dsxai0j82mh9my0cg7r4rxa8y-uv-0.8.14.drv",
-      "description": "Extremely fast Python package installer and resolver, written in Rust",
-      "install_id": "uv",
-      "license": "[ Apache-2.0, MIT ]",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "uv-0.8.14",
-      "pname": "uv",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T01:46:49.729017Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "0.8.14",
-      "outputs_to_install": [
-        "out"
-      ],
-      "outputs": {
-        "out": "/nix/store/jvsjlmb0h8kfflmr1fjqaqvv8znp99pr-uv-0.8.14"
-      },
-      "system": "aarch64-darwin",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "uv",
-      "broken": false,
-      "derivation": "/nix/store/x94macy7lhp7hd4wjjpxgmwpc4jr1i0p-uv-0.8.14.drv",
-      "description": "Extremely fast Python package installer and resolver, written in Rust",
-      "install_id": "uv",
-      "license": "[ Apache-2.0, MIT ]",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "uv-0.8.14",
-      "pname": "uv",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T02:17:23.529161Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "0.8.14",
-      "outputs_to_install": [
-        "out"
-      ],
-      "outputs": {
-        "out": "/nix/store/3yyvvd9k79im73nsafnrqqadi7ln7lgd-uv-0.8.14"
-      },
-      "system": "aarch64-linux",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "uv",
-      "broken": false,
-      "derivation": "/nix/store/xfgy447lhvnc3k8r2byrl75chd8fnlwl-uv-0.8.14.drv",
-      "description": "Extremely fast Python package installer and resolver, written in Rust",
-      "install_id": "uv",
-      "license": "[ Apache-2.0, MIT ]",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "uv-0.8.14",
-      "pname": "uv",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T02:44:25.627999Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "0.8.14",
-      "outputs_to_install": [
-        "out"
-      ],
-      "outputs": {
-        "out": "/nix/store/lsl4wjgvsfvka6dm0lirlgpfks3r9937-uv-0.8.14"
-      },
-      "system": "x86_64-darwin",
-      "group": "toplevel",
-      "priority": 5
-    },
-    {
-      "attr_path": "uv",
-      "broken": false,
-      "derivation": "/nix/store/5vqqskgn6nfnms12lbr00qr1qmp2q4s8-uv-0.8.14.drv",
-      "description": "Extremely fast Python package installer and resolver, written in Rust",
-      "install_id": "uv",
-      "license": "[ Apache-2.0, MIT ]",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "name": "uv-0.8.14",
-      "pname": "uv",
-      "rev": "e9f00bd893984bc8ce46c895c3bf7cac95331127",
-      "rev_count": 868392,
-      "rev_date": "2025-09-28T05:12:35Z",
-      "scrape_date": "2025-09-30T03:17:19.618300Z",
-      "stabilities": [
-        "unstable"
-      ],
-      "unfree": false,
-      "version": "0.8.14",
-      "outputs_to_install": [
-        "out"
-      ],
-      "outputs": {
-        "out": "/nix/store/d4klvr31w9qc9qpypwaxmz6f9xy3339y-uv-0.8.14"
+        "out": "/nix/store/96z210bq5gssky3zdpm7sks7j4qbqkn2-lazyjj-0.6.1"
       },
       "system": "x86_64-linux",
       "group": "toplevel",
       "priority": 5
     }
-  ],
-  "compose": {
-    "composer": {
-      "version": 1,
-      "options": {},
-      "include": {
-        "environments": [
-          {
-            "remote": "yjpark/tools"
-          },
-          {
-            "remote": "yjpark/python"
-          }
-        ]
-      }
-    },
-    "include": [
-      {
-        "manifest": {
-          "version": 1,
-          "install": {
-            "jq": {
-              "pkg-path": "jq"
-            },
-            "just": {
-              "pkg-path": "just"
-            }
-          },
-          "hook": {},
-          "profile": {},
-          "options": {}
-        },
-        "name": "tools",
-        "descriptor": {
-          "remote": "yjpark/tools"
-        }
-      },
-      {
-        "manifest": {
-          "version": 1,
-          "install": {
-            "python3": {
-              "pkg-path": "python3"
-            },
-            "uv": {
-              "pkg-path": "uv"
-            }
-          },
-          "hook": {},
-          "profile": {},
-          "options": {}
-        },
-        "name": "python",
-        "descriptor": {
-          "remote": "yjpark/python"
-        }
-      }
-    ],
-    "warnings": []
-  }
+  ]
 }
