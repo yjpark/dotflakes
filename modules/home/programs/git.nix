@@ -29,8 +29,14 @@
       enable = true;
     };
   };
+  programs.gh = {
+    enable = true;
+    extensions = [
+      pkgs.gh-dash
+    ];
+  };
+  programs.lazygit.enable = true;
   home.packages = with pkgs; [
     difftastic
   ];
-  programs.lazygit.enable = true;
 }
