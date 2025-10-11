@@ -40,7 +40,7 @@
       };
     }
     {
-      context = "Editor && (vim_mode == normal || vim_mode == visual)";
+      context = "Editor";
       bindings = {
         "ctrl-c" = "editor::Copy";
         "ctrl-v" = "editor::Paste";
@@ -105,10 +105,13 @@
   ];
   programs.zed-editor.userSettings = {
     title_bar = {
-      show_branch_icon= false;
+      show_branch_icon= true;
       show_branch_name = true;
       show_project_items = true;
-      show_menus = true;
+      show_sign_in = false;
+      show_user_picture = true;
+      show_onboarding_banner = false;
+      show_menus = false;
     };
     vim_mode = true;
     vim.enable_vim_sneak = true;
