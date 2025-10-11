@@ -8,6 +8,8 @@
     clipboard = "unnamedplus";
     termguicolors = true;
     background = "dark";
+    cursorline = true;
+    cursorcolumn = true;
   };
   clipboard.providers.wl-copy.enable = true;
 }

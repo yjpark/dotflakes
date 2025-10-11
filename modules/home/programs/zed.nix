@@ -20,9 +20,30 @@
       };
     }
     {
+      context = "Workspace || Pane";
+      bindings = {
+        "ctrl-1" = [ "pane::ActivateItem" 0 ];
+        "ctrl-2" = [ "pane::ActivateItem" 1 ];
+        "ctrl-3" = [ "pane::ActivateItem" 2 ];
+        "ctrl-4" = [ "pane::ActivateItem" 3 ];
+        "ctrl-5" = [ "pane::ActivateItem" 4 ];
+        "ctrl-6" = [ "pane::ActivateItem" 5 ];
+        "ctrl-7" = [ "pane::ActivateItem" 6 ];
+        "ctrl-8" = [ "pane::ActivateItem" 7 ];
+        "ctrl-9" = [ "pane::ActivateItem" 8 ];
+      };
+    }
+    {
       context = "Terminal";
       bindings = {
         "alt-t" = "terminal_panel::Toggle";
+      };
+    }
+    {
+      context = "Editor && (vim_mode == normal || vim_mode == visual)";
+      bindings = {
+        "ctrl-c" = "editor::Copy";
+        "ctrl-v" = "editor::Paste";
       };
     }
     {
@@ -83,6 +104,12 @@
     }
   ];
   programs.zed-editor.userSettings = {
+    title_bar = {
+      show_branch_icon= false;
+      show_branch_name = true;
+      show_project_items = true;
+      show_menus = true;
+    };
     vim_mode = true;
     vim.enable_vim_sneak = true;
     theme = "Gruvbox Dark";
