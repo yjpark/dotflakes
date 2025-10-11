@@ -7,7 +7,7 @@
     }
     {
       action = "<cmd>NvimTreeFindFile<CR>";
-      key = ",e";
+      key = "<A-e>";
     }
   ];
 }

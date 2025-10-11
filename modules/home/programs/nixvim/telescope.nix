@@ -12,6 +12,10 @@
       };
       "<A-.>" = {
         options.desc = "find via grep";
+        action = "live_grep";
+      };
+      "<leader>." = {
+        options.desc = "find word via grep";
         action = "grep_string";
       };
       "<leader>T" = {
