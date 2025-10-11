@@ -30,8 +30,15 @@
   # Wired using https://nixos-unified.org/autowiring.html
   outputs = inputs:
     inputs.flakelight ./. {
-      nixDirAliases.homeModules = [ "home" ];
-    }
+      nixDirAliases = {
+        nixosConfigurations = [ "hosts" ];
+        homeConfigurations = [ "users" ];
+        nixosModules = [ "nixos" ];
+        homeModules = [ "home" ];
+        devShells = [ "shells" ];
+        withOverlays = [ "overlays" ];
+      };
+    };
     #inputs.nixos-unified.lib.mkFlake
     #  { inherit inputs; root = ./.; };
 }

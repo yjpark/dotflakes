@@ -147,6 +147,26 @@
         "type": "github"
       }
     },
+    "flakelight": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1759818365,
+        "narHash": "sha256-N8jwqZ9T1ZBznv4gJ6aaHV3FZiYyErbIqeY3cxNQ07E=",
+        "owner": "nix-community",
+        "repo": "flakelight",
+        "rev": "eda172d7ead89292cb7f9e136a482e97e00873a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "flakelight",
+        "type": "github"
+      }
+    },
     "flox": {
       "inputs": {
         "crane": "crane",
@@ -490,6 +510,7 @@
       "inputs": {
         "autowire": "autowire",
         "flake-parts": "flake-parts",
+        "flakelight": "flakelight",
         "flox": "flox",
         "home-manager": "home-manager",
         "nixidy": "nixidy",
