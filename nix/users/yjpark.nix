@@ -11,9 +11,9 @@ in
 
   # Defined by /modules/home/me.nix
   # And used all around in /modules/home/*
-  me = {
-    username = "yjpark";
+  specialArgs = {
     fullname = "YJ Park";
     email = "yjpark@gmail.com";
+    stateVersion = "25.05"
   };
 }
