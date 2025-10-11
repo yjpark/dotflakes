@@ -6,11 +6,10 @@ in
 {
   imports = [
     self.homeModules.default
-    ../../options/home/versions/25.05.nix
+    ../../mixins/home/versions/25.05.nix
   ];
 
-  # Defined by /modules/home/me.nix
-  # And used all around in /modules/home/*
+  # Defined by /modules/home/options.nix
   me = {
     username = "yjpark";
     fullname = "YJ Park";
