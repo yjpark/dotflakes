@@ -1,19 +1,15 @@
-{ flake, ... }:
-let
-  inherit (flake) inputs;
-  inherit (inputs) self;
-in
-{
-  imports = [
-    self.homeModules.default
-    ../../options/home/versions/25.05.nix
-  ];
-
-  # Defined by /modules/home/me.nix
-  # And used all around in /modules/home/*
-  specialArgs = {
+{ ... }: {
+  extraSpecialArgs = {
     fullname = "YJ Park";
     email = "yjpark@gmail.com";
-    stateVersion = "25.05"
+
+    # This value determines the Home Manager release that your configuration is
+    # compatible with. This helps avoid breakage when a new Home Manager release
+    # introduces backwards incompatible changes.
+    #
+    # You should not change this value, even if you update Home Manager. If you do
+    # want to update the value, then make sure to first check the Home Manager
+    # release notes.
   };
+  home.stateVersion = "25.05";
 }

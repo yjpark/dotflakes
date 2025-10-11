@@ -8,9 +8,6 @@
     flakelight.url = "github:nix-community/flakelight";
     flakelight.inputs.nixpkgs.follows = "nixpkgs";
 
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    nixos-unified.url = "github:srid/nixos-unified";
-
     # Tools
     autowire.url = "github:yjpark/autowire.nix";
 
@@ -18,7 +15,6 @@
     ## https://nix-community.github.io/nixvim/index.html
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.inputs.flake-parts.follows = "flake-parts";
 
     ## https://flox.dev/docs/install-flox/install/#__tabbed_1_5
     flox.url = "github:flox/flox/latest";
@@ -39,6 +35,4 @@
         withOverlays = [ "overlays" ];
       };
     };
-    #inputs.nixos-unified.lib.mkFlake
-    #  { inherit inputs; root = ./.; };
 }
