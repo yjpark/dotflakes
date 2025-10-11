@@ -1,5 +1,6 @@
-activate-home *ARGS:
-    nix run {{ARGS}}
+switch-home:
+    #home-manager --flake .#yjpark switch
+    home-manager --flake .#yjpark build
 
 show:
     om show .

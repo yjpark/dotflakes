@@ -26,6 +26,7 @@
   # Wired using https://nixos-unified.org/autowiring.html
   outputs = inputs:
     inputs.flakelight ./. {
+      inherit inputs;
       nixDirAliases = {
         nixosConfigurations = [ "hosts" ];
         homeConfigurations = [ "users" ];

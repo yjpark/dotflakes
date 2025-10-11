@@ -1,4 +1,5 @@
-{ ... }: {
+{ inputs, ... }: {
+  system = "x86_64-linux";
   #extraSpecialArgs = {
   #  fullname = "YJ Park";
   #  email = "yjpark@gmail.com";
@@ -11,5 +12,10 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "25.05";
+  modules = [
+    {
+      home.stateVersion = "25.05";
+      home.homeDirectory = "/home/yjpark";
+    }
+  ] ++ inputs.self.homeModules;
 }
