@@ -21,8 +21,8 @@ function zellij_update_tabname_pwd --on-variable PWD
 end
 
 function zellij_update_panename_cmd --on-event fish_preexec
-    #set title (string split ' ' $argv)[1]
-    zellij_update_panename $argv
+    zellij_update_panename "$argv"
 end
 
 zellij_update_tabname
+zellij_update_panename
