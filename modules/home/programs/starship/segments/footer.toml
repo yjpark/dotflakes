@@ -1,0 +1,16 @@
+[cmd_duration]
+format = "[$duration]($style)"
+min_time = 0
+show_milliseconds = true
+style = "yellow"
+
+[custom.shadowenv]
+command = "echo -n"
+symbol = " *"
+when = "with-shadowenv"
+
+[env_var]
+default = ""
+format = "[$env_value]($style)"
+style = "purple bold"
+variable = "FLOX_PROMPT_ENVIRONMENTS"

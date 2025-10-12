@@ -6,7 +6,13 @@ function zellij_update_tabname
         else
             set current_dir (basename $current_dir)
         end
-        nohup zellij action rename-tab "$current_dir`$argv" >/dev/null 2>&1
+        nohup zellij action rename-tab "$current_dir" >/dev/null 2>&1
+    end
+end
+
+function zellij_update_panename
+    if set -q ZELLIJ
+        nohup zellij action rename-pane "$argv" >/dev/null 2>&1
     end
 end
 
@@ -14,9 +20,9 @@ function zellij_update_tabname_pwd --on-variable PWD
     zellij_update_tabname
 end
 
-function zellij_update_tabname_cmd --on-event fish_preexec
-    set title (string split ' ' $argv)[1]
-    zellij_update_tabname $title
+function zellij_update_panename_cmd --on-event fish_preexec
+    #set title (string split ' ' $argv)[1]
+    zellij_update_panename $argv
 end
 
 zellij_update_tabname

@@ -1,0 +1,13 @@
+update-presets:
+  just update-preset pastel-powerline
+  just update-preset tokyo-night
+  just update-preset gruvbox-rainbow
+
+update-preset name:
+  starship preset {{name}} -o /tmp/{{name}}.toml
+  cp segments/header.toml {{name}}.toml
+  echo "\n\n\n" {{name}}.toml
+  cat /tmp/{{name}}.toml >> {{name}}.toml
+  echo "\n\n\n" {{name}}.toml
+  cat segments/footer.toml >> {{name}}.toml
+

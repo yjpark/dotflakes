@@ -11,6 +11,9 @@ plugins {
         // you can hide hints in the locked mode by setting this to true
         hide_in_base_mode false // default
     }
+    compact-bar location="zellij:compact-bar" {
+        tooltip "F1"
+    }
 }
 
 load_plugins {

@@ -1,0 +1,36 @@
+add_newline = false
+format = "$fill $time $fill $cmd_duration\n$all"
+right_format = "${env_var}${custom.shadowenv}"
+
+[aws]
+disabled = true
+
+[character]
+error_symbol = "[✗](bold red)"
+success_symbol = "[➜](bold green)"
+
+[cmd_duration]
+format = "[$duration]($style)"
+min_time = 0
+show_milliseconds = true
+style = "yellow"
+
+[custom.shadowenv]
+command = "echo -n"
+symbol = " *"
+when = "with-shadowenv"
+
+[env_var]
+default = ""
+format = "[$env_value]($style)"
+style = "purple bold"
+variable = "FLOX_PROMPT_ENVIRONMENTS"
+
+[fill]
+style = "gray"
+symbol = "═"
+
+[time]
+disabled = false
+format = "[$time]($style)"
+style = "gray"
