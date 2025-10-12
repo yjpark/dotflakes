@@ -22,6 +22,7 @@
     j = "just";
     jl = "just -l";
     ju = "jjui";
+    jz = "lazyjj";
     k = "kubectl";
     kn = "kubens";
     lg = "lazygit";
