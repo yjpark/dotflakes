@@ -7,6 +7,7 @@
   programs.helix.settings = {
     theme = "papercolor-dark";
     editor = {
+      true-color = true;
       bufferline = "always";
       cursorline = true;
       cursorcolumn = false;
