@@ -5,11 +5,11 @@
 }: {
   programs.helix.enable = true;
   programs.helix.settings = {
-    theme = "papercolar-dark";
+    theme = "papercolor-dark";
     editor = {
       bufferline = "always";
       cursorline = true;
-      cursorcolumn = true;
+      cursorcolumn = false;
       trim-final-newlines = true;
       trim-trailing-whitespace = true;
     };
