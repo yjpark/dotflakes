@@ -2,9 +2,6 @@ local wezterm = require 'wezterm'
 local act = wezterm.action
 
 return {
-    set_environment_variables = {
-        COLORTERM = "truecolor",
-    },
     enable_wayland = true,
     --window_decorations = 'INTEGRATED_BUTTONS|RESIZE',
 
