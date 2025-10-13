@@ -9,7 +9,19 @@
     termguicolors = true;
     background = "dark";
     cursorline = true;
-    cursorcolumn = true;
+    cursorcolumn = false;
   };
   clipboard.providers.wl-copy.enable = true;
+  autoCmd = [
+      {
+          command = "setlocal cursorcolumn";
+          event = [ "InsertEnter" ];
+          pattern = [ "*" ];
+      }
+      {
+          command = "setlocal nocursorcolumn";
+          event = [ "InsertLeave" ];
+          pattern = [ "*" ];
+      }
+  ];
 }
