@@ -1,9 +1,7 @@
-{ flake, ... }:
-let
+{flake, ...}: let
   inherit (flake) inputs;
   inherit (inputs) self;
-in
-{
+in {
   imports = [
     self.homeModules.default
     ../../mixins/home/versions/25.05.nix

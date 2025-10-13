@@ -1,9 +1,11 @@
-{ flake, pkgs, ... }:
-let
+{
+  flake,
+  pkgs,
+  ...
+}: let
   inherit (flake) inputs;
   imports = inputs.autowire.gatherImports ./.;
-in
-{
+in {
   imports = [
     inputs.nixvim.homeModules.nixvim
   ];

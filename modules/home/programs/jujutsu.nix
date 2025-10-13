@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   programs.jujutsu = {
     enable = true;
     settings = {
@@ -6,7 +10,7 @@
         email = config.me.email;
         name = config.me.fullname;
       };
-      ui.default-command = [ "log" "--no-pager" "--limit" "20"];
+      ui.default-command = ["log" "--no-pager" "--limit" "20"];
     };
   };
   programs.jjui = {

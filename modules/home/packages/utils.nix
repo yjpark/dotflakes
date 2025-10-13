@@ -1,7 +1,7 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   home.packages = with pkgs; [
     # Most useful
-    ripgrep                 # rg
+    ripgrep # rg
     fd
     just
     shadowenv
@@ -10,20 +10,20 @@
     devenv
 
     # Basic utils
-    sd                      # sed alternative
-    gnused                  # sed
-    dust                    # du alternative
-    dysk                    # df alternative
-    procs                   # ps alternative
-    pv                      # add progress bar for console apps
+    sd # sed alternative
+    gnused # sed
+    dust # du alternative
+    dysk # df alternative
+    procs # ps alternative
+    pv # add progress bar for console apps
 
     # Network utils
     mosh
     axel
     curl
     inetutils
-    dogdns                  # dig alternative
-    bandwhich               # show network usage by process
+    dogdns # dig alternative
+    bandwhich # show network usage by process
 
     # Secret
     age
@@ -36,7 +36,7 @@
     # Git tools
     tig
     git-extras
-    tokei                   # source line calculater
+    tokei # source line calculater
 
     # Wayland tools
     wl-clipboard

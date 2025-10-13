@@ -1,6 +1,11 @@
-{ inputs, ... }:
-{
-  perSystem = { self', system, pkgs, lib, ... }: {
+{inputs, ...}: {
+  perSystem = {
+    self',
+    system,
+    pkgs,
+    lib,
+    ...
+  }: {
     packages.nixidy = inputs.nixidy.packages.${system}.default;
     devShells.nixidy = pkgs.mkShell {
       name = "nixidy";

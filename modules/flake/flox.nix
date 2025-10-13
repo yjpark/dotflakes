@@ -1,6 +1,11 @@
-{ inputs, ... }:
-{
-  perSystem = { self', system, pkgs, lib, ... }: {
+{inputs, ...}: {
+  perSystem = {
+    self',
+    system,
+    pkgs,
+    lib,
+    ...
+  }: {
     packages.flox = inputs.flox.packages.${system}.default;
     devShells.flox = pkgs.mkShell {
       name = "flox";

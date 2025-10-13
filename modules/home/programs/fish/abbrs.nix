@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.fish.shellAbbrs = {
     a = "rg --smart-case";
     bw = "sudo bandwhich";

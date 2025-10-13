@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.fish.shellAliases = {
     ".." = "cd ..";
     "..." = "cd ../..";

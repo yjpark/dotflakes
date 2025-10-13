@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   programs.helix.enable = true;
   programs.helix.settings = {
     theme = "papercolar-dark";
