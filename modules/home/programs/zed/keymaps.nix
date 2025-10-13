@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.zed-editor.userKeymaps = [
     {
       context = "EmptyPane || SharedScreen || Workspace";
@@ -14,21 +14,22 @@
     {
       context = "Workspace || Pane";
       bindings = {
-        "ctrl-1" = [ "pane::ActivateItem" 0 ];
-        "ctrl-2" = [ "pane::ActivateItem" 1 ];
-        "ctrl-3" = [ "pane::ActivateItem" 2 ];
-        "ctrl-4" = [ "pane::ActivateItem" 3 ];
-        "ctrl-5" = [ "pane::ActivateItem" 4 ];
-        "ctrl-6" = [ "pane::ActivateItem" 5 ];
-        "ctrl-7" = [ "pane::ActivateItem" 6 ];
-        "ctrl-8" = [ "pane::ActivateItem" 7 ];
-        "ctrl-9" = [ "pane::ActivateItem" 8 ];
+        "ctrl-1" = ["pane::ActivateItem" 0];
+        "ctrl-2" = ["pane::ActivateItem" 1];
+        "ctrl-3" = ["pane::ActivateItem" 2];
+        "ctrl-4" = ["pane::ActivateItem" 3];
+        "ctrl-5" = ["pane::ActivateItem" 4];
+        "ctrl-6" = ["pane::ActivateItem" 5];
+        "ctrl-7" = ["pane::ActivateItem" 6];
+        "ctrl-8" = ["pane::ActivateItem" 7];
+        "ctrl-9" = ["pane::ActivateItem" 8];
       };
     }
     {
       context = "Terminal";
       bindings = {
-        "alt-t" = "terminal_panel::Toggle";
+        #"alt-t" = "terminal_panel::Toggle";
+        "alt-t" = "workspace::ToggleBottomDock";
       };
     }
     {
@@ -92,6 +93,13 @@
         # Switch between buffers
         "ctrl-p" = "pane::ActivatePreviousItem";
         "ctrl-n" = "pane::ActivateNextItem";
+      };
+    }
+    {
+      context = "Editor && vim_mode == insert";
+      bindings = {
+        "ctrl-a" = "editor::MoveToBeginningOfLine";
+        "ctrl-e" = "editor::MoveToEndOfLine";
       };
     }
   ];

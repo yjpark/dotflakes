@@ -1,16 +1,21 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.zed-editor = {
     enable = true;
     installRemoteServer = true;
     extensions = [
-      "just" "nix" "fish" "toml" "yaml" "lua"
+      "just"
+      "nix"
+      "fish"
+      "toml"
+      "yaml"
+      "lua"
     ];
-    extraPackages = [ pkgs.nixd ];
+    extraPackages = [pkgs.nixd];
   };
   programs.zed-editor.userSettings = {
     assistant.enabled = false;
     title_bar = {
-      show_branch_icon= true;
+      show_branch_icon = true;
       show_branch_name = true;
       show_project_items = true;
       show_sign_in = false;
@@ -34,5 +39,6 @@
     font_family = "FiraCode Nerd Font Mono";
     font_features = null;
     line_height = "comfortable";
+    tab_size = 4;
   };
 }
