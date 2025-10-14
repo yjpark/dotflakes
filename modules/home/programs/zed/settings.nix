@@ -33,11 +33,10 @@
     };
     inlay_hints.enabled = true;
     auto_install_extensions = true;
-    hour_format = "hour24";
     auto_update = false;
     ui_font_size = 18;
     ui_font_family = "Hurmit Nerd Font Mono";
-    #ui_font_features = null;
+    terminal.font_family = "Hurmit Nerd Font Mono";
     buffer_line_height = "comfortable";
     tab_size = 4;
   };
