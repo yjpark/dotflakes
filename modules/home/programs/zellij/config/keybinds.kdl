@@ -12,6 +12,8 @@ keybinds {
         bind "Ctrl k" { SwitchToMode "pane"; }
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Ctrl b" { SwitchToMode "tmux"; }
+        bind "Ctrl Right" { GoToNextTab; }
+        bind "Ctrl Left" { GoToPreviousTab; }
     }
     pane {
         bind "Ctrl k" { SwitchToMode "normal"; }
