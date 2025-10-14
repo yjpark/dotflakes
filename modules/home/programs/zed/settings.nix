@@ -24,7 +24,7 @@
       show_menus = false;
     };
     vim_mode = true;
-    vim.enable_vim_sneak = true;
+    vim.use_smartcase_find = true;
     theme = "Gruvbox Dark";
     tab_bar.show = true;
     indent_guides = {
@@ -37,7 +37,7 @@
     auto_update = false;
     ui_font_size = 18;
     ui_font_family = "Hurmit Nerd Font Mono";
-    ui_font_features = null;
+    #ui_font_features = null;
     buffer_line_height = "comfortable";
     tab_size = 4;
   };
