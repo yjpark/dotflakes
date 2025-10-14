@@ -13,7 +13,7 @@
     extraPackages = [pkgs.nixd];
   };
   programs.zed-editor.userSettings = {
-    assistant.enabled = false;
+    agent.enabled = false;
     title_bar = {
       show_branch_icon = true;
       show_branch_name = true;
@@ -36,7 +36,7 @@
     hour_format = "hour24";
     auto_update = false;
     ui_font_size = 18;
-    font_family = "FiraCode Nerd Font Mono";
+    font_family = "Hurmit Nerd Font Mono";
     font_features = null;
     line_height = "comfortable";
     tab_size = 4;
