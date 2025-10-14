@@ -31,14 +31,14 @@
       enabled = true;
       coloring = "indent_aware";
     };
-    inlay_hints.enable = true;
+    inlay_hints.enabled = true;
     auto_install_extensions = true;
     hour_format = "hour24";
     auto_update = false;
     ui_font_size = 18;
-    font_family = "Hurmit Nerd Font Mono";
-    font_features = null;
-    line_height = "comfortable";
+    ui_font_family = "Hurmit Nerd Font Mono";
+    ui_font_features = null;
+    buffer_line_height = "comfortable";
     tab_size = 4;
   };
 }
