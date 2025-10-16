@@ -18,6 +18,21 @@
       key = "<C-p>";
     }
     {
+      action = "<C-o>0";
+      key = "<C-a>";
+      mode = "i";
+    }
+    {
+      action = "<C-o>$";
+      key = "<C-e>";
+      mode = "i";
+    }
+    {
+      action = "<C-o>X";
+      key = "<C-h>";
+      mode = "i";
+    }
+    {
       action = "0";
       key = "<C-a>";
       mode = "n";
@@ -35,6 +50,16 @@
     {
       action = ":w<CR>";
       key = "<C-s>";
+      mode = "n";
+    }
+    {
+      action = "i";
+      key = "<cr>";
+      mode = "n";
+    }
+    {
+      action = "i<bs>";
+      key = "<bs>";
       mode = "n";
     }
     {
