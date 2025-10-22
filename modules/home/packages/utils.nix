@@ -40,5 +40,7 @@
 
     # Wayland tools
     wl-clipboard
+
+    slint-lsp
   ];
 }

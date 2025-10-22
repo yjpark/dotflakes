@@ -19,6 +19,7 @@
     pyright.enable = true;
     ruff.enable = true;
     rust_analyzer.enable = true;
+    slint-lsp.enable = true;
     tailwindcss.enable = true;
     tombi.enable = true;
   };

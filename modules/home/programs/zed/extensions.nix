@@ -6,5 +6,6 @@
     "toml"
     "yaml"
     "lua"
+    "slint"
   ];
 }
