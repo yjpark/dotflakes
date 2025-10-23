@@ -42,5 +42,6 @@
     wl-clipboard
 
     slint-lsp
+    slint-viewer
   ];
 }
