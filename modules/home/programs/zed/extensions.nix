@@ -7,5 +7,6 @@
     "yaml"
     "lua"
     "slint"
+    "crates-lsp"
   ];
 }
