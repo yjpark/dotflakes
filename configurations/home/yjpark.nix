@@ -4,7 +4,8 @@
 in {
   imports = [
     self.homeModules.default
-    ../../mixins/home/versions/25.05.nix
+    (self + /mixins/home/versions/25.05.nix)
+    (self + /mixins/home/linux)
   ];
 
   # Defined by /modules/home/options.nix

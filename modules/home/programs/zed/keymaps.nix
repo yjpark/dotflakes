@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{...}: {
   programs.zed-editor.userKeymaps = [
     {
       context = "EmptyPane || SharedScreen || Workspace";

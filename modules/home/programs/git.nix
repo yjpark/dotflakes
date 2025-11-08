@@ -5,9 +5,9 @@
 }: {
   programs.git = {
     enable = true;
-    userName = config.me.fullname;
-    userEmail = config.me.email;
-    extraConfig = {
+    settings.user.name = config.me.fullname;
+    settings.user.email = config.me.email;
+    settings = {
       init.defaultBranch = "main";
       # url."git@github.com:".insteadOf = "https://github.com/";
       remote.pushDefault = config.me.username;
@@ -18,7 +18,7 @@
       difftool.prompt = false;
       difftool."difftastic".cmd = ''difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"'';
     };
-    aliases = {
+    settings.alias = {
       st = "status";
       co = "checkout";
       br = "branch";
@@ -29,9 +29,10 @@
       rg = "reflog --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
     };
     lfs.enable = true;
-    delta = {
-      enable = true;
-    };
+  };
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
   };
   programs.gh = {
     enable = true;

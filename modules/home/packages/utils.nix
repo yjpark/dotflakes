@@ -38,9 +38,6 @@
     git-extras
     tokei # source line calculater
 
-    # Wayland tools
-    wl-clipboard
-
     slint-lsp
     slint-viewer
     nil # nix language server

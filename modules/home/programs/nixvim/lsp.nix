@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   # https://nix-community.github.io/nixvim/plugins/lspconfig/index.html
   plugins.lspconfig.enable = true;
   plugins.lspconfig.autoLoad = true;
