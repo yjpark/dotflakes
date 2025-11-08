@@ -10,6 +10,10 @@
     background = "dark";
     cursorline = true;
     cursorcolumn = false;
+    hlsearch = true;
+    incsearch = true;
+    ignorecase = true;
+    smartcase = true;
   };
   clipboard.providers.wl-copy.enable = true;
   autoCmd = [
