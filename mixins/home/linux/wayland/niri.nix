@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     niri
+    nirius
 
     # Wayland tools
     wl-clipboard
@@ -14,5 +15,11 @@
       rofi-file-browser
       rofi-emoji
     ];
+  };
+  programs.tofi = {
+    enable = true;
+  };
+  programs.swaylock = {
+    enable = true;
   };
 }
