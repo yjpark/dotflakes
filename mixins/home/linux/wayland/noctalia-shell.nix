@@ -5,9 +5,13 @@
   programs.noctalia-shell = {
     enable = true;
     settings = {
-      colorSchemes.predefinedScheme = "Ayu";
+      # https://docs.noctalia.dev/getting-started/nixos/#config-ref
       # configure noctalia here; defaults will
       # be deep merged with these attributes.
+      colorSchemes.predefinedScheme = "Ayu";
+      general = {
+        radiusRatio = 0;
+      };
       bar = {
         density = "default";
       };

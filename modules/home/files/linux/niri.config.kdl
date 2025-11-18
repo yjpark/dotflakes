@@ -336,18 +336,6 @@ binds {
     Alt+Tab repeat=false { focus-window-previous; }
 }
 
-workspace "apps"
-
-window-rule {
-    match app-id=r#"^org.wezfurlong.wezterm$"#
-    match app-id=r#"^obsidian$"#
-    match app-id=r#"^google-chrome$"#
-    match app-id=r#"^dev.zed.Zed$"#
-    match app-id=r#"^microsoft-edge$"#
-    open-maximized true
-    open-on-workspace "apps"
-}
-
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
@@ -463,7 +451,7 @@ window-rule {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 4
+    gaps 1
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -511,7 +499,7 @@ layout {
         // off
 
         // How many logical pixels the ring extends out from the windows.
-        width 2
+        width 1
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -549,7 +537,7 @@ layout {
         // If you enable the border, you probably want to disable the focus ring.
         off
 
-        width 2
+        width 1
         active-color "#ffc87f"
         inactive-color "#505050"
 
@@ -607,10 +595,10 @@ layout {
     // Top and bottom struts will simply add outer gaps in addition to the area occupied by
     // layer-shell panels and regular gaps.
     struts {
-        // left 64
-        // right 64
-        // top 64
-        // bottom 64
+        // left 2
+        // right 2
+        top 2
+        // bottom 2
     }
 }
 
@@ -697,4 +685,23 @@ window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
 }
+
+workspace "apps"
+
+window-rule {
+    match app-id=r#"^org.wezfurlong.wezterm$"#
+    match app-id=r#"^obsidian$"#
+    match app-id=r#"^google-chrome$"#
+    match app-id=r#"^dev.zed.Zed$"#
+    match app-id=r#"^microsoft-edge$"#
+    open-maximized true
+    open-on-workspace "apps"
+    border {
+        off
+    }
+    focus-ring {
+        off
+    }
+}
+
 
