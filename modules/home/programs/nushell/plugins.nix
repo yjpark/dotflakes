@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   programs.nushell.plugins = with pkgs.nushellPlugins; [
     polars
-    semver
+    #semver
     gstat
     query
     #units

@@ -1,5 +1,7 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
+    microsoft-edge
+    rustdesk
     vlc
     qimgv
     synergy

@@ -15,7 +15,6 @@
     ignorecase = true;
     smartcase = true;
   };
-  clipboard.providers.wl-copy.enable = true;
   autoCmd = [
       {
           command = "setlocal cursorcolumn";
