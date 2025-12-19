@@ -1,4 +1,6 @@
-{...}: {
+{ lib,...}: {
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
   networking.hostId = "9a8d434c";
   networking.hostName = "pc";
   networking.interfaces.eno1.wakeOnLan.enable = true;

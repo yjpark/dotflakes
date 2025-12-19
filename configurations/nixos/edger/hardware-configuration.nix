@@ -40,7 +40,6 @@
   # networking.interfaces.enp37s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp36s0.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # https://nixos.wiki/wiki/AMD_GPU
