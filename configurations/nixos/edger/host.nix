@@ -1,4 +1,4 @@
-{...}: {
+{ lib,...}: {
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   networking.hostId = "f4769ef1";
