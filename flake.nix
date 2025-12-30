@@ -12,6 +12,10 @@
     autowire.url = "github:yjpark/autowire.nix";
 
     # Software inputs
+    ## https://github.com/Mic92/sops-nix
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     ## https://nix-community.github.io/nixvim/index.html
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";

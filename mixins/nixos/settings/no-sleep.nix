@@ -1,6 +1,6 @@
 {...}: {
   # When keep running with lid closed, might got warning in systemd-logind
-  services.logind.lidSwitch = "lock";
+  services.logind.settings.Login.lidSwitch = "lock";
 
   # https://discourse.nixos.org/t/stop-pc-from-sleep/5757
   # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
