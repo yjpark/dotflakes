@@ -6,16 +6,6 @@ if test -d ~/.nix.private/bin/common
     set -x PATH ~/.nix.private/bin/common $PATH
 end
 
-uname -v | grep NixOS > /dev/null
-if [ $status -eq 0 ]
-    if test -d ~/.nix/bin/nixos
-        set -x PATH ~/.nix/bin/nixos $PATH
-    end
-    if test -d ~/.nix.private/bin/nixos
-        set -x PATH ~/.nix.private/bin/nixos $PATH
-    end
-end
-
 uname -v | grep Darwin > /dev/null
 if [ $status -eq 0 ]
     set -x PATH ~/.nix-profile/bin $PATH
@@ -63,3 +53,15 @@ end
 if test -d ~/.local/bin
     set -x PATH ~/.local/bin $PATH
 end
+
+uname -v | grep NixOS > /dev/null
+if [ $status -eq 0 ]
+    if test -d ~/.local/bin/nixos
+        set -x PATH ~/.local/bin/nixos $PATH
+    end
+    if test -d ~/.nix.private/bin/nixos
+        set -x PATH ~/.nix.private/bin/nixos $PATH
+    end
+end
+
+
