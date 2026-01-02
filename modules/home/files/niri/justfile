@@ -1,0 +1,6 @@
+backup-to-flakes:
+  cp -v config.*.kdl ~/.flakes/modules/home/files/niri/
+
+update-config host:
+  cp -v config.common.kdl config.kdl
+  cat config.{{host}}.kdl >> config.kdl
