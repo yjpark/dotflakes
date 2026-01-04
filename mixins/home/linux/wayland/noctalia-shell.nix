@@ -14,9 +14,10 @@
       };
       bar = {
         density = "default";
+        position = "bottom";
       };
       dock = {
-        enable = false;
+        enabled = false;
       };
       location = {
         monthBeforeDay = true;
