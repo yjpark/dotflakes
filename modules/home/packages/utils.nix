@@ -22,7 +22,7 @@
     axel
     curl
     inetutils
-    dogdns # dig alternative
+    doggo     # dig alternative
     bandwhich # show network usage by process
 
     # Secret
