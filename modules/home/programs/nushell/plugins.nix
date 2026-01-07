@@ -6,6 +6,6 @@
     query
     #units
     formats
-    highlight
+    #highlight
   ];
 }
