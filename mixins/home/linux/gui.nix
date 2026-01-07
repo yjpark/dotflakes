@@ -4,7 +4,7 @@
     rustdesk
     vlc
     qimgv
-    synergy
+    # synergy
     oculante
     #darktable
     #mattermost-desktop
