@@ -2,3 +2,5 @@ version = 1
 
 [install]
 lazyjj.pkg-path = "lazyjj"
+antigravity-fhs.pkg-path = "antigravity-fhs"
+antigravity-fhs.systems = ["x86_64-linux", "aarch64-linux"]

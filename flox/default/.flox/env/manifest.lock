@@ -3,6 +3,13 @@
   "manifest": {
     "version": 1,
     "install": {
+      "antigravity-fhs": {
+        "pkg-path": "antigravity-fhs",
+        "systems": [
+          "x86_64-linux",
+          "aarch64-linux"
+        ]
+      },
       "lazyjj": {
         "pkg-path": "lazyjj"
       }
@@ -11,22 +18,78 @@
   },
   "packages": [
     {
+      "attr_path": "antigravity-fhs",
+      "broken": false,
+      "derivation": "/nix/store/mc10sc30xq9cmk1dn9kknhh1zp2bd566-antigravity-1.13.3.drv",
+      "description": "Wrapped variant of antigravity which launches in a FHS compatible environment, should allow for easy usage of extensions without nix-specific modifications",
+      "install_id": "antigravity-fhs",
+      "license": "Unfree",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
+      "name": "antigravity-1.13.3",
+      "pname": "antigravity-fhs",
+      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
+      "rev_count": 921484,
+      "rev_date": "2026-01-02T18:37:51Z",
+      "scrape_date": "2026-01-04T03:20:54.118941Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": true,
+      "version": "1.13.3",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/cp53rrds5i7p0nvwl56dl4ig2ys4qx31-antigravity-1.13.3"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "antigravity-fhs",
+      "broken": false,
+      "derivation": "/nix/store/4chis1cgw254gszwivbfb4wcyzmr881l-antigravity-1.13.3.drv",
+      "description": "Wrapped variant of antigravity which launches in a FHS compatible environment, should allow for easy usage of extensions without nix-specific modifications",
+      "install_id": "antigravity-fhs",
+      "license": "Unfree",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
+      "name": "antigravity-1.13.3",
+      "pname": "antigravity-fhs",
+      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
+      "rev_count": 921484,
+      "rev_date": "2026-01-02T18:37:51Z",
+      "scrape_date": "2026-01-04T03:42:34.555623Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": true,
+      "version": "1.13.3",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/8iryaihmpria2nkv688jfm186ynwffs7-antigravity-1.13.3"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
       "attr_path": "lazyjj",
       "broken": false,
-      "derivation": "/nix/store/y1kx0xiv41pdi0p4ygm4qf1wcr8cj7nl-lazyjj-0.6.1.drv",
+      "derivation": "/nix/store/4z9cf6gh64j64nkhp78m73p3l6xpfz3p-lazyjj-0.6.1.drv",
       "description": "TUI for Jujutsu/jj",
       "install_id": "lazyjj",
       "license": "Apache-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e643668fd71b949c53f8626614b21ff71a07379d",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
       "name": "lazyjj-0.6.1",
       "pname": "lazyjj",
-      "rev": "e643668fd71b949c53f8626614b21ff71a07379d",
-      "rev_count": 866707,
-      "rev_date": "2025-09-24T05:06:22Z",
-      "scrape_date": "2025-09-26T03:42:50.218017Z",
+      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
+      "rev_count": 921484,
+      "rev_date": "2026-01-02T18:37:51Z",
+      "scrape_date": "2026-01-04T02:57:10.115015Z",
       "stabilities": [
-        "stable",
-        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -35,7 +98,7 @@
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/mhjqkship2j3w4vywpss94qiw28bfz55-lazyjj-0.6.1"
+        "out": "/nix/store/mlnm2i3zr0wi4kipllk4z4d7806iy18n-lazyjj-0.6.1"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
@@ -44,20 +107,18 @@
     {
       "attr_path": "lazyjj",
       "broken": false,
-      "derivation": "/nix/store/lpsny42x7dszzdfb1ql55dn1a7slmv76-lazyjj-0.6.1.drv",
+      "derivation": "/nix/store/vi14ikaixdawgdp56dwgpb04anmdp0rb-lazyjj-0.6.1.drv",
       "description": "TUI for Jujutsu/jj",
       "install_id": "lazyjj",
       "license": "Apache-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e643668fd71b949c53f8626614b21ff71a07379d",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
       "name": "lazyjj-0.6.1",
       "pname": "lazyjj",
-      "rev": "e643668fd71b949c53f8626614b21ff71a07379d",
-      "rev_count": 866707,
-      "rev_date": "2025-09-24T05:06:22Z",
-      "scrape_date": "2025-09-26T04:11:55.045631Z",
+      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
+      "rev_count": 921484,
+      "rev_date": "2026-01-02T18:37:51Z",
+      "scrape_date": "2026-01-04T03:21:17.366394Z",
       "stabilities": [
-        "stable",
-        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -66,7 +127,7 @@
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/6qkdc408k92db10hdgn8n2wgyf697grz-lazyjj-0.6.1"
+        "out": "/nix/store/n00gd0p53bqvwa8907iq55sjbbfivgf6-lazyjj-0.6.1"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
@@ -75,20 +136,18 @@
     {
       "attr_path": "lazyjj",
       "broken": false,
-      "derivation": "/nix/store/c13q026ia5piz2dc00hfcvi5q4baqaya-lazyjj-0.6.1.drv",
+      "derivation": "/nix/store/hglm2kdmqj1aa37sw45bxymikcl01all-lazyjj-0.6.1.drv",
       "description": "TUI for Jujutsu/jj",
       "install_id": "lazyjj",
       "license": "Apache-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e643668fd71b949c53f8626614b21ff71a07379d",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
       "name": "lazyjj-0.6.1",
       "pname": "lazyjj",
-      "rev": "e643668fd71b949c53f8626614b21ff71a07379d",
-      "rev_count": 866707,
-      "rev_date": "2025-09-24T05:06:22Z",
-      "scrape_date": "2025-09-26T04:39:48.281705Z",
+      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
+      "rev_count": 921484,
+      "rev_date": "2026-01-02T18:37:51Z",
+      "scrape_date": "2026-01-04T03:32:14.920764Z",
       "stabilities": [
-        "stable",
-        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -97,7 +156,7 @@
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/gs29iwamwml6hjhw01brsbxlkk4kpwcq-lazyjj-0.6.1"
+        "out": "/nix/store/954dx1dspr6qk2ky295dgg44n8l3mkmy-lazyjj-0.6.1"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
@@ -106,20 +165,18 @@
     {
       "attr_path": "lazyjj",
       "broken": false,
-      "derivation": "/nix/store/41qv3wnqzihdav491a90bybh9y0wifn6-lazyjj-0.6.1.drv",
+      "derivation": "/nix/store/5rqb6brs6wnlagq082xv8v3alpqygrbc-lazyjj-0.6.1.drv",
       "description": "TUI for Jujutsu/jj",
       "install_id": "lazyjj",
       "license": "Apache-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=e643668fd71b949c53f8626614b21ff71a07379d",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
       "name": "lazyjj-0.6.1",
       "pname": "lazyjj",
-      "rev": "e643668fd71b949c53f8626614b21ff71a07379d",
-      "rev_count": 866707,
-      "rev_date": "2025-09-24T05:06:22Z",
-      "scrape_date": "2025-09-26T05:10:58.424019Z",
+      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
+      "rev_count": 921484,
+      "rev_date": "2026-01-02T18:37:51Z",
+      "scrape_date": "2026-01-04T03:42:58.996607Z",
       "stabilities": [
-        "stable",
-        "staging",
         "unstable"
       ],
       "unfree": false,
@@ -128,7 +185,7 @@
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/96z210bq5gssky3zdpm7sks7j4qbqkn2-lazyjj-0.6.1"
+        "out": "/nix/store/bc5gw4dc00lm21jn30j0mbqsmhsm3qqs-lazyjj-0.6.1"
       },
       "system": "x86_64-linux",
       "group": "toplevel",
