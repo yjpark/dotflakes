@@ -1,13 +1,13 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     microsoft-edge
-    rustdesk
+    # rustdesk
     vlc
     qimgv
     # synergy
-    oculante
-    #darktable
-    #mattermost-desktop
+    # oculante
+    # darktable
+    # mattermost-desktop
     vulkan-tools
     ydotool
     gnome-randr
