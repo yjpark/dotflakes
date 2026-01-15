@@ -1,0 +1,5 @@
+{
+  plugins.ansiesc = {
+    enable = true;
+  };
+}
