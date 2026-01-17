@@ -2,6 +2,10 @@
   # https://taoa.io/posts/Setting-up-ipad-screen-mirroring-on-nixos
   environment.systemPackages = with pkgs; [
     uxplay
+    (pkgs.writeShellScriptBin "start-uxplay"  ''
+      #!/usr/bin/env bash
+      uxplay -p -hls -fs
+    '')
   ];
   services.avahi = {
     nssmdns = true;
