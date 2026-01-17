@@ -2,10 +2,6 @@
   # https://taoa.io/posts/Setting-up-ipad-screen-mirroring-on-nixos
   environment.systemPackages = with pkgs; [
     uxplay
-    # Add GStreamer plugins for hardware decoding if needed (e.g., for NVIDIA/AMD)
-    # gst_all_1.gst-plugins-bad
-    # gst_all_1.gst-plugins-ugly
-    # gst_all_1.gst-libav
   ];
   services.avahi = {
     nssmdns = true;
