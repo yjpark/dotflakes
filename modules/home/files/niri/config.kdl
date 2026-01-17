@@ -326,10 +326,10 @@ binds {
     Mod+Up        { focus-workspace-up; }
 
     Ctrl+Alt+E repeat=false { spawn-sh "nirius focus-or-spawn --app-id dev.zed.Zed zeditor"; }
-    Ctrl+Alt+M repeat=false { spawn-sh "nirius focus-or-spawn --app-id Google-chrome google-chrome-stable"; }
+    Ctrl+Alt+M repeat=false { spawn-sh "nirius focus-or-spawn --app-id google-chrome google-chrome-stable"; }
     Ctrl+Alt+O repeat=false { spawn-sh "nirius focus-or-spawn --app-id obsidian obsidian"; }
     Ctrl+Alt+T repeat=false { spawn-sh "nirius focus-or-spawn --app-id org.wezfurlong.wezterm wezterm"; }
-    Ctrl+Alt+G repeat=false { spawn-sh "nirius focus-or-spawn --app-id Microsoft-edge microsoft-edge"; }
+    Ctrl+Alt+G repeat=false { spawn-sh "nirius focus-or-spawn --app-id microsoft-edge microsoft-edge"; }
     Ctrl+Alt+P repeat=false { spawn-sh "nirius focus-or-spawn --app-id clash-verge clash-verge"; }
     Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus --app-id Alacritty"; }
 
