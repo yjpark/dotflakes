@@ -36,6 +36,10 @@
     # vscode-server
     nixos-vscode-server.url = "github:nix-community/nixos-vscode-server";
     nixos-vscode-server.flake = false;
+
+    # https://github.com/Svenum/Solaar-Flake
+    solaar.url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
+    solaar.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # Wired using https://nixos-unified.org/autowiring.html
