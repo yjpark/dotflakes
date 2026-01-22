@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   programs.fish.shellAbbrs = {
     a = "rg --smart-case";
+    b = "bacon";
     bw = "sudo bandwhich";
     cat = "bat";
     c = "cargo";
