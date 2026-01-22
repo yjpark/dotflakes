@@ -5,7 +5,8 @@ animations {
   slowdown 0.25
 }
 
-spawn-at-startup "noctalia-shell"
+//spawn-at-startup "noctalia-shell"
+spawn-at-startup "cosmic-ext-alternative-startup"
 spawn-at-startup "niriusd"
 spawn-at-startup "niriswitcher"
 
