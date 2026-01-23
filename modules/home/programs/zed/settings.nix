@@ -13,7 +13,7 @@
     extraPackages = [pkgs.nixd];
   };
   programs.zed-editor.userSettings = {
-    agent.enabled = false;
+    agent.enabled = true;
     title_bar = {
       show_branch_icon = true;
       show_branch_name = true;
