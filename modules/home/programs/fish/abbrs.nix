@@ -30,6 +30,7 @@
     p = "podman";
     r = "clear-buffer ; tv --show-remote";
     s = "shadowenv";
+    sg = "ast-grep";
     sp = "sync-pass";
     top = "btm";
     tree = "exa -T";

@@ -43,5 +43,8 @@
     nil # nix language server
 
     mmv
+    ast-grep 
+    quint
+    semgrep
   ];
 }

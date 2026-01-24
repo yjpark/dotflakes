@@ -41,6 +41,7 @@
     ];
   };
   programs.lazygit.enable = true;
+  programs.mergiraf.enable = true;
   home.packages = with pkgs; [
     difftastic
   ];
