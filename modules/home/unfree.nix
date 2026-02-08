@@ -11,5 +11,6 @@
       "microsoft-edge"
       "obsidian"
       "libsciter"
+      "claude-code"
     ];
 }

@@ -27,12 +27,6 @@
     # https://nixidy.dev/user_guide/getting_started/
     nixidy.url = "github:arnarg/nixidy";
 
-    # https://docs.noctalia.dev/getting-started/nixos/
-    quickshell.url = "github:outfoxxed/quickshell";
-    quickshell.inputs.nixpkgs.follows = "nixpkgs";
-    noctalia.url = "github:noctalia-dev/noctalia-shell";
-    noctalia.inputs.quickshell.follows = "quickshell";
-
     # vscode-server
     nixos-vscode-server.url = "github:nix-community/nixos-vscode-server";
     nixos-vscode-server.flake = false;
