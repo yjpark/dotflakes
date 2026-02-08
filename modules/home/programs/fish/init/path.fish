@@ -64,4 +64,11 @@ if [ $status -eq 0 ]
     end
 end
 
+if test -L ~/.local/bin/private
+    set -x PATH ~/.local/bin/private $PATH
+    if test -f ~/.local/bin/private/.secret.init.fish
+      source ~/.local/bin/private/.secret.init.fish
+    end
+end
+
 
