@@ -34,6 +34,9 @@
     # https://github.com/Svenum/Solaar-Flake
     solaar.url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
     solaar.inputs.nixpkgs.follows = "nixpkgs";
+
+    # AI Tools
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   # Wired using https://nixos-unified.org/autowiring.html

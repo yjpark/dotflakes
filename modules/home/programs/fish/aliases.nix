@@ -11,5 +11,6 @@
     set-proxy-edger = "set-proxy 172.22.1.2 31102";
     set-proxy-edger_lan = "set-proxy 10.0.1.2 31102";
     show-openai = "env | grep OPENAI";
+    serera = "uvx --from git+https://github.com/oraios/serena serena";
   };
 }
