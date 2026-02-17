@@ -31,7 +31,7 @@
     ssh-to-age
 
     # For nix and flakes
-    # omnix
+    omnix
 
     # Git tools
     tig

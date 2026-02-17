@@ -6,11 +6,15 @@
   programs.jujutsu = {
     enable = true;
     settings = {
+      ui.default-command = ["log" "--no-pager" "--limit" "20"];
       user = {
         email = config.me.email;
         name = config.me.fullname;
       };
-      ui.default-command = ["log" "--no-pager" "--limit" "20"];
+      git = {
+        push = "yjpark";
+        fetch = ["origin" "yjpark"];
+      };
     };
   };
   programs.jjui = {
