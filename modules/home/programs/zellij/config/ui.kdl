@@ -1,4 +1,4 @@
 simplified_ui false
 pane_frames true
-default_layout "compact"
+//default_layout "compact"
 theme "gruvbox-dark"
