@@ -1,0 +1,10 @@
+keybindings {
+  shared_except "locked" {
+    bind "Ctrl Left" { GoToPreviousTab; }
+    bind "Ctrl Right" { GoToNextTab; }
+    bind "Alt Left" { GoToPreviousTab; }
+    bind "Alt Right" { GoToNextTab; }
+    bind "Alt [" { PreviousSwapLayout; }
+    bind "Alt ]" { NextSwapLayout; }
+  }
+}

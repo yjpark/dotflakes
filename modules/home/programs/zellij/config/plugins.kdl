@@ -1,19 +1,9 @@
 plugins {
-    zjstatus-hints location="file:~/.config/zellij/plugins/zjstatus-hints.wasm" {
-        // Maximum number of characters to display
-        max_length 40 // 0 = unlimited
-        // String to append when truncated
-        overflow_str "..." // default
-        // Name of the pipe for zjstatus integration
-        pipe_name "zjstatus_hints" // default
-        // Hide hints in base mode (a.k.a. default mode)
-        // E.g. if you have set default_mode to "locked", then
-        // you can hide hints in the locked mode by setting this to true
-        hide_in_base_mode false // default
-    }
-    // https://github.com/ivoronin/zellij-tab-bar-indexed/?tab=readme-ov-file#compact-bar-plugin
-    // compact-bar location="zellij:compact-bar" {
-    compact-bar location="file:~/.config/zellij/plugins/compact-bar.wasm" {
+    // https://github.com/ivoronin/zellij-tab-bar-indexed/?tab=readme-ov-file#tab-bar-plugin
+    tab-bar location="file:~/.config/zellij/plugins/tab-bar.wasm" {
+        show_tab_indices true
+    }    
+    compact-bar location="zellij:compact-bar" {
         tooltip "F1"
     }
 }

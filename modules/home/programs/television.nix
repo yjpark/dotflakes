@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   programs.television = {
     enable = true;
     enableFishIntegration = false; # NOT using the shell_integration keybindings, so manually import it in fish
@@ -14,4 +14,11 @@
     };
   };
   programs.nix-search-tv.enable = true;
+
+  home.packages = [
+    (pkgs.writeShellScriptBin "update-television-fish-completion"  ''
+      #!/usr/bin/env bash
+      tv init fish > ~/.flakes/modules/home/programs/fish/completions/television-completion.fish
+    '')
+  ];
 }

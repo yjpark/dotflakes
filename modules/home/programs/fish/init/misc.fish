@@ -13,5 +13,4 @@ set -x RUSTC_WRAPPER sccache
 # television fish integration is using the shared version instead of the version after custimization
 #source /nix/store/0vxxc4ifpdk28hiakxagnnfzs2hihkki-television-0.15.0/share/television/completion.fish
 source ~/.config/fish/completions/television-completion.fish
-alias update-television-completion "tv init fish > ~/.flakes/modules/fish/completions/television-completion.fish"
 
