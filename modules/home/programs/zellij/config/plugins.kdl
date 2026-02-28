@@ -11,7 +11,9 @@ plugins {
         // you can hide hints in the locked mode by setting this to true
         hide_in_base_mode false // default
     }
-    compact-bar location="zellij:compact-bar" {
+    // https://github.com/ivoronin/zellij-tab-bar-indexed/?tab=readme-ov-file#compact-bar-plugin
+    // compact-bar location="zellij:compact-bar" {
+    compact-bar location="file:~/.config/zellij/plugins/compact-bar.wasm" {
         tooltip "F1"
     }
 }

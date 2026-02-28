@@ -7,14 +7,18 @@
     claude-code
     openspec
     opencode
+    claudebox
     ccusage
     ck
     vibe-kanban
     agent-browser
-    claudebox
-    skills-installer
+    #skills-installer
 
     pkgs.nodejs_25 # needed by context7
+    (pkgs.writeShellScriptBin "happy"  ''
+      #!/usr/bin/env bash
+      npx happy-coder "$@"
+    '')
     (pkgs.writeShellScriptBin "mcpjam"  ''
       #!/usr/bin/env bash
       npx @mcpjam/inspector@latest "$@"
