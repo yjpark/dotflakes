@@ -41,12 +41,16 @@
     # https://github.com/jacopone/antigravity-nix
     antigravity.url = "github:jacopone/antigravity-nix";
     antigravity.inputs.nixpkgs.follows = "nixpkgs";
+
+    # the unrealsed v0.10 version is much better
+    # https://github.com/idursun/jjui/discussions/319
+    jjui.url = "github:idursun/jjui";
   };
 
   # Wired using https://nixos-unified.org/autowiring.html
-  outputs = inputs:
-    inputs.nixos-unified.lib.mkFlake
-    {
+  outputs =
+    inputs:
+    inputs.nixos-unified.lib.mkFlake {
       inherit inputs;
       root = ./.;
     };

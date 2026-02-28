@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.fish.shellAbbrs = {
     a = "rg --smart-case";
     b = "bacon";
@@ -41,7 +42,6 @@
     xa = "flox activate";
     xe = "flox envs";
     xl = "flox list";
-    y = "yazi";
     z = "zellij";
     za = "zellij action";
     zt = "zellij attach --create";

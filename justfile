@@ -1,11 +1,9 @@
 activate-home *ARGS:
+    jj status
     nix run {{ARGS}}
 
 show:
     om show .
-
-run *ARGS:
-    nix run {{ARGS}}
 
 update *ARGS:
     nix flake update {{ARGS}}
