@@ -15,7 +15,6 @@ return {
     hide_tab_bar_if_only_one_tab = false,
 
     keys = {
-        { key = 'w',          mods = 'CTRL|SHIFT', action = act.CloseCurrentTab { confirm = false }, },
         { key = '1',          mods = 'CTRL',       action = act.ActivateTab(0), },
         { key = '2',          mods = 'CTRL',       action = act.ActivateTab(1), },
         { key = '3',          mods = 'CTRL',       action = act.ActivateTab(2), },
@@ -38,38 +37,5 @@ return {
         { key = '0',          mods = 'CTRL|ALT',   action = act.MoveTab(9), },
         { key = 'LeftArrow',  mods = 'CTRL|ALT',   action = act.MoveTabRelative(-1) },
         { key = 'RightArrow', mods = 'CTRL|ALT',   action = act.MoveTabRelative(1) },
-        {
-            key = 'c',
-            mods = 'CTRL',
-            action = wezterm.action_callback(function(window, pane)
-                local has_selection = window:get_selection_text_for_pane(pane) ~= ""
-                if has_selection then
-                    window:perform_action(
-                        wezterm.action { CopyTo = "ClipboardAndPrimarySelection" },
-                        pane)
-                    window:perform_action("ClearSelection", pane)
-                else
-                    window:perform_action(
-                        wezterm.action { SendKey = { key = "c", mods = "CTRL" } },
-                        pane)
-                end
-            end),
-        },
-        {
-            key = "c",
-            mods = "SHIFT|ALT",
-            action = wezterm.action { SendKey = { key = "c", mods = "CTRL" } }
-        },
-        {
-            key = "v",
-            mods = "CTRL",
-            action = act.PasteFrom 'Clipboard',
-        },
-        {
-            key = "v",
-            mods = "SHIFT|ALT",
-            action = wezterm.action { SendKey = { key = "v", mods = "CTRL" } },
-        },
-        { key = 't', mods = 'CTRL', action = act.SpawnTab 'CurrentPaneDomain', },
     },
 }
