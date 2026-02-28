@@ -2,3 +2,4 @@ version = 1
 
 [install]
 lazyjj.pkg-path = "lazyjj"
+simple-http-server.pkg-path = "simple-http-server"

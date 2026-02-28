@@ -5,6 +5,9 @@
     "install": {
       "lazyjj": {
         "pkg-path": "lazyjj"
+      },
+      "simple-http-server": {
+        "pkg-path": "simple-http-server"
       }
     },
     "options": {}
@@ -17,13 +20,13 @@
       "description": "TUI for Jujutsu/jj",
       "install_id": "lazyjj",
       "license": "Apache-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
       "name": "lazyjj-0.6.1",
       "pname": "lazyjj",
-      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
-      "rev_count": 921484,
-      "rev_date": "2026-01-02T18:37:51Z",
-      "scrape_date": "2026-01-04T02:57:10.115015Z",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T02:57:08.191812Z",
       "stabilities": [
         "unstable"
       ],
@@ -46,13 +49,13 @@
       "description": "TUI for Jujutsu/jj",
       "install_id": "lazyjj",
       "license": "Apache-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
       "name": "lazyjj-0.6.1",
       "pname": "lazyjj",
-      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
-      "rev_count": 921484,
-      "rev_date": "2026-01-02T18:37:51Z",
-      "scrape_date": "2026-01-04T03:21:17.366394Z",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:13:17.142221Z",
       "stabilities": [
         "unstable"
       ],
@@ -75,13 +78,13 @@
       "description": "TUI for Jujutsu/jj",
       "install_id": "lazyjj",
       "license": "Apache-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
       "name": "lazyjj-0.6.1",
       "pname": "lazyjj",
-      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
-      "rev_count": 921484,
-      "rev_date": "2026-01-02T18:37:51Z",
-      "scrape_date": "2026-01-04T03:32:14.920764Z",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:24:00.211833Z",
       "stabilities": [
         "unstable"
       ],
@@ -104,13 +107,13 @@
       "description": "TUI for Jujutsu/jj",
       "install_id": "lazyjj",
       "license": "Apache-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=fb7944c166a3b630f177938e478f0378e64ce108",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
       "name": "lazyjj-0.6.1",
       "pname": "lazyjj",
-      "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
-      "rev_count": 921484,
-      "rev_date": "2026-01-02T18:37:51Z",
-      "scrape_date": "2026-01-04T03:42:58.996607Z",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:34:15.164004Z",
       "stabilities": [
         "unstable"
       ],
@@ -121,6 +124,122 @@
       ],
       "outputs": {
         "out": "/nix/store/bc5gw4dc00lm21jn30j0mbqsmhsm3qqs-lazyjj-0.6.1"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "simple-http-server",
+      "broken": false,
+      "derivation": "/nix/store/28swrwbhlabnx55amqq85c98g8plqkds-simple-http-server-0.6.13.drv",
+      "description": "Simple HTTP server in Rust",
+      "install_id": "simple-http-server",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "simple-http-server-0.6.13",
+      "pname": "simple-http-server",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T02:58:25.948051Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.6.13",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/j07i32bjar99c54qw812i510llywsb3f-simple-http-server-0.6.13"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "simple-http-server",
+      "broken": false,
+      "derivation": "/nix/store/8r0rmyybd3jkvhr2swsg46m3cfq1yw7j-simple-http-server-0.6.13.drv",
+      "description": "Simple HTTP server in Rust",
+      "install_id": "simple-http-server",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "simple-http-server-0.6.13",
+      "pname": "simple-http-server",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:15:09.586600Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.6.13",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/n4shizslhwnj5r5lk0m9mqf6ygv3wdxz-simple-http-server-0.6.13"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "simple-http-server",
+      "broken": false,
+      "derivation": "/nix/store/8229gybgrhxscr2wlsqw6qc2mr2qs9lb-simple-http-server-0.6.13.drv",
+      "description": "Simple HTTP server in Rust",
+      "install_id": "simple-http-server",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "simple-http-server-0.6.13",
+      "pname": "simple-http-server",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:25:18.359920Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.6.13",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/zkhg2i9pwndj81nskgml5yp45gz7vrca-simple-http-server-0.6.13"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "simple-http-server",
+      "broken": false,
+      "derivation": "/nix/store/w52x8drpchr5i02wqw7nf43llhkvzr55-simple-http-server-0.6.13.drv",
+      "description": "Simple HTTP server in Rust",
+      "install_id": "simple-http-server",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "simple-http-server-0.6.13",
+      "pname": "simple-http-server",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:36:07.987178Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "0.6.13",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/50rs9vwpinawfxffv0vppx62q2gdypm2-simple-http-server-0.6.13"
       },
       "system": "x86_64-linux",
       "group": "toplevel",

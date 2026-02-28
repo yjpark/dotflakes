@@ -37,6 +37,10 @@
 
     # AI Tools
     llm-agents.url = "github:numtide/llm-agents.nix";
+
+    # https://github.com/jacopone/antigravity-nix
+    antigravity.url = "github:jacopone/antigravity-nix";
+    antigravity.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # Wired using https://nixos-unified.org/autowiring.html

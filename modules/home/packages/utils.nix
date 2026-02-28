@@ -21,6 +21,7 @@
     mosh
     axel
     curl
+    wget
     inetutils
     doggo     # dig alternative
     bandwhich # show network usage by process
