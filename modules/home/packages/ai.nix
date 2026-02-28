@@ -11,8 +11,8 @@
     claudebox
     ccusage
     ck
-    vibe-kanban
-    agent-browser
+    #vibe-kanban
+    #agent-browser
     #skills-installer
 
     pkgs.bun # needed by ccusage statusline
