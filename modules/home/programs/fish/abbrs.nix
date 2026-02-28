@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.fish.shellAbbrs = {
     a = "rg --smart-case";
     b = "bacon";
@@ -46,5 +45,6 @@
     za = "zellij action";
     zt = "zellij attach --create";
     zl = "zellij list-sessions";
+    zz = "zellij attach --create $(basename $PWD)";
   };
 }

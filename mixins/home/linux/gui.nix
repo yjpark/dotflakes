@@ -4,9 +4,11 @@
     # rustdesk
     vlc
     qimgv
+    nomacs
+    kdePackages.kimageformats
     # synergy
-    # oculante
-    # darktable
+    oculante
+    darktable
     # mattermost-desktop
     vulkan-tools
     ydotool

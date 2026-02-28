@@ -4,11 +4,6 @@
     #theme = "papercolor_dark";
     settings.keyboard.bindings = [
       {
-        key = "T";
-        mods = "Control";
-        action = "CreateNewTab";
-      }
-      {
         key = "1";
         mods = "Control";
         action = "SelectTab1";

@@ -3,7 +3,7 @@ local act = wezterm.action
 
 return {
     enable_wayland = true,
-    --window_decorations = 'INTEGRATED_BUTTONS|RESIZE',
+    window_decorations = 'INTEGRATED_BUTTONS|RESIZE',
 
     --font_dirs = { '/run/current-system/sw/share/X11/fonts' },
     --font = wezterm.font 'FiraCode Nerd Font Mono',
