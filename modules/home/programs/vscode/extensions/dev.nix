@@ -1,5 +1,7 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
+    visualjj.visualjj
     jnoortheen.nix-ide
     rust-lang.rust-analyzer
     zxh404.vscode-proto3
@@ -11,5 +13,8 @@
     tamasfe.even-better-toml
     serayuzgur.crates
     fill-labs.dependi
+  ];
+  home.packages = with pkgs; [
+    nixfmt
   ];
 }
