@@ -17,7 +17,7 @@
     pkgs.nodejs_25 # needed by context7
     (pkgs.writeShellScriptBin "happy"  ''
       #!/usr/bin/env bash
-      npx happy-coder "$@"
+      npx --package happy-coder happy "$@"
     '')
     (pkgs.writeShellScriptBin "mcpjam"  ''
       #!/usr/bin/env bash

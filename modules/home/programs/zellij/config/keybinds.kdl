@@ -1,0 +1,10 @@
+keybinds {
+  unbind "Ctrl s" "Ctrl q" "Alt p"
+  normal {
+    bind "Ctrl k" { SwitchToMode "search"; }
+    bind "Ctrl q" { Detach; }
+  }
+  session {
+    bind "Ctrl q" { Detach; }
+  }
+}

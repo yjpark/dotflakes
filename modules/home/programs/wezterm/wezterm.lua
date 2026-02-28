@@ -25,6 +25,8 @@ return {
         { key = '8',          mods = 'CTRL',       action = act.ActivateTab(7), },
         { key = '9',          mods = 'CTRL',       action = act.ActivateTab(8), },
         { key = '0',          mods = 'CTRL',       action = act.ActivateTab(9), },
+        { key = 'LeftArrow',  mods = 'CTRL',       action = act.ActivateTabRelative(-1) },
+        { key = 'RightArrow', mods = 'CTRL',       action = act.ActivateTabRelative(1) },
         { key = '1',          mods = 'CTRL|ALT',   action = act.MoveTab(0), },
         { key = '2',          mods = 'CTRL|ALT',   action = act.MoveTab(1), },
         { key = '3',          mods = 'CTRL|ALT',   action = act.MoveTab(2), },

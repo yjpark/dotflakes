@@ -44,7 +44,7 @@
     y = "yazi";
     z = "zellij";
     za = "zellij action";
-    zt = "zellij attach";
+    zt = "zellij attach --create";
     zl = "zellij list-sessions";
   };
 }

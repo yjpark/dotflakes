@@ -15,6 +15,10 @@
         push = "yjpark";
         fetch = ["origin" "yjpark"];
       };
+      # https://github.com/jj-vcs/jj/blob/main/docs/config.md#set-of-immutable-commits
+      revset-aliases = {
+        "immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())";
+      };
     };
   };
   programs.jjui = {

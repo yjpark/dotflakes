@@ -2,6 +2,6 @@
   programs.zellij = {
     enable = true;
     # This will automatically start zellij for new shell, which make working with remote machine much harder
-    enableFishIntegration = false;
+    # enableFishIntegration = false;
   };
 }

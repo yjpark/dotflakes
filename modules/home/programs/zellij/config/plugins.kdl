@@ -7,8 +7,3 @@ plugins {
         tooltip "F1"
     }
 }
-
-load_plugins {
-    // Load at startup
-    zjstatus-hints
-}
