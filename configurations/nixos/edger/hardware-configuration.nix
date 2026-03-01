@@ -12,10 +12,10 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = [];
-  boot.extraModulePackages = [];
+  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ "evdi" ];
+  boot.kernelModules = [ "evdi" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.evdi ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/64d92558-1ff3-443f-9e81-3e5a1286a1b7";
@@ -43,7 +43,7 @@
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # https://nixos.wiki/wiki/AMD_GPU
-  # services.xserver.videoDrivers = ["amdgpu" "displaylink" "modesetting"];
+  services.xserver.videoDrivers = ["amdgpu" "modesetting"];
   # Vulkan support
   # hardware.opengl.driSupport = true;
   # For 32 bit applications
@@ -51,4 +51,14 @@
   environment.systemPackages = [
     pkgs.displaylink
   ];
+
+  systemd.services.displaylink-server = {
+    description = "DisplayLink Manager Service";
+    after = [ "display-manager.service" ];
+    wantedBy = [ "graphical.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.displaylink}/bin/DisplayLinkManager";
+      Restart = "always";
+    };
+  };
 }
