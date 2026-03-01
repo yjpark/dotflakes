@@ -6,8 +6,22 @@
       "lazyjj": {
         "pkg-path": "lazyjj"
       },
+      "libinput": {
+        "pkg-path": "libinput",
+        "systems": [
+          "x86_64-linux",
+          "aarch64-linux"
+        ]
+      },
       "simple-http-server": {
         "pkg-path": "simple-http-server"
+      },
+      "xdotool": {
+        "pkg-path": "xdotool",
+        "systems": [
+          "x86_64-linux",
+          "aarch64-linux"
+        ]
       }
     },
     "options": {}
@@ -130,6 +144,68 @@
       "priority": 5
     },
     {
+      "attr_path": "libinput",
+      "broken": false,
+      "derivation": "/nix/store/g5lkp6w4fwmi4hirkspmnbq8xm5hx8mi-libinput-1.29.2.drv",
+      "description": "Handles input devices in Wayland compositors and provides a generic X.Org input driver",
+      "install_id": "libinput",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "libinput-1.29.2",
+      "pname": "libinput",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:13:17.921066Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.29.2",
+      "outputs_to_install": [
+        "bin"
+      ],
+      "outputs": {
+        "bin": "/nix/store/9gyxf18dlvyy3yg43i4r6lw8apysl7vz-libinput-1.29.2-bin",
+        "dev": "/nix/store/7l18fysmm22laxp4xmk64zjnp5ilj792-libinput-1.29.2-dev",
+        "out": "/nix/store/zj4c2qhbs572s0llna2x1ac80wcwlxqk-libinput-1.29.2"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "libinput",
+      "broken": false,
+      "derivation": "/nix/store/fsbafmgy9yra6v7c803hqwcypqahib1v-libinput-1.29.2.drv",
+      "description": "Handles input devices in Wayland compositors and provides a generic X.Org input driver",
+      "install_id": "libinput",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "libinput-1.29.2",
+      "pname": "libinput",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:34:16.010213Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "1.29.2",
+      "outputs_to_install": [
+        "bin"
+      ],
+      "outputs": {
+        "bin": "/nix/store/248zkd6222jr7xv5jlwrdj70c15g3qvr-libinput-1.29.2-bin",
+        "dev": "/nix/store/pa3asawv8vx96lz2zsm89rrg13flr4wk-libinput-1.29.2-dev",
+        "out": "/nix/store/pfaavvrfb1lhx26zwllc4vm5jyzfl1hh-libinput-1.29.2"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
       "attr_path": "simple-http-server",
       "broken": false,
       "derivation": "/nix/store/28swrwbhlabnx55amqq85c98g8plqkds-simple-http-server-0.6.13.drv",
@@ -240,6 +316,64 @@
       ],
       "outputs": {
         "out": "/nix/store/50rs9vwpinawfxffv0vppx62q2gdypm2-simple-http-server-0.6.13"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "xdotool",
+      "broken": false,
+      "derivation": "/nix/store/1nzz71729cl91ss1z07i5ilkqrkvxank-xdotool-3.20211022.1.drv",
+      "description": "Fake keyboard/mouse input, window management, and more",
+      "install_id": "xdotool",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "xdotool-3.20211022.1",
+      "pname": "xdotool",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:16:15.706333Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "3.20211022.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/c9ld5fyyir87lnak3zlrschasr09x26f-xdotool-3.20211022.1"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "xdotool",
+      "broken": false,
+      "derivation": "/nix/store/n961009yvy6aahkgb6w2hwng2liisdp1-xdotool-3.20211022.1.drv",
+      "description": "Fake keyboard/mouse input, window management, and more",
+      "install_id": "xdotool",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "xdotool-3.20211022.1",
+      "pname": "xdotool",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:37:12.701992Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "3.20211022.1",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/kapw564zfds889lni1ndi7g8asva9z95-xdotool-3.20211022.1"
       },
       "system": "x86_64-linux",
       "group": "toplevel",
