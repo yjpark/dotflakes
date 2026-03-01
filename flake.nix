@@ -45,11 +45,13 @@
     # the unrealsed v0.10 version is much better
     # https://github.com/idursun/jjui/discussions/319
     jjui.url = "github:idursun/jjui";
+
+    # https://github.com/xremap/nix-flake/blob/master/docs/HOWTO.md#nixos
+    xremap-flake.url = "github:xremap/nix-flake";
   };
 
   # Wired using https://nixos-unified.org/autowiring.html
-  outputs =
-    inputs:
+  outputs = inputs:
     inputs.nixos-unified.lib.mkFlake {
       inherit inputs;
       root = ./.;
