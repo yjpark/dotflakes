@@ -7,3 +7,5 @@ libinput.pkg-path = "libinput"
 libinput.systems = ["x86_64-linux", "aarch64-linux"]
 xdotool.pkg-path = "xdotool"
 xdotool.systems = ["x86_64-linux", "aarch64-linux"]
+libgbm.pkg-path = "libgbm"
+libgbm.systems = ["x86_64-linux", "aarch64-linux"]

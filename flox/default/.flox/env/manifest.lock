@@ -6,6 +6,13 @@
       "lazyjj": {
         "pkg-path": "lazyjj"
       },
+      "libgbm": {
+        "pkg-path": "libgbm",
+        "systems": [
+          "x86_64-linux",
+          "aarch64-linux"
+        ]
+      },
       "libinput": {
         "pkg-path": "libinput",
         "systems": [
@@ -138,6 +145,66 @@
       ],
       "outputs": {
         "out": "/nix/store/bc5gw4dc00lm21jn30j0mbqsmhsm3qqs-lazyjj-0.6.1"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "libgbm",
+      "broken": false,
+      "derivation": "/nix/store/01nfq7i12qzsgx3dh4wssd29hsk4wl30-mesa-libgbm-25.1.0.drv",
+      "description": "Open source 3D graphics library",
+      "install_id": "libgbm",
+      "license": "[ MIT ]",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "mesa-libgbm-25.1.0",
+      "pname": "libgbm",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:13:17.776167Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "25.1.0",
+      "outputs_to_install": [
+        "out",
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/4gncjmfp0x85vmimzqybkbd97jm090wy-mesa-libgbm-25.1.0"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "libgbm",
+      "broken": false,
+      "derivation": "/nix/store/28rf2qza9iqwc8drxqwnr77n7gzabcwq-mesa-libgbm-25.1.0.drv",
+      "description": "Open source 3D graphics library",
+      "install_id": "libgbm",
+      "license": "[ MIT ]",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "name": "mesa-libgbm-25.1.0",
+      "pname": "libgbm",
+      "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
+      "rev_count": 924538,
+      "rev_date": "2026-01-08T17:13:37Z",
+      "scrape_date": "2026-01-10T03:34:15.859934Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "25.1.0",
+      "outputs_to_install": [
+        "out",
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/24w3s75aa2lrvvxsybficn8y3zxd27kp-mesa-libgbm-25.1.0"
       },
       "system": "x86_64-linux",
       "group": "toplevel",

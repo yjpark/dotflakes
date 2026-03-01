@@ -1,0 +1,14 @@
+output "DP-1" {
+    mode "2560x1440"
+    scale 1
+    transform "normal"
+    position x=0 y=0
+}
+
+output "DVI-I-1" {
+    mode "1920x1080"
+    scale 1
+    transform "normal"
+    position x=320 y=1440
+}
+

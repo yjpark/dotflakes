@@ -65,7 +65,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
+    Mod+T hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
@@ -319,21 +319,25 @@ binds {
 
     // Mine Mappings ---------------------------------------------------------------------------
     Ctrl+Tab repeat=false { toggle-overview; }
-    MouseBack repeat=false { toggle-overview; }
-    MouseForward repeat=false { focus-window-previous; }
+    // MouseBack repeat=false { toggle-overview; }
+    // MouseForward repeat=false { focus-window-previous; }
+
+    MouseMiddle repeat=false { toggle-overview; }
+    MouseForward allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
+    MouseBack allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
 
     Mod+Down      { focus-workspace-down; }
     Mod+Up        { focus-workspace-up; }
 
     Ctrl+Alt+E repeat=false { spawn-sh "nirius focus-or-spawn --app-id dev.zed.Zed zeditor"; }
-    Ctrl+Alt+M repeat=false { spawn-sh "nirius focus-or-spawn --app-id google-chrome google-chrome-stable"; }
+    Ctrl+Alt+M repeat=false { spawn-sh "nirius focus-or-spawn --app-id Google-chrome google-chrome-stable"; }
     Ctrl+Alt+O repeat=false { spawn-sh "nirius focus-or-spawn --app-id obsidian obsidian"; }
     Ctrl+Alt+T repeat=false { spawn-sh "nirius focus-or-spawn --app-id org.wezfurlong.wezterm wezterm"; }
-    Ctrl+Alt+G repeat=false { spawn-sh "nirius focus-or-spawn --app-id microsoft-edge microsoft-edge"; }
+    Ctrl+Alt+G repeat=false { spawn-sh "nirius focus-or-spawn --app-id Microsoft-edge microsoft-edge"; }
     Ctrl+Alt+P repeat=false { spawn-sh "nirius focus-or-spawn --app-id clash-verge clash-verge"; }
-    Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus --app-id Alacritty"; }
+    Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus --app-id Alacritty alacritty"; }
 
-    Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
 
 
     Alt+Tab repeat=false { focus-window-previous; }
@@ -706,5 +710,3 @@ window-rule {
         off
     }
 }
-
-

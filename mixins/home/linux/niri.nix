@@ -1,6 +1,10 @@
-{pkgs, ...}: {
+{
+  flake,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
-    niri
+    flake.inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri
     nirius
 
     # Wayland tools

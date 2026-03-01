@@ -46,6 +46,9 @@
     # https://github.com/idursun/jjui/discussions/319
     jjui.url = "github:idursun/jjui";
 
+    # Need latest niri to support the displaylink
+    niri.url = "github:yjpark/niri/wip-display-port";
+
     # https://github.com/xremap/nix-flake/blob/master/docs/HOWTO.md#nixos
     xremap-flake.url = "github:xremap/nix-flake";
   };
