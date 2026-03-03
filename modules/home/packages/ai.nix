@@ -11,6 +11,8 @@
     claudebox
     ccusage
     ck
+    backlog-md
+    beads
     #vibe-kanban
     #agent-browser
     #skills-installer

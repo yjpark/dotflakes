@@ -11,6 +11,9 @@
         type = "command";
         command = "uv run ~/.claude/scripts/statusline.py";
       };
+      enabledPlugins = {
+        "skill-creator@claude-plugins-official" = true;
+      };
     };
   };
 
