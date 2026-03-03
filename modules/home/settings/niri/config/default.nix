@@ -4,7 +4,12 @@
   ...
 }: {
   home.file =
-    lib.mapAttrs'
-    (flake.inputs.autowire.doPrefixName ".config/niri/")
-    (flake.inputs.autowire.gatherFiles_kdl ./.);
+    (lib.mapAttrs'
+      (flake.inputs.autowire.doPrefixName ".config/niri/")
+      (flake.inputs.autowire.gatherFiles_kdl ./.))
+    // {
+      ".config/niri/justfile" = {
+        source = ./niri.justfile;
+      };
+    };
 }
