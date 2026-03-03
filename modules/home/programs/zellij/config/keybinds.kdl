@@ -1,7 +1,7 @@
 keybinds {
   unbind "Ctrl s" "Ctrl q" "Alt p"
   normal {
-    bind "Ctrl k" { SwitchToMode "search"; }
+    bind "Ctrl k" { SwitchToMode "scroll"; }
     bind "Ctrl q" { Detach; }
     bind "Alt 1" { GoToTab 1; }
     bind "Alt 2" { GoToTab 2; }
@@ -14,6 +14,7 @@ keybinds {
     bind "Alt 9" { GoToTab 9; }
   }
   session {
+    bind "Ctrl k" { SwitchToMode "scroll"; }
     bind "Ctrl q" { Detach; }
   }
 }

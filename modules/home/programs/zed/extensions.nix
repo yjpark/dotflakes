@@ -8,5 +8,6 @@
     "lua"
     "slint"
     "crates-lsp"
+    "python"
   ];
 }

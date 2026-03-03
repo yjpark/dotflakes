@@ -36,8 +36,9 @@
     auto_update = false;
     ui_font_size = 18;
     ui_font_family = "Hurmit Nerd Font Mono";
-    terminal.font_family = "Hurmit Nerd Font Mono";
     buffer_line_height = "comfortable";
     tab_size = 4;
+    terminal.font_family = "Hurmit Nerd Font Mono";
+    terminal.dock = "right";
   };
 }

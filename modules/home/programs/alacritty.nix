@@ -2,6 +2,9 @@
   programs.alacritty = {
     enable = true;
     #theme = "papercolor_dark";
+    settings.font = {
+      normal.family = "Hurmit Nerd Font Mono";
+    };
     settings.keyboard.bindings = [
       {
         key = "1";

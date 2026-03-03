@@ -6,8 +6,14 @@ show:
     jj status
     om show .
 
-update *ARGS:
+flake-update *ARGS:
     nix flake update {{ARGS}}
+    jj status
+
+# Sometime stuck with nurHash not matched issue, need to remove flake.lock to fix this
+flake-reset:
+    rm flake.lock
+    nix flake update
     jj status
 
 build-host command="build" *ARGS:

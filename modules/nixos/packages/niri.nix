@@ -7,13 +7,22 @@
   start-cosmic-ext-niri = pkgs.writeShellScriptBin "start-cosmic-ext-niri" (builtins.readFile ./niri-cosmic/start-cosmic-ext-niri.bash);
 
   # 2. Create a desktop file that points to your script
-  niriCosmicSession = pkgs.writeTextDir "share/wayland-sessions/niri-Cosmic.desktop" ''
-    [Desktop Entry]
-    Name=Niri Cosmic
-    Comment=A scrollable-tiling Wayland compositor (with Cosmic session)
-    Exec=${start-cosmic-ext-niri}/bin/start-cosmic-ext-niri
-    Type=Application
-  '';
+  niriCosmicSession =
+    pkgs.runCommand "start-cosmic-ext-niri" {
+      # This is the magic line NixOS is asking for!
+      # It must match the filename below exactly (without .desktop)
+      passthru.providedSessions = ["niri-Cosmic"];
+    } ''
+      mkdir -p $out/share/wayland-sessions
+
+      cat > $out/share/wayland-sessions/niri-Cosmic.desktop <<EOF
+      [Desktop Entry]
+      Name=Niri (COSMIC)
+      Comment=Custom Niri with COSMIC session
+      Exec=${start-cosmic-ext-niri}/bin/start-cosmic-ext-niri
+      Type=Application
+      EOF
+    '';
 
   cosmic-ext-alternative-startup = pkgs.stdenv.mkDerivation {
     pname = "cosmic-ext-alternative-startup";

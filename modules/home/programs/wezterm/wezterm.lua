@@ -13,7 +13,9 @@ return {
     --color_scheme = "Molokai",
     color_scheme = 'Pencil Dark (Gogh)',
 
-    hide_tab_bar_if_only_one_tab = false,
+    hide_tab_bar_if_only_one_tab = true,
+
+    enable_kitty_keyboard = true,
 
     keys = {
         { key = '1',          mods = 'CTRL',       action = act.ActivateTab(0), },
@@ -40,5 +42,6 @@ return {
         { key = '0',          mods = 'CTRL|ALT',   action = act.MoveTab(9), },
         { key = 'LeftArrow',  mods = 'CTRL|ALT',   action = act.MoveTabRelative(-1) },
         { key = 'RightArrow', mods = 'CTRL|ALT',   action = act.MoveTabRelative(1) },
+        { key = '`', modes = "CTRL", action = act.SendString('\x1b[96;5u')},
     },
 }

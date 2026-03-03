@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   programs.kitty = {
     enable = true;
     settings = {
@@ -27,4 +27,10 @@
       "ctrl+alt+right" = "move_tab_forward";
     };
   };
+  home.packages = [
+    (pkgs.writeShellScriptBin "kitty-themes" ''
+      #!/usr/bin/env bash
+      kitty +kitten themes
+    '')
+  ];
 }

@@ -2,6 +2,10 @@
   programs.bash = {
     enable = true;
     enableCompletion = false;
-    #initExtra = "fish";
+    initExtra = ''
+      if [[ $- == *i* ]]; then
+        exec fish
+      fi
+    '';
   };
 }
