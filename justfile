@@ -24,6 +24,6 @@ build-host command="build" *ARGS:
     nixos-rebuild {{command}} --flake .#`hostname` {{ARGS}}
 
 switch-host *ARGS:
-    @just build-host build
+    jj status
     sudo nixos-rebuild switch --flake .#`hostname` {{ARGS}}
     sudo chown yjpark:wheel flake.lock
