@@ -4,6 +4,6 @@
   ...
 }: {
   home.packages = with pkgs; [
-    flake.inputs.flox.packages.${system}.default
+    flake.inputs.flox.packages.${stdenv.hostPlatform.system}.default
   ];
 }

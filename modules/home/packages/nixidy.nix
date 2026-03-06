@@ -4,6 +4,6 @@
   ...
 }: {
   home.packages = with pkgs; [
-    flake.inputs.nixidy.packages.${system}.default
+    flake.inputs.nixidy.packages.${stdenv.hostPlatform.system}.default
   ];
 }

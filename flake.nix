@@ -37,6 +37,7 @@
 
     # AI Tools
     llm-agents.url = "github:numtide/llm-agents.nix";
+    claude-desktop.url = "github:aaddrick/claude-desktop-debian";
 
     # https://github.com/jacopone/antigravity-nix
     antigravity.url = "github:jacopone/antigravity-nix";
