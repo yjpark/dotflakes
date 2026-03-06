@@ -6,7 +6,6 @@
     lib,
     ...
   }: {
-    packages.nixidy = inputs.nixidy.packages.${system}.default;
     devShells.nixidy = pkgs.mkShell {
       name = "nixidy";
       meta.description = "Shell environment for nixidy";

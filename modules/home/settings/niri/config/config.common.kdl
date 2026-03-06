@@ -1,13 +1,15 @@
 overview {
-  zoom 0.1
+  zoom 0.15
 }
 animations {
-  slowdown 0.25
+  slowdown 0.2
 }
 
 spawn-at-startup "cosmic-ext-alternative-startup"
 spawn-at-startup "niriusd"
 spawn-at-startup "niriswitcher"
+spawn-at-startup "hypridle"
+//spawn-at-startup "sh" "-c" "systemctl --user import-environment WAYLAND_DISPLAY && systemctl --user restart graphical-session.target"
 
 input {
     keyboard {
@@ -332,10 +334,11 @@ binds {
     Ctrl+Alt+E repeat=false { spawn-sh "nirius focus-or-spawn --app-id dev.zed.Zed zeditor"; }
     Ctrl+Alt+M repeat=false { spawn-sh "nirius focus-or-spawn --app-id google-chrome google-chrome-stable"; }
     Ctrl+Alt+O repeat=false { spawn-sh "nirius focus-or-spawn --app-id obsidian obsidian"; }
-    Ctrl+Alt+T repeat=false { spawn-sh "nirius focus-or-spawn --app-id org.wezfurlong.wezterm wezterm"; }
+    Ctrl+Alt+T repeat=false { spawn-sh "nirius focus-or-spawn --app-id kitty kitty"; }
     Ctrl+Alt+G repeat=false { spawn-sh "nirius focus-or-spawn --app-id microsoft-edge microsoft-edge"; }
     Ctrl+Alt+P repeat=false { spawn-sh "nirius focus-or-spawn --app-id clash-verge clash-verge"; }
-    Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus --app-id Alacritty alacritty"; }
+    //Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus --app-id Alacritty alacritty"; }
+    Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus-or-spawn --app-id org.wezfurlong.wezterm wezterm"; }
 
     Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
 

@@ -11,4 +11,7 @@ output "DVI-I-1" {
     transform "normal"
     position x=320 y=1440
 }
+//debug {
+//    render-drm-device "/dev/dri/renderD128"
+//}
 
