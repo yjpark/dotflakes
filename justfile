@@ -17,13 +17,13 @@ flake-update *ARGS:
 flake-reset:
     rm flake.lock
     nix flake update
-    jj status
+    jj new
 
 build-host command="build" *ARGS:
     jj status
     nixos-rebuild {{command}} --flake .#`hostname` {{ARGS}}
 
 switch-host *ARGS:
-    jj status
+    @just build-host build
     sudo nixos-rebuild switch --flake .#`hostname` {{ARGS}}
     sudo chown yjpark:wheel flake.lock
