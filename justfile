@@ -6,6 +6,9 @@ show:
     jj status
     om show .
 
+flake-update-llm-agents:
+    @just flake-update llm-agents
+
 flake-update *ARGS:
     nix flake update {{ARGS}}
     jj status

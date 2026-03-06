@@ -337,6 +337,7 @@ binds {
     Ctrl+Alt+T repeat=false { spawn-sh "nirius focus-or-spawn --app-id kitty kitty"; }
     Ctrl+Alt+G repeat=false { spawn-sh "nirius focus-or-spawn --app-id microsoft-edge microsoft-edge"; }
     Ctrl+Alt+P repeat=false { spawn-sh "nirius focus-or-spawn --app-id clash-verge clash-verge"; }
+    Ctrl+Alt+C repeat=false { spawn-sh "nirius focus-or-spawn --app-id Claude claude-desktop"; }
     //Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus --app-id Alacritty alacritty"; }
     Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus-or-spawn --app-id org.wezfurlong.wezterm wezterm"; }
 
