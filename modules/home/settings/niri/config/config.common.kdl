@@ -714,3 +714,10 @@ window-rule {
         off
     }
 }
+
+gestures {
+    hot-corners {
+        // Disables all hot corners, including the default top-left overview toggle
+        off
+    }
+}

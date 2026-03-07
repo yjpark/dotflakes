@@ -17,4 +17,9 @@ keybinds {
     bind "Ctrl k" { SwitchToMode "scroll"; }
     bind "Ctrl q" { Detach; }
   }
+  tab {
+    bind "Alt Shift Left" { MoveTab "Left"; }
+    bind "Alt Shift Right" { MoveTab "Right"; }
+    bind "a" { MoveTab "Left"; }
+  }
 }
