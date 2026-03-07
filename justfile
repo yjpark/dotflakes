@@ -6,6 +6,9 @@ show:
     jj status
     om show .
 
+flake-lock-niri:
+    nix flake lock --update-input niri
+
 flake-update-llm-agents:
     @just flake-update llm-agents
 
