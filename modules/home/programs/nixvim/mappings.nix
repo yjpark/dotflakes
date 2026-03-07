@@ -11,11 +11,23 @@
     }
     {
       action = ":bnext<CR>";
-      key = "<C-n>";
+      key = "<M-S-Right>";
+      mode = "n";
     }
     {
       action = ":bprev<CR>";
-      key = "<C-p>";
+      key = "<M-S-Left>";
+      mode = "n";
+    }
+    {
+      action = "<Esc>:bnext<CR>";
+      key = "<M-S-Right>";
+      mode = "i";
+    }
+    {
+      action = "<Esc>:bprev<CR>";
+      key = "<M-S-Left>";
+      mode = "i";
     }
     {
       action = "<C-o>0";
