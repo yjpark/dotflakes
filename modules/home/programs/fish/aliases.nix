@@ -3,6 +3,7 @@
     ".." = "cd ..";
     "..." = "cd ../..";
     "...." = "cd ../../..";
+    clear-buffer = ''echo -e -n "\\0033c"'';
     reset-proxy = "set -ge https_proxy; set -ge http_proxy; set -ge all_proxy; set -ge NIX_CURL_FLAGS";
     show-proxy = "env | grep _proxy; env | grep NIX_CURL_FLAGS";
     set-proxy-verge = "set-proxy 127.0.0.1 1102";
