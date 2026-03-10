@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
+    bitwarden-desktop
     microsoft-edge
     # rustdesk
     vlc
@@ -15,5 +16,7 @@
     gnome-randr
     gjs # JavaScript bindings for GNOME
     clash-verge-rev # clash gui
+    # others
+    discord
   ];
 }

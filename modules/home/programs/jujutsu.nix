@@ -29,6 +29,16 @@
       revset-aliases = {
         "immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())";
       };
+
+      aliases = {
+        local-heads = [ "log" "--stat" "-r" "visible_heads() ~ remote_bookmarks()"];
+        dt = ["diff" "--tool" "difftastic"];
+      };
+
+      merge-tools.difftastic = {
+        program = "difft";
+        diff-args = ["--color=always" "$left" "$right"];
+      };
     };
   };
   programs.jjui = {
