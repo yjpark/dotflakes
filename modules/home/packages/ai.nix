@@ -11,6 +11,7 @@
     ccusage
     ck
     backlog-md
+    pkgs.beans
     beads
     #vibe-kanban
     #agent-browser

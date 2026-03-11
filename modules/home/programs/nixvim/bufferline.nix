@@ -10,39 +10,39 @@
   keymaps = [
     {
       action = "<cmd>BufferLineGoToBuffer 1<CR>";
-      key = "<leader>1";
+      key = "<M-S-1>";
     }
     {
       action = "<cmd>BufferLineGoToBuffer 2<CR>";
-      key = "<leader>2";
+      key = "<M-S-2>";
     }
     {
       action = "<cmd>BufferLineGoToBuffer 3<CR>";
-      key = "<leader>3";
+      key = "<M-S-3>";
     }
     {
       action = "<cmd>BufferLineGoToBuffer 4<CR>";
-      key = "<leader>4";
+      key = "<M-S-4>";
     }
     {
       action = "<cmd>BufferLineGoToBuffer 5<CR>";
-      key = "<leader>5";
+      key = "<M-S-5>";
     }
     {
       action = "<cmd>BufferLineGoToBuffer 6<CR>";
-      key = "<leader>6";
+      key = "<M-S-6>";
     }
     {
       action = "<cmd>BufferLineGoToBuffer 7<CR>";
-      key = "<leader>7";
+      key = "<M-S-7>";
     }
     {
       action = "<cmd>BufferLineGoToBuffer 8<CR>";
-      key = "<leader>8";
+      key = "<M-S-8>";
     }
     {
       action = "<cmd>BufferLineGoToBuffer 9<CR>";
-      key = "<leader>9";
+      key = "<M-S-9>";
     }
   ];
 }
