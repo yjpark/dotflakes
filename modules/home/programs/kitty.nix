@@ -3,6 +3,7 @@
     enable = true;
     settings = {
       font_family = "Hurmit Nerd Font Mono";
+      font_size = "16";
       hide_window_decorations = "yes";
       tab_bar_edge = "top";
       tab_bar_style = "powerline";
@@ -30,7 +31,13 @@
   home.packages = [
     (pkgs.writeShellScriptBin "kitty-themes" ''
       #!/usr/bin/env bash
+      echo "Select the theme, save for Dark/Light, will take effect afterwards"
       kitty +kitten themes
+
+      # Note: on OSX, it's not auto loading some time, force a reload here
+      killall -USR1 kitty
+
+      echo "On OSX, the shortcut to reload config is <Ctrl+Cmd+Comma>"
     '')
   ];
 }

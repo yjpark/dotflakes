@@ -20,6 +20,12 @@
     pkgs.bun # needed by ccusage statusline
     pkgs.nodejs_25 # needed by context7
 
+    (pkgs.writeShellScriptBin "install-ccline"  ''
+      #!/usr/bin/env bash
+
+      npm install -g @cometix/ccline
+    '')
+
     (pkgs.writeShellScriptBin "install-googleworkspace-cli"  ''
       #!/usr/bin/env bash
 
