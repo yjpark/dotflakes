@@ -3,8 +3,8 @@
     a = "rg --smart-case";
     bc = "bacon";
     bn = "beans";
-    bt = "beans tui";
-    bw = "sudo bandwhich";
+    bw = "beans-serve";
+    bt = "beans-tui";
     cat = "bat";
     c = "cargo";
     cb = "clear-buffer ; cargo build";

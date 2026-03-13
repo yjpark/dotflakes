@@ -2,7 +2,22 @@
   flake,
   pkgs,
   ...
-}: {
+}:
+let
+    dolt-version = "1.83.5";
+    dolt = pkgs.dolt.overrideAttrs (old: {
+      version = dolt-version;
+      src = pkgs.fetchFromGitHub {
+        owner = "dolthub";
+        repo = "dolt";
+        tag = "v${dolt-version}";
+        hash = "sha256-UaC9Yl3xl3IWQN7RSu1ApJNgm/fIgvLgoxOFWEVJK28=";
+      };
+      vendorHash = "sha256-hnJhLEJo/EQlTuTv+smiLok7AarFoDIB4ebB6ncUYtc=";
+      doCheck = false;
+    });
+in
+{
   home.packages = with flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
     claude-code
     openspec
@@ -10,15 +25,24 @@
     claudebox
     ccusage
     ck
-    backlog-md
     pkgs.beans
+    backlog-md
     beads
+    dolt
     #vibe-kanban
     #agent-browser
     #skills-installer
 
     pkgs.bun # needed by ccusage statusline
     pkgs.nodejs_25 # needed by context7
+
+    (pkgs.writeShellScriptBin "clone-beans" ''
+      #!/usr/bin/env bash
+
+      mkdir -p ~/tools/
+      cd ~/tools/
+      git clone https://github.com/hmans/beans.git
+    '')
 
     (pkgs.writeShellScriptBin "install-ccline"  ''
       #!/usr/bin/env bash

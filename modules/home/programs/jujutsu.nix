@@ -8,12 +8,7 @@
   programs.jujutsu = {
     enable = true;
     settings = {
-      ui.default-command = [
-        "log"
-        "--no-pager"
-        "--limit"
-        "20"
-      ];
+      ui.default-command = "status";
       user = {
         email = config.me.email;
         name = config.me.fullname;
@@ -31,13 +26,37 @@
       };
 
       aliases = {
-        local-heads = [ "log" "--stat" "-r" "visible_heads() ~ remote_bookmarks()"];
-        dt = ["diff" "--tool" "difftastic"];
+        try-resolve = [
+          "util"
+          "exec"
+          "--"
+          "sh"
+          "-c"
+          ''
+            # 1. Let mergiraf try to solve it automatically first
+            jj resolve --tool mergiraf "$@"
+
+            # 2. Fallback to Neovim (jj-diffconflicts) for anything left over
+            jj resolve --tool diffconflicts "$@"
+          ''
+          "" # (Required) This acts as $0 so any extra arguments map correctly
+        ];
       };
 
-      merge-tools.difftastic = {
-        program = "difft";
-        diff-args = ["--color=always" "$left" "$right"];
+      merge-tools.diffconflicts = {
+        program = "nvim";
+        merge-args = [
+          "-c"
+          "let g:jj_diffconflicts_marker_length=$marker_length"
+          "-c"
+          "JJDiffConflicts!"
+          "$output"
+          "$base"
+          "$left"
+          "$right"
+        ];
+        # This tells jj that the plugin handles the markers natively
+        merge-tool-edits-conflict-markers = true;
       };
     };
   };
@@ -45,7 +64,13 @@
     enable = true;
     package = flake.inputs.jjui.packages.${pkgs.stdenv.hostPlatform.system}.jjui;
   };
-  home.packages = with pkgs; [
-    lazyjj
-  ];
+  programs.mergiraf = {
+    enable = true;
+    enableJujutsuIntegration = true;
+    enableGitIntegration = true;
+  };
+  programs.difftastic = {
+    enable = true;
+    jujutsu.enable = true; # Injects the difftastic config into jj automatically
+  };
 }
