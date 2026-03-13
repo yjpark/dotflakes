@@ -26,9 +26,9 @@ in
     ccusage
     ck
     pkgs.beans
-    backlog-md
     beads
     dolt
+    #backlog-md
     #vibe-kanban
     #agent-browser
     #skills-installer
@@ -42,6 +42,9 @@ in
       mkdir -p ~/tools/
       cd ~/tools/
       git clone https://github.com/hmans/beans.git
+      cd beans
+      git remote add yjpark git@github.com:yjpark/beans.git
+      jj git init --colocate
     '')
 
     (pkgs.writeShellScriptBin "install-ccline"  ''
