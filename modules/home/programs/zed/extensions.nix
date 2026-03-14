@@ -9,5 +9,6 @@
     "slint"
     "crates-lsp"
     "python"
+    "markdown-oxide"
   ];
 }

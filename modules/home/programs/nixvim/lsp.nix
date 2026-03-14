@@ -9,7 +9,7 @@
     gopls.enable = true;
     jsonls.enable = true;
     just.enable = true;
-    marksman.enable = true;
+    markdown_oxide.enable = true;
     nixd.enable = true;
     nushell.enable = true;
     pyright.enable = true;

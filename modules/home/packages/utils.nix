@@ -42,6 +42,7 @@
     slint-lsp
     slint-viewer
     nil # nix language server
+    markdown-oxide
 
     mmv
     ast-grep 

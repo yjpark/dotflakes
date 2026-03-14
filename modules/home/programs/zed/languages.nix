@@ -16,6 +16,9 @@
       "basedpyright"
     ];
   };
+  programs.zed-editor.userSettings.languages.Markdown = {
+    language_servers = ["markdown-oxide"];
+  };
   programs.zed-editor.userSettings.languages.Nix = {
     tab_size = 2;
     formatter.external = {
