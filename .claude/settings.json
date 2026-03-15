@@ -9,6 +9,24 @@
     ],
     "PreCompact": [
       { "hooks": [{ "type": "command", "command": "beans prime" }] }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/save-plan.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(grep: *)",
+      "Bash(beans list:*)",
+      "Bash(beans show:*)"
     ]
   }
 }

@@ -1,0 +1,1 @@
+../../../.skills/.claude/hooks/save-plan.sh
