@@ -8,6 +8,7 @@ in {
     (self + /mixins/nixos/versions/22.05.nix)
     (self + /mixins/nixos/settings/no-sleep.nix)
     (self + /mixins/nixos/services/nix-serve.nix)
+    (self + /mixins/nixos/services/incus.nix)
     (self + /mixins/nixos/ext4)
     (self + /mixins/nixos/dev)
   ];
