@@ -6,13 +6,10 @@
     bw = "beans-serve";
     bt = "beans-tui";
     cat = "bat";
-    c = "cargo";
-    cb = "clear-buffer ; cargo build";
-    cr = "clear-buffer ; cargo run";
-    cw = "cargo watch";
-    cwb = "cargo watch -s 'clear-buffer ; cargo build'";
-    cwr = "cargo watch -s 'clear-buffer ; cargo run'";
-    cl = "clear";
+    c = "claude";
+    cs = "claude --model sonnet";
+    co = "claude --model opus";
+    ch = "claude --model haiku";
     dig = "dog";
     du = "dust";
     e = "vim";
@@ -30,6 +27,7 @@
     kn = "kubens";
     lg = "lazygit";
     p = "podman";
+    ps = "procs -t";
     r = "clear-buffer ; tv --show-remote";
     s = "shadowenv";
     sg = "ast-grep";
