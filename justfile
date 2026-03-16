@@ -33,3 +33,7 @@ switch-host *ARGS:
 
 build-yolo:
     nixos-rebuild build-image --image-variant lxc --flake .#yolo
+
+launch-yolo:
+    nix run .#incus-yolo-launch
+    incus exec yolo -- nixos-rebuild switch --option experimental-features "nix-command flakes" --flake /root/yolo-flake#yolo
