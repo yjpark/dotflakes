@@ -6,7 +6,7 @@
     home = "/home/yjpark";
     description = "YJ Park";
     uid = 1000;
-    extraGroups = ["wheel" "networkmanager" "podman" "disk" "systemd-journal" "input" "uinput"];
+    extraGroups = ["wheel" "networkmanager" "disk" "systemd-journal" "input" "uinput"];
     shell = "/run/current-system/sw/bin/fish";
 
     openssh.authorizedKeys.keys = [

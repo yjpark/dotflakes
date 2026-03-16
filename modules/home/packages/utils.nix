@@ -39,8 +39,8 @@
     git-extras
     tokei # source line calculater
 
-    slint-lsp
-    slint-viewer
+    # slint-lsp
+    # slint-viewer
     nil # nix language server
     markdown-oxide
 

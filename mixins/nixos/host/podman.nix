@@ -27,4 +27,6 @@
     docker-client
     distrobox
   ];
+
+  users.extraUsers.yjpark.extraGroups = ["podman"];
 }
