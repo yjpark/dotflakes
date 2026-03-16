@@ -19,6 +19,9 @@
     gwp = "git-commit-wip-and-push";
     gsp = "git-commit-sync-and-push";
     h = "hx";
+    i = "incus";
+    il = "incus list";
+    is = "incus shell";
     j = "just";
     jl = "just -l";
     ju = "jjui";

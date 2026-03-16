@@ -20,6 +20,7 @@ in
 {
   home.packages = with flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
     claude-code
+    gemini-cli
     openspec
     opencode
     claudebox
