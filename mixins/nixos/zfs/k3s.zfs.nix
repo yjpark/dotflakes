@@ -31,15 +31,13 @@
       #};
     };
   };
-  networking.firewall.allowedTCPPorts = [
-    6443
-    80
-    443
-  ];
-  networking.firewall.allowedTCPPortRanges = [
-    {
-      from = 30000;
-      to = 32767;
-    }
-  ];
+  services.firewalld.services.k3s = {
+    ports = [
+      { port = 6443; protocol = "tcp"; }
+      { port = 80; protocol = "tcp"; }
+      { port = 443; protocol = "tcp"; }
+      { port = { from = 30000; to = 32767; }; protocol = "tcp"; }
+    ];
+  };
+  services.firewalld.zones.public.services = [ "k3s" ];
 }

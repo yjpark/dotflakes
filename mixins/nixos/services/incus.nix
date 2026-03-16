@@ -1,6 +1,8 @@
-{...}: {
+{pkgs, ...}: {
   virtualisation.incus = {
     enable = true;
+    package = pkgs.incus;
+    ui.enable = true;
     preseed = {
       networks = [
         {
@@ -41,8 +43,10 @@
   # KVM support for VMs (modules are mutually exclusive; only the matching one loads)
   boot.kernelModules = ["kvm-amd" "kvm-intel"];
 
-  # Incus on NixOS is unsupported using iptables.
-  networking.nftables.enable = true;
+  services.firewalld.zones.incus = {
+    interfaces = [ "incusbr0" ];
+    target = "ACCEPT";
+  };
 
   users.extraUsers.yjpark.extraGroups = ["incus-admin"];
 }
