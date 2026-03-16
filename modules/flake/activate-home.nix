@@ -18,8 +18,8 @@ in {
             if [ "$_host" = "$h" ]; then _found=1; break; fi
           done
           if [ "$_found" = "0" ]; then
-            echo "Host '$_host' not in known hosts, using fallback config '$_user'"
-            _key="$_user"
+            echo "Host '$_host' not in known hosts, using fallback config '$_user@'"
+            _key="$_user"@
           fi
           ${lib.getExe self'.packages.activate} "$_key"
         '';
