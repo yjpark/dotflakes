@@ -3,7 +3,10 @@ let
   mkHomeConfigs = { configDir, baseConfigPath, mixinDir, username }:
     pkgs:
     let
-      hosts = builtins.attrNames (builtins.readDir (self + configDir));
+      entries = builtins.readDir (self + configDir);
+      hosts = map (name:
+        if entries.${name} == "regular" then lib.removeSuffix ".nix" name else name
+      ) (builtins.filter (name: name != "default.nix") (builtins.attrNames entries));
       hasHostMixin = host: builtins.pathExists (self + mixinDir + "/${host}.nix");
       mkHostModule = host: {
         imports = [ (self + baseConfigPath) ]
