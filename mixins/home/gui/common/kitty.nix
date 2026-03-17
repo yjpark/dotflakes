@@ -8,7 +8,7 @@
       tab_bar_edge = "top";
       tab_bar_style = "powerline";
       tab_powerline_style = "round";
-      tab_title_template = "  [{index}] {title}  ";
+      tab_title_template = "  [{index}] {title.partition(' | ')[0]}  ";
       active_tab_font_style = "bold";
       inactive_tab_font_style = "normal";
     };

@@ -1,6 +1,11 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
 
+wezterm.on('format-tab-title', function(tab)
+    local title = tab.active_pane.title
+    return title:match('^(.-)%s*|') or title
+end)
+
 return {
     enable_wayland = true,
     -- window_decorations = 'INTEGRATED_BUTTONS|RESIZE',
