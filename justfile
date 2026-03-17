@@ -38,9 +38,5 @@ launch-yolo:
     nix run .#incus-yolo-launch
     incus exec yolo -- nixos-rebuild switch --option experimental-features "nix-command flakes" --flake /root/yolo-flake#yolo
 
-reset-wip:
-    git fetch origin
-    git reset --hard
-    git checkout origin/wip
-    git branch -D wip
-    git checkout -b wip
+beans-serve:
+    beans-serve --cors-origin "*"
