@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-15T05:31:36Z
-updated_at: 2026-03-15T05:39:06Z
+updated_at: 2026-03-17T15:28:05Z
+order: u
 ---
 
 Create modules/nixos/settings/home-manager.nix to import home-manager as a NixOS module so nixos-rebuild switch handles both system and home config in one command.

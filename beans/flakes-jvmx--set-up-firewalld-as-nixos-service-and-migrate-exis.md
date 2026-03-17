@@ -1,11 +1,12 @@
 ---
 # flakes-jvmx
 title: Set up firewalld as NixOS service and migrate existing firewall rules
-status: in-progress
+status: completed
 type: task
 priority: normal
 created_at: 2026-03-16T13:50:47Z
-updated_at: 2026-03-16T13:52:55Z
+updated_at: 2026-03-17T15:28:05Z
+order: r
 ---
 
 ## Objective

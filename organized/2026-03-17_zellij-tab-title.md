@@ -1,14 +1,11 @@
 ---
-# flakes-2fpy
-title: Tidy up the shell title when running zellij
-status: todo
+provider: beans
 type: task
-priority: normal
-tags:
-    - tweaks
-created_at: 2026-03-14T01:38:54Z
-updated_at: 2026-03-17T15:19:45Z
-order: s
+title: "Fix terminal tab title when running zellij"
+date: 2026-03-17
+status: organized
+source: beans://flakes-2fpy
+bean_id: flakes-2fpy
 ---
 
 ## Objective

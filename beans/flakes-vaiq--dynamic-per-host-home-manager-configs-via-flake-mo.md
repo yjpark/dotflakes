@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-15T04:46:11Z
-updated_at: 2026-03-15T04:58:05Z
+updated_at: 2026-03-17T15:28:05Z
+order: o
 ---
 
 Create home-hosts.nix flake module to auto-generate homeConfigurations for all NixOS hosts, with optional host mixins. Delete per-host config files.
