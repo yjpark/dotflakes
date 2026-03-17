@@ -41,4 +41,7 @@
       pkgs.gh-dash
     ];
   };
+  programs.lazygit = {
+    enable = true;
+  };
 }
