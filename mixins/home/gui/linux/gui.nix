@@ -1,7 +1,5 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    google-chrome
-    obsidian
     bitwarden-desktop
     microsoft-edge
     # rustdesk

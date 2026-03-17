@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   programs.fish.shellAbbrs = {
     a = "rg --smart-case";
     bc = "bacon";
@@ -6,10 +6,7 @@
     bw = "beans-serve";
     bt = "beans-tui";
     cat = "bat";
-    c = "claude";
-    cs = "claude --model sonnet";
-    co = "claude --model opus";
-    ch = "claude --model haiku";
+    catcmd = "catwhich";
     dig = "dog";
     du = "dust";
     e = "vim";
@@ -40,10 +37,6 @@
     tn = "clear-buffer ; tv nix-search-tv";
     "t." = "clear-buffer ; tv text";
     tp = "clear-buffer ; tv files";
-    x = "flox";
-    xa = "flox activate";
-    xe = "flox envs";
-    xl = "flox list";
     z = "zellij";
     za = "zellij action";
     zt = "zellij attach --create";
