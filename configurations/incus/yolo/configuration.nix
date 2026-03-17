@@ -2,11 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ ... }:
+{ modulesPath, ... }:
 
 {
-  # Required for LXC/incus containers
-  boot.isContainer = true;
+  imports = [
+    # Include the default incus configuration.
+    "${modulesPath}/virtualisation/lxc-container.nix"
+  ];
 
   networking = {
     dhcpcd.enable = false;

@@ -1,7 +1,15 @@
-{
+{ flake, lib, config, ... }:
+let
+  inherit (flake) inputs;
+  inherit (inputs) self;
+  baseConfigPath = self + /configurations/home/yj.nix;
+  hostMixinDir = self + /mixins/home/containers;
+  hostname = config.networking.hostName;
+  hasHostMixin = builtins.pathExists (hostMixinDir + "/${hostname}.nix");
+in {
   programs.fish.enable = true;
 
-  users.extraUsers.yjpark = {
+  users.extraUsers.yj = {
     isNormalUser = true;
     home = "/home/yj";
     description = "YJ";
@@ -20,4 +28,9 @@
   '';
 
   nix.settings.trusted-users = ["root" "yj"];
+
+  home-manager.users.yj = {
+      imports = [ baseConfigPath ]
+        ++ lib.optional hasHostMixin (hostMixinDir + "/${hostname}.nix");
+  };
 }

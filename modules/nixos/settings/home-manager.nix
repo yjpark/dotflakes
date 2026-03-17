@@ -1,11 +1,6 @@
-{ flake, lib, config, ... }:
+{ flake, lib, ... }:
 let
   inherit (flake) inputs;
-  inherit (inputs) self;
-  baseConfigPath = self + /configurations/home/yjpark.nix;
-  hostMixinDir = self + /mixins/home/hosts;
-  hostname = config.networking.hostName;
-  hasHostMixin = builtins.pathExists (hostMixinDir + "/${hostname}.nix");
 in {
   imports = [ inputs.home-manager.nixosModules.home-manager ];
 
@@ -13,9 +8,5 @@ in {
     useGlobalPkgs = lib.mkForce false;
     useUserPackages = lib.mkForce false;
     extraSpecialArgs = { flake = { inherit inputs; }; };
-    users.yjpark = {
-      imports = [ baseConfigPath ]
-        ++ lib.optional hasHostMixin (hostMixinDir + "/${hostname}.nix");
-    };
   };
-}
+} 

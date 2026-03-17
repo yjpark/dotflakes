@@ -1,4 +1,12 @@
-{
+{ flake, lib, config, ... }:
+let
+  inherit (flake) inputs;
+  inherit (inputs) self;
+  baseConfigPath = self + /configurations/home/yjpark.nix;
+  hostMixinDir = self + /mixins/home/hosts;
+  hostname = config.networking.hostName;
+  hasHostMixin = builtins.pathExists (hostMixinDir + "/${hostname}.nix");
+in {
   programs.fish.enable = true;
 
   users.extraUsers.yjpark = {
@@ -30,4 +38,9 @@
   '';
 
   nix.settings.trusted-users = ["root" "yjpark"];
+
+  home-manager.users.yjpark = {
+      imports = [ baseConfigPath ]
+        ++ lib.optional hasHostMixin (hostMixinDir + "/${hostname}.nix");
+  };
 }

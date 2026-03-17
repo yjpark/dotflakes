@@ -1,7 +1,1 @@
-{
-  flake,
-  pkgs,
-  ...
-}: {
-  environment.systemPackages = flake.inputs.autowire.gatherScriptPackages_bash pkgs ./.;
-}
+{flake, ...}: flake.inputs.autowire.default ./.

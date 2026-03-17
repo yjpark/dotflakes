@@ -52,9 +52,6 @@
 
     # https://github.com/xremap/nix-flake/blob/master/docs/HOWTO.md#nixos
     xremap-flake.url = "github:xremap/nix-flake";
-
-    # https://github.com/Daviey/nixos-incus-containers/blob/main/README.md
-    nixos-incus-containers.url = "github:Daviey/nixos-incus-containers";
   };
 
   # Wired using https://nixos-unified.org/autowiring.html
