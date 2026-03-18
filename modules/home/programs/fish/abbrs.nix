@@ -20,7 +20,7 @@
     h = "hx";
     j = "just";
     jl = "just -l";
-    ju = "jjui";
+    ju = "jjui --revset 'present(@) | ancestors(tracked_remote_bookmarks() | visible_heads(), 10) | trunk()'";
     jz = "lazyjj";
     k = "kubectl";
     kn = "kubens";
