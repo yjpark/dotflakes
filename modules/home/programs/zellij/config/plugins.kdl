@@ -1,6 +1,7 @@
 plugins {
     // https://github.com/ivoronin/zellij-tab-bar-indexed/?tab=readme-ov-file#tab-bar-plugin
     tab-bar location="file:~/.config/zellij/plugins/tab-bar.wasm" {
+    // tab-bar location="zellij:tab-bar" {
         show_tab_indices true
     }    
     compact-bar location="zellij:compact-bar" {
