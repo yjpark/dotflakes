@@ -35,13 +35,15 @@ build-image-yolo:
     nixos-rebuild build-image --image-variant lxc --flake .#yolo
     mkdir -p images/yolo/
     rm -vf images/yolo/*
-    mv result/tarball/*.tar.xz images/yolo/
+    cp -v result/tarball/*.tar.xz images/yolo/
+    rm result
 
 build-metadata-yolo:
     nixos-rebuild build-image --image-variant lxc-metadata --flake .#yolo
     mkdir -p images/yolo-metadata/
     rm -vf images/yolo-metadata/*
-    mv result/tarball/*.tar.xz images/yolo-metadata/
+    cp -v result/tarball/*.tar.xz images/yolo-metadata/
+    rm result
 
 incus-import-yolo:
     incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yolo

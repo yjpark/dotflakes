@@ -37,7 +37,7 @@ in {
     Defaults env_keep += "NIX_CURL_FLAGS"
   '';
 
-  nix.settings.trusted-users = ["root" "yjpark"];
+  nix.settings.trusted-users = ["yjpark"];
 
   home-manager.users.yjpark = {
       imports = [ baseConfigPath ]

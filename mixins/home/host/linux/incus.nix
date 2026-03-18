@@ -3,7 +3,7 @@
     incus
   ];
 
-  programs.fish.shellInit = ''
+  programs.fish.interactiveShellInit = ''
     if type -q incus
       incus completion fish | source
     end
