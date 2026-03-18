@@ -17,6 +17,8 @@ users:
 YAML_EOF
 )"
 
+incus config set ubuntu security.nesting true
+
 incus config device add ubuntu agents disk \
   source=/home/yjpark/agents \
   path=/home/yj/agents \

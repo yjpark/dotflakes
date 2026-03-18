@@ -1,11 +1,18 @@
-{ pkgs, ... }: {
+{ lib, ... }: {
 
   # Required for LXC/incus containers
   boot.isContainer = true;
 
-  # LXC containers lack CAP_SYS_NICE, so use default scheduling policies
-  nix.daemonCPUSchedPolicy = "other";
-  nix.daemonIOSchedClass = "best-effort";
+  # LXC/Incus containers lack user namespaces required by Nix sandboxing
+  nix.settings.sandbox = false;
+
+  # LXC containers lack CAP_SYS_NICE — any CPUSchedulingPolicy triggers sched_setscheduler()
+  # which is blocked in containers. Force-remove it from the nix-daemon service unit.
+  systemd.services.nix-daemon.serviceConfig = {
+    CPUSchedulingPolicy = lib.mkForce "";
+    IOSchedulingClass = lib.mkForce "";
+    IOSchedulingPriority = lib.mkForce "";
+  };
 
   networking = {
     dhcpcd.enable = false;

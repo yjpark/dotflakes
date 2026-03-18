@@ -45,11 +45,15 @@ build-yolo-metadata:
     cp -v result/tarball/*.tar.xz images/yolo-metadata/
     rm result
 
-incus-import-yolo:
+build-and-import-yolo:
     incus image list | grep yolo
+    echo ""
     @just build-yolo-image
+    echo ""
     @just build-yolo-metadata
+    echo ""
     incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yolo
+    echo ""
     incus image list | grep yolo
 
 beans-serve:

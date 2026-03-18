@@ -6,6 +6,6 @@
 {
   programs.yazi = {
     enable = true;
-    shellWrapperName = "y";
+    shellWrapperName = "ya";
   };
 }
