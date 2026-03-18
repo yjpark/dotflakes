@@ -10,8 +10,7 @@
     settings = {
       init.defaultBranch = "main";
       # url."git@github.com:".insteadOf = "https://github.com/";
-      # remote.pushDefault = config.me.username;
-      remote.pushDefault = "yjpark";
+      remote.pushDefault = config.me.username;
       push.default = "current";
       pull.rebase = "false";
       diff.tool = "difftastic";
@@ -28,6 +27,8 @@
       mt = "mergetool";
       lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
       rg = "reflog --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+      t = "worktree";
+      tl = "worktree list";
     };
     lfs.enable = true;
   };
@@ -44,4 +45,5 @@
   programs.lazygit = {
     enable = true;
   };
+  home.packages= [ pkgs.gitu ];
 }

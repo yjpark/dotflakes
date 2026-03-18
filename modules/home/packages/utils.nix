@@ -6,9 +6,6 @@
     just
     shadowenv
 
-    # Legacy, might remove later
-    devenv
-
     # Basic utils
     sd # sed alternative
     gnused # sed
@@ -18,35 +15,19 @@
     pv # add progress bar for console apps
 
     # Network utils
-    mosh
     axel
     curl
     wget
     inetutils
     doggo     # dig alternative
-    bandwhich # show network usage by process
 
     # Secret
     age
-    sops
-    ssh-to-age
-
-    # For nix and flakes
-    omnix
 
     # Git tools
     tig
-    git-extras
     tokei # source line calculater
 
-    # slint-lsp
-    # slint-viewer
-    nil # nix language server
-    markdown-oxide
-
     mmv
-    ast-grep 
-    quint
-    semgrep
   ];
 }

@@ -1,1 +1,7 @@
-{flake, ...}: flake.inputs.autowire.default ./.
+{
+  flake,
+  pkgs,
+  ...
+}: {
+  home.packages = flake.inputs.autowire.gatherScriptPackages_bash pkgs ./.;
+}

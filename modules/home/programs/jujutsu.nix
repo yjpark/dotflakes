@@ -8,7 +8,7 @@
   programs.jujutsu = {
     enable = true;
     settings = {
-      ui.default-command = "status";
+      ui.default-command = "blt";
       user = {
         email = config.me.email;
         name = config.me.fullname;
@@ -40,6 +40,20 @@
             jj resolve --tool diffconflicts "$@"
           ''
           "" # (Required) This acts as $0 so any extra arguments map correctly
+        ];
+        bl = [
+          "bookmark"
+          "list"
+        ];
+        bla = [
+          "bookmark"
+          "list"
+          "--all"
+        ];
+        blt = [
+          "bookmark"
+          "list"
+          "--tracked"
         ];
       };
 

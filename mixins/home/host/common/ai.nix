@@ -4,10 +4,10 @@
 }:
 {
   home.packages = with pkgs; [
-    bun # needed by ccusage statusline
-    nodejs_25 # needed by context7
+    pkgs.bun # needed by ccusage statusline
+    pkgs.nodejs_25 # needed by context7
 
-    (writeShellScriptBin "clone-beans" ''
+    (pkgs.writeShellScriptBin "clone-beans" ''
       #!/usr/bin/env bash
 
       mkdir -p ~/tools/
@@ -18,7 +18,7 @@
       jj git init --colocate
     '')
 
-    (writeShellScriptBin "install-ccline"  ''
+    (pkgs.writeShellScriptBin "install-ccline"  ''
       #!/usr/bin/env bash
 
       npm config set prefix ~/.npm
@@ -26,4 +26,3 @@
     '')
   ];
 }
-

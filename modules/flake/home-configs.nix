@@ -30,7 +30,7 @@ let
     } pkgs)
     //
     (mkHomeConfigs {
-      configDir = "/configurations/incus";
+      configDir = "/mixins/home/containers";
       baseConfigPath = "/configurations/home/yj.nix";
       mixinDir = "/mixins/home/containers";
       username = "yj";

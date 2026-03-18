@@ -13,6 +13,8 @@
     f = "fd";
     d = "dotnet";
     g = "git";
+    gu = "gitu";
+    gl = "lazygit";
     gwp = "git-commit-wip-and-push";
     gsp = "git-commit-sync-and-push";
     h = "hx";

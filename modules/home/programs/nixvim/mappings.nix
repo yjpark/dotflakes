@@ -84,5 +84,15 @@
       key = ",c";
       mode = "n";
     }
+    {
+      action = ":%bd|e#|bd#<CR>";
+      key = "<M-S-w>";
+      mode = "n";
+    }
+    {
+      action = "<Esc>:%bd|e#|bd#<CR>";
+      key = "<M-S-w>";
+      mode = "i";
+    }
   ];
 }

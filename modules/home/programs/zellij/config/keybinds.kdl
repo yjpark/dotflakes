@@ -1,5 +1,5 @@
 keybinds {
-  unbind "Ctrl s" "Ctrl q" "Alt p"
+  unbind "Ctrl b" "Ctrl s" "Ctrl q" "Alt p"
   normal {
     bind "Ctrl k" { SwitchToMode "scroll"; }
     bind "Ctrl q" { Detach; }
