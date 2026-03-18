@@ -31,14 +31,14 @@ switch-host *ARGS:
     sudo nixos-rebuild switch --flake .#`hostname` {{ARGS}}
     sudo chown yjpark:wheel flake.lock
 
-build-image-yolo:
+build-yolo-image:
     nixos-rebuild build-image --image-variant lxc --flake .#yolo
     mkdir -p images/yolo/
     rm -vf images/yolo/*
     cp -v result/tarball/*.tar.xz images/yolo/
     rm result
 
-build-metadata-yolo:
+build-yolo-metadata:
     nixos-rebuild build-image --image-variant lxc-metadata --flake .#yolo
     mkdir -p images/yolo-metadata/
     rm -vf images/yolo-metadata/*
@@ -46,7 +46,11 @@ build-metadata-yolo:
     rm result
 
 incus-import-yolo:
+    incus image list | grep yolo
+    @just build-yolo-image
+    @just build-yolo-metadata
     incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yolo
+    incus image list | grep yolo
 
 beans-serve:
     beans-serve --cors-origin "*"

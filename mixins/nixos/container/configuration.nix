@@ -3,10 +3,8 @@
   # Required for LXC/incus containers
   boot.isContainer = true;
 
-  # Fix the CPU scheduling error
-  nix.daemonCPUSchedPolicy = "batch";  # or "other"
-
-  # Also recommended for containers:
+  # LXC containers lack CAP_SYS_NICE, so use default scheduling policies
+  nix.daemonCPUSchedPolicy = "other";
   nix.daemonIOSchedClass = "best-effort";
 
   networking = {

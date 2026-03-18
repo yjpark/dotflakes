@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-incus launch images:ubuntu/noble/cloud yolo --config cloud-init.user-data="$(cat << YAML_EOF
+incus launch images:ubuntu/noble/cloud ubuntu --config cloud-init.user-data="$(cat << YAML_EOF
 #cloud-config
 packages:
   - xz_utils
@@ -8,6 +8,7 @@ packages:
   - just
   - git
   - tig
+  - gitu
   - lazygit
 users:
   - name: yj
@@ -16,7 +17,7 @@ users:
 YAML_EOF
 )"
 
-incus config device add yolo agents disk \
+incus config device add ubuntu agents disk \
   source=/home/yjpark/agents \
   path=/home/yj/agents \
   shift=true
