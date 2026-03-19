@@ -1,16 +1,15 @@
 { self, lib, ... }:
 let
-  mkHomeConfigs = { configDir, baseConfigPath, mixinDir, username }:
+  mkHomeConfigs = { baseConfigPath, mixinDir, username }:
     pkgs:
     let
-      entries = builtins.readDir (self + configDir);
+      entries = builtins.readDir (self + mixinDir);
       hosts = map (name:
         if entries.${name} == "regular" then lib.removeSuffix ".nix" name else name
-      ) (builtins.filter (name: name != "default.nix") (builtins.attrNames entries));
-      hasHostMixin = host: builtins.pathExists (self + mixinDir + "/${host}.nix");
+      ) (builtins.filter (name: name != "default.nix")
+        (builtins.attrNames entries));
       mkHostModule = host: {
-        imports = [ (self + baseConfigPath) ]
-          ++ lib.optional (hasHostMixin host) (self + mixinDir + "/${host}.nix");
+        imports = [ (self + baseConfigPath) (self + mixinDir + "/${host}.nix") ];
       };
       hostConfigs = lib.listToAttrs (map (host:
         lib.nameValuePair "${username}@${host}"
@@ -23,14 +22,12 @@ let
 
   mkAllConfigs = pkgs:
     (mkHomeConfigs {
-      configDir = "/configurations/nixos";
       baseConfigPath = "/configurations/home/yjpark.nix";
       mixinDir = "/mixins/home/hosts";
       username = "yjpark";
     } pkgs)
     //
     (mkHomeConfigs {
-      configDir = "/mixins/home/containers";
       baseConfigPath = "/configurations/home/yj.nix";
       mixinDir = "/mixins/home/containers";
       username = "yj";

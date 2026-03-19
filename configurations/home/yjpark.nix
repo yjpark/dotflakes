@@ -4,10 +4,11 @@
 in {
   imports = [
     self.homeModules.default
-    (self + /mixins/home/versions/25.05.nix)
     (self + /mixins/home/host)
     (self + /mixins/home/gui)
   ];
+
+  home.stateVersion = "25.05";
 
   # Defined by /modules/home/options.nix
   me = {

@@ -1,8 +1,15 @@
-{ self, ... }:
-let
-  knownHosts = builtins.attrNames (builtins.readDir (self + /configurations/nixos));
-in {
-  perSystem = { self', pkgs, lib, ... }: {
+{ self, ... }: {
+  perSystem = { self', pkgs, lib, ... }:
+  let
+    readHostNames = dir:
+      let entries = builtins.readDir (self + dir);
+      in map (name:
+        if entries.${name} == "regular" then lib.removeSuffix ".nix" name else name
+      ) (builtins.filter (name: name != "default.nix" && name != ".gitkeep")
+        (builtins.attrNames entries));
+    hosts = readHostNames "/mixins/home/hosts";
+    containers = readHostNames "/mixins/home/containers";
+  in {
     apps.default = {
       inherit (self'.packages.activate) meta;
       program = pkgs.writeShellApplication {
@@ -10,16 +17,21 @@ in {
         text = ''
           set -x
           _host="$(hostname -s)"
-          _user="$(id -un)"
-          _key="''${_user}@''${_host}"
-          _known="${lib.concatStringsSep " " knownHosts}"
-          _found=0
-          for h in $_known; do
-            if [ "$_host" = "$h" ]; then _found=1; break; fi
+          _key=""
+          _hosts=(${lib.concatStringsSep " " hosts})
+          for h in "''${_hosts[@]}"; do
+            if [ "$_host" = "$h" ]; then _key="yjpark@$_host"; break; fi
           done
-          if [ "$_found" = "0" ]; then
-            echo "Host '$_host' not in known hosts, using fallback config '$_user@'"
-            _key="$_user"@
+          if [ -z "$_key" ]; then
+            _containers=(${lib.concatStringsSep " " containers})
+            for h in "''${_containers[@]}"; do
+              if [ "$_host" = "$h" ]; then _key="yj@$_host"; break; fi
+            done
+          fi
+          if [ -z "$_key" ]; then
+            _user="$(id -un)"
+            echo "Host '$_host' not in known hosts, using fallback config '$_user'@"
+            _key="''${_user}@"
           fi
           ${lib.getExe self'.packages.activate} "$_key"
         '';

@@ -4,9 +4,10 @@
 in {
   imports = [
     self.homeModules.default
-    (self + /mixins/home/versions/26.05.nix)
     (self + /mixins/home/container)
   ];
+
+  home.stateVersion = "26.05";
 
   # Defined by /modules/home/options.nix
   me = {
