@@ -11,7 +11,7 @@ in {
   # Defined by /modules/home/options.nix
   me = {
     username = "yj";
-    fullname = "YJ";
-    email = "yj@example.com";
+    fullname = "YJ Park";
+    email = "yjpark@gmail.com";
   };
 }

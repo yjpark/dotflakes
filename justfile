@@ -1,3 +1,7 @@
+activate-home *ARGS:
+    @just vcs-status
+    nix run {{ARGS}}
+
 [private]
 vcs-status:
     #!/usr/bin/env bash
@@ -6,10 +10,6 @@ vcs-status:
     else
         git status
     fi
-
-activate-home *ARGS:
-    @just vcs-status
-    nix run {{ARGS}}
 
 show:
     @just vcs-status
