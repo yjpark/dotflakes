@@ -47,7 +47,8 @@ return {
         { key = '0',          mods = 'CTRL|ALT',   action = act.MoveTab(9), },
         { key = 'LeftArrow',  mods = 'CTRL|ALT',   action = act.MoveTabRelative(-1) },
         { key = 'RightArrow', mods = 'CTRL|ALT',   action = act.MoveTabRelative(1) },
-        { key = '`', modes = "CTRL", action = act.SendString('\x1b[96;5u')},
+        -- on linux, this cause ` key not working for some reason
+        -- { key = '`', modes = "CTRL", action = act.SendString('\x1b[96;5u')},
         { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
         { key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
     },
