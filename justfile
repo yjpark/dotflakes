@@ -1,9 +1,18 @@
+[private]
+vcs-status:
+    #!/usr/bin/env bash
+    if command -v jj &>/dev/null && [ -d .jj ]; then
+        jj status
+    else
+        git status
+    fi
+
 activate-home *ARGS:
-    jj status
+    @just vcs-status
     nix run {{ARGS}}
 
 show:
-    jj status
+    @just vcs-status
     om show .
 
 flake-lock-niri:
@@ -14,7 +23,7 @@ flake-update-llm-agents:
 
 flake-update *ARGS:
     nix flake update {{ARGS}}
-    jj status
+    @just vcs-status
 
 # Sometime stuck with nurHash not matched issue, need to remove flake.lock to fix this
 flake-reset:
@@ -23,13 +32,13 @@ flake-reset:
     jj new
 
 build-host command="build" *ARGS:
-    jj status
+    @just vcs-status
     nixos-rebuild {{command}} --flake .#`hostname` {{ARGS}}
 
 switch-host *ARGS:
-    jj status
+    @just vcs-status
     sudo nixos-rebuild switch --flake .#`hostname` {{ARGS}}
-    sudo chown yjpark:wheel flake.lock
+    sudo chown $USER:wheel flake.lock
 
 build-yolo-image:
     nixos-rebuild build-image --image-variant lxc --flake .#yolo
