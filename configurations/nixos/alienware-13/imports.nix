@@ -8,6 +8,7 @@ in {
     (self + /mixins/nixos/versions/22.05.nix)
     (self + /mixins/nixos/zfs)
     (self + /mixins/nixos/host)
+    (self + /mixins/nixos/lan/cn)
     (self + /mixins/nixos/settings/no-sleep.nix)
   ];
 }
