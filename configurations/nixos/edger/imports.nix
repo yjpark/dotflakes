@@ -9,6 +9,7 @@ in {
     (self + /mixins/nixos/ext4)
     (self + /mixins/nixos/host)
     (self + /mixins/nixos/gui)
+    (self + /mixins/nixos/lan/my)
     (self + /mixins/nixos/services/nix-serve.nix)
     (self + /mixins/nixos/services/airplay.nix)
     (self + /mixins/nixos/settings/no-sleep.nix)
