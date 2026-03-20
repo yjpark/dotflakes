@@ -6,7 +6,7 @@
   programs.zoxide = {
     enable = true;
     options = [
-      "--cmd" "t"
+      "--cmd" "tt"
     ];
   };
 }

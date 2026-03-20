@@ -29,12 +29,12 @@
     lg = "lazygit";
     p = "podman";
     ps = "procs -t";
-    r = "clear-buffer ; tv --show-remote";
     s = "shadowenv";
     sg = "ast-grep";
     sp = "sync-pass";
     top = "btm";
     tree = "exa -T";
+    t = "clear-buffer ; tv --show-remote";
     tc = "clear-buffer ; clip";
     tn = "clear-buffer ; tv nix-search-tv";
     "t." = "clear-buffer ; tv text";
