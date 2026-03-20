@@ -14,10 +14,10 @@
         name = config.me.fullname;
       };
       git = {
-        push = "yjpark";
+        push = config.me.username;
         fetch = [
           "origin"
-          "yjpark"
+          config.me.username
         ];
       };
       # https://github.com/jj-vcs/jj/blob/main/docs/config.md#set-of-immutable-commits
@@ -78,6 +78,7 @@
     enable = true;
     package = flake.inputs.jjui.packages.${pkgs.stdenv.hostPlatform.system}.jjui;
     settings = {
+      git.default_remote = config.me.username;
       preview.width_percentage = 75;
       revisions.revset = "present(@) | ancestors(tracked_remote_bookmarks() | visible_heads(), 10) | trunk()";
     };
