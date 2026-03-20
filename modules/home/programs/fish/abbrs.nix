@@ -20,7 +20,8 @@
     h = "hx";
     j = "just";
     jl = "just -l";
-    m = "mise run";
+    m = "mise";
+    mr = "mise run";
     ml = "mise tasks";
     ju = "jjui --revset 'present(@) | ancestors(tracked_remote_bookmarks() | visible_heads(), 10) | trunk()'";
     jz = "lazyjj";
