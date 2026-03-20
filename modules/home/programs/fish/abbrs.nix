@@ -36,7 +36,8 @@
     top = "btm";
     tree = "exa -T";
     t = "clear-buffer ; tv --show-remote";
-    tc = "clear-buffer ; clip";
+    tc = "clear-buffer ; tv-cliphist";
+    tm = "clear-buffer ; tv-mise-tasks";
     tn = "clear-buffer ; tv nix-search-tv";
     "t." = "clear-buffer ; tv text";
     tp = "clear-buffer ; tv files";
