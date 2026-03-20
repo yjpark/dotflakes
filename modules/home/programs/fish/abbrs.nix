@@ -18,7 +18,9 @@
     gwp = "git-commit-wip-and-push";
     gsp = "git-commit-sync-and-push";
     h = "hx";
-    j = "mise-run-or-just";
+    j = {
+      function = "_j_abbr";
+    };
     m = "mise";
     mr = "mise run";
     ml = "mise tasks";

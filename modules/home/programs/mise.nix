@@ -1,10 +1,10 @@
 {...}: {
   programs.mise.enable = true;
-  programs.fish.functions.mise-run-or-just = ''
+  programs.fish.functions._j_abbr = ''
     if test "$(mise config --json 2>/dev/null)" != "[]"
-        mise run $argv
+        echo "mise run"
     else
-        just $argv
+        echo just
     end
   '';
 
