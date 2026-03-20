@@ -79,134 +79,135 @@
     package = flake.inputs.jjui.packages.${pkgs.stdenv.hostPlatform.system}.jjui;
     settings = {
       ui.colors = {
-        # Full theme using only hex/ANSI256 colors — works on any dark terminal.
-        # Avoids ANSI 0-15 (terminal-dependent); uses One Dark-inspired palette.
+        # Full theme using ANSI 256 indexed colors (16-255) — terminal-independent.
+        # IndexedColor passes through unchanged in both ANSI256 and TrueColor modes.
+        # One Dark-inspired palette mapped to nearest ANSI 256 equivalents.
 
         # --- Core ---
-        dimmed = "#5c6370";
-        title = { fg = "#c678dd"; bold = true; };
-        shortcut = "#c678dd";
-        matched = "#56b6c2";
-        selected = { fg = "#56b6c2"; bg = "#2c313c"; };
-        target_marker = { fg = "#1a1a1a"; bg = "#be5046"; bold = true; };
-        source_marker = { fg = "#1a1a1a"; bg = "#56b6c2"; };
-        success = "#98c379";
-        error = "#e06c75";
+        dimmed = "241";           # #5c6370 → #626262
+        title = { fg = "176"; bold = true; };  # #c678dd → #d787d7
+        shortcut = "176";         # #c678dd → #d787d7
+        matched = "73";           # #56b6c2 → #5fafaf
+        selected = { fg = "73"; bg = "236"; };  # #56b6c2, #2c313c → #5fafaf, #303030
+        target_marker = { fg = "234"; bg = "131"; bold = true; };  # #1a1a1a, #be5046 → #1c1c1c, #af5f5f
+        source_marker = { fg = "234"; bg = "73"; };  # #1a1a1a, #56b6c2 → #1c1c1c, #5fafaf
+        success = "114";          # #98c379 → #87d787
+        error = "167";            # #e06c75 → #d75f5f
 
         # --- Flash ---
-        "flash selected" = "#56b6c2";
-        "flash text" = "#abb2bf";
-        "flash success" = "#98c379";
-        "flash error" = "#e06c75";
-        "flash matched" = "#56b6c2";
+        "flash selected" = "73";  # #56b6c2
+        "flash text" = "249";     # #abb2bf → #b2b2b2
+        "flash success" = "114";  # #98c379
+        "flash error" = "167";    # #e06c75
+        "flash matched" = "73";   # #56b6c2
 
         # --- Confirmation dialog ---
-        "confirmation text" = { fg = "#c678dd"; bold = true; };
-        "confirmation selected" = { fg = "#ebebeb"; bg = "#3d78c0"; bold = true; };
-        "confirmation dimmed" = "#9da5b4";
+        "confirmation text" = { fg = "176"; bold = true; };  # #c678dd
+        "confirmation selected" = { fg = "255"; bg = "68"; bold = true; };  # #ebebeb, #3d78c0 → #eeeeee, #5f87d7
+        "confirmation dimmed" = "248";  # #9da5b4 → #a8a8a8
 
         # --- Help panel ---
-        "help title" = { fg = "#98c379"; bold = true; };
-        "help dimmed" = "#5c6370";
-        "help shortcut" = "#c678dd";
-        "help desc" = "#abb2bf";
+        "help title" = { fg = "114"; bold = true; };  # #98c379
+        "help dimmed" = "241";    # #5c6370
+        "help shortcut" = "176";  # #c678dd
+        "help desc" = "249";      # #abb2bf
 
         # --- Revisions list ---
-        "revisions text" = "#abb2bf";
-        "revisions dimmed" = "#5c6370";
+        "revisions text" = "249"; # #abb2bf
+        "revisions dimmed" = "241";  # #5c6370
         "revisions matched" = { underline = false; reverse = true; };
-        "revisions selected" = { fg = "#56b6c2"; bg = "#2c313c"; };
+        "revisions selected" = { fg = "73"; bg = "236"; };  # #56b6c2, #2c313c
 
         # --- Revision detail panel ---
-        "revisions details text" = "#abb2bf";
-        "revisions details selected" = { bg = "#2c313c"; };
-        "revisions details dimmed" = "#5c6370";
-        "revisions details added" = "#98c379";
-        "revisions details modified" = "#e5c07b";
-        "revisions details renamed" = "#61afef";
-        "revisions details copied" = "#56b6c2";
-        "revisions details deleted" = "#e06c75";
-        "revisions details conflict" = { fg = "#e06c75"; bold = true; };
+        "revisions details text" = "249";     # #abb2bf
+        "revisions details selected" = { bg = "236"; };  # #2c313c
+        "revisions details dimmed" = "241";   # #5c6370
+        "revisions details added" = "114";    # #98c379
+        "revisions details modified" = "180"; # #e5c07b → #d7af87
+        "revisions details renamed" = "75";   # #61afef → #5fafff
+        "revisions details copied" = "73";    # #56b6c2
+        "revisions details deleted" = "167";  # #e06c75
+        "revisions details conflict" = { fg = "167"; bold = true; };  # #e06c75
 
         # --- Revset bar ---
-        "revset title" = "#c678dd";
-        "revset text" = { fg = "#98c379"; bold = true; };
+        "revset title" = "176";   # #c678dd
+        "revset text" = { fg = "114"; bold = true; };  # #98c379
 
         # --- Revset completion popup ---
-        "revset completion" = { bg = "#21252b"; };
-        "revset completion dimmed" = { fg = "#5c6370"; };
-        "revset completion text" = { fg = "#98c379"; };
-        "revset completion matched" = { fg = "#98c379"; underline = true; bold = true; };
-        "revset completion selected" = { bg = "#6e40b5"; };
+        "revset completion" = { bg = "235"; };  # #21252b → #262626
+        "revset completion dimmed" = { fg = "241"; };   # #5c6370
+        "revset completion text" = { fg = "114"; };     # #98c379
+        "revset completion matched" = { fg = "114"; underline = true; bold = true; };  # #98c379
+        "revset completion selected" = { bg = "97"; };  # #6e40b5 → #875faf
 
         # --- Status bar ---
-        "status title" = { fg = "#1a1a1a"; bg = "#c678dd"; bold = true; };
-        "status text" = "#abb2bf";
-        "status dimmed" = "#5c6370";
-        "status shortcut" = "#c678dd";
+        "status title" = { fg = "234"; bg = "176"; bold = true; };  # #1a1a1a, #c678dd
+        "status text" = "249";    # #abb2bf
+        "status dimmed" = "241";  # #5c6370
+        "status shortcut" = "176";  # #c678dd
 
         # --- Menu ---
-        "menu title" = { fg = "#ffffd7"; bg = "#5f5fd7"; bold = true; };
-        "menu subtitle" = { fg = "#ffffd7"; bold = true; };
-        "menu matched" = { fg = "#c678dd"; bold = true; };
-        "menu selected" = { fg = "#56b6c2"; bold = true; underline = false; };
+        "menu title" = { fg = "230"; bg = "62"; bold = true; };  # #ffffd7, #5f5fd7 (already ANSI 256)
+        "menu subtitle" = { fg = "230"; bold = true; };  # #ffffd7
+        "menu matched" = { fg = "176"; bold = true; };   # #c678dd
+        "menu selected" = { fg = "73"; bold = true; underline = false; };  # #56b6c2
 
         # --- Picker ---
-        "picker text" = "#abb2bf";
-        "picker dimmed" = "#5c6370";
-        "picker matched" = "#56b6c2";
-        "picker selected" = { fg = "#56b6c2"; bold = true; underline = false; };
-        "picker bookmark" = "#e5c07b";
+        "picker text" = "249";    # #abb2bf
+        "picker dimmed" = "241";  # #5c6370
+        "picker matched" = "73";  # #56b6c2
+        "picker selected" = { fg = "73"; bold = true; underline = false; };  # #56b6c2
+        "picker bookmark" = "180";  # #e5c07b
 
         # --- Operation log ---
-        "oplog text" = "#abb2bf";
+        "oplog text" = "249";     # #abb2bf
         "oplog matched" = { underline = false; reverse = true; };
-        "oplog selected" = { fg = "#56b6c2"; bg = "#2c313c"; };
+        "oplog selected" = { fg = "73"; bg = "236"; };  # #56b6c2, #2c313c
 
         # --- Evolution log ---
-        "evolog text" = "#abb2bf";
-        "evolog dimmed" = "#5c6370";
-        "evolog selected" = { fg = "#56b6c2"; bg = "#2c313c"; };
-        "evolog target_marker" = { fg = "#1a1a1a"; bg = "#be5046"; bold = true; };
-        "evolog change_id" = "#c678dd";
-        "evolog commit_id" = "#61afef";
+        "evolog text" = "249";    # #abb2bf
+        "evolog dimmed" = "241";  # #5c6370
+        "evolog selected" = { fg = "73"; bg = "236"; };  # #56b6c2, #2c313c
+        "evolog target_marker" = { fg = "234"; bg = "131"; bold = true; };  # #1a1a1a, #be5046
+        "evolog change_id" = "176";   # #c678dd
+        "evolog commit_id" = "75";    # #61afef
 
         # --- Interactive rebase / squash / etc. ---
-        "rebase dimmed" = "#5c6370";
-        "rebase shortcut" = "#c678dd";
-        "rebase source_marker" = { fg = "#1a1a1a"; bg = "#56b6c2"; };
-        "rebase target_marker" = { fg = "#1a1a1a"; bg = "#be5046"; bold = true; };
-        "rebase change_id" = "#c678dd";
+        "rebase dimmed" = "241";  # #5c6370
+        "rebase shortcut" = "176";  # #c678dd
+        "rebase source_marker" = { fg = "234"; bg = "73"; };   # #1a1a1a, #56b6c2
+        "rebase target_marker" = { fg = "234"; bg = "131"; bold = true; };  # #1a1a1a, #be5046
+        "rebase change_id" = "176";  # #c678dd
 
-        "squash dimmed" = "#5c6370";
-        "squash source_marker" = { fg = "#1a1a1a"; bg = "#56b6c2"; };
-        "squash target_marker" = { fg = "#1a1a1a"; bg = "#be5046"; bold = true; };
+        "squash dimmed" = "241";  # #5c6370
+        "squash source_marker" = { fg = "234"; bg = "73"; };   # #1a1a1a, #56b6c2
+        "squash target_marker" = { fg = "234"; bg = "131"; bold = true; };  # #1a1a1a, #be5046
 
-        "duplicate dimmed" = "#5c6370";
-        "duplicate source_marker" = { fg = "#1a1a1a"; bg = "#56b6c2"; };
-        "duplicate target_marker" = { fg = "#1a1a1a"; bg = "#be5046"; bold = true; };
-        "duplicate change_id" = "#c678dd";
+        "duplicate dimmed" = "241";  # #5c6370
+        "duplicate source_marker" = { fg = "234"; bg = "73"; };  # #1a1a1a, #56b6c2
+        "duplicate target_marker" = { fg = "234"; bg = "131"; bold = true; };  # #1a1a1a, #be5046
+        "duplicate change_id" = "176";  # #c678dd
 
-        "revert dimmed" = "#5c6370";
-        "revert shortcut" = "#c678dd";
-        "revert source_marker" = { fg = "#1a1a1a"; bg = "#56b6c2"; };
-        "revert target_marker" = { fg = "#1a1a1a"; bg = "#be5046"; bold = true; };
-        "revert change_id" = "#c678dd";
+        "revert dimmed" = "241";  # #5c6370
+        "revert shortcut" = "176";  # #c678dd
+        "revert source_marker" = { fg = "234"; bg = "73"; };   # #1a1a1a, #56b6c2
+        "revert target_marker" = { fg = "234"; bg = "131"; bold = true; };  # #1a1a1a, #be5046
+        "revert change_id" = "176";  # #c678dd
 
-        "set_parents dimmed" = "#5c6370";
-        "set_parents source_marker" = { fg = "#1a1a1a"; bg = "#56b6c2"; };
-        "set_parents target_marker" = { fg = "#1a1a1a"; bg = "#be5046"; bold = true; };
+        "set_parents dimmed" = "241";  # #5c6370
+        "set_parents source_marker" = { fg = "234"; bg = "73"; };  # #1a1a1a, #56b6c2
+        "set_parents target_marker" = { fg = "234"; bg = "131"; bold = true; };  # #1a1a1a, #be5046
 
         # --- Input / password ---
-        "input text" = "#abb2bf";
-        "input title" = { fg = "#c678dd"; bold = true; };
-        "password title" = { fg = "#c678dd"; bold = true; };
+        "input text" = "249";     # #abb2bf
+        "input title" = { fg = "176"; bold = true; };   # #c678dd
+        "password title" = { fg = "176"; bold = true; };  # #c678dd
 
         # --- Choose ---
-        "choose text" = "#abb2bf";
-        "choose title" = { fg = "#c678dd"; bold = true; };
-        "choose selected" = { fg = "#56b6c2"; bg = "#2c313c"; };
-        "choose input" = "#abb2bf";
+        "choose text" = "249";    # #abb2bf
+        "choose title" = { fg = "176"; bold = true; };  # #c678dd
+        "choose selected" = { fg = "73"; bg = "236"; };  # #56b6c2, #2c313c
+        "choose input" = "249";   # #abb2bf
       };
     };
   };
