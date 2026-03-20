@@ -1,3 +1,6 @@
+[settings]
+disable_tools = ["*"]
+
 [tasks.update-presets]
 description = "Update all starship presets"
 depends = ["update-preset-pastel", "update-preset-tokyo", "update-preset-gruvbox"]

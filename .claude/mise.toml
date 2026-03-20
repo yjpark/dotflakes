@@ -1,3 +1,6 @@
+[settings]
+disable_tools = ["*"]
+
 [tasks.sync-from-skills]
 description = "Sync Claude skills from ~/.skills/"
 run = """

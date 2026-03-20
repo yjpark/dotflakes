@@ -1,3 +1,6 @@
+[settings]
+disable_tools = ["*"]
+
 [tasks.activate-home]
 description = "Activate Home Manager config"
 depends = ["vcs-status"]
