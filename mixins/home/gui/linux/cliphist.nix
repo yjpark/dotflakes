@@ -1,7 +1,10 @@
 {...}: {
   programs.fish.functions.tv-cliphist = ''
     set -l result (tv cliphist)
-    and echo $result | cliphist decode | wl-copy
+    or return
+    test -n "$result"
+    or return
+    echo $result | cliphist decode | wl-copy
   '';
 
   programs.television.channels.cliphist = {

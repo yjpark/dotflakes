@@ -1,8 +1,24 @@
 {...}: {
   programs.mise.enable = true;
+  programs.fish.functions.mise-run-or-just = ''
+    if test "$(mise config --json 2>/dev/null)" != "[]"
+        mise run $argv
+    else
+        just $argv
+    end
+  '';
+
   programs.fish.functions.tv-mise-tasks = ''
-    set -l result (tv mise-tasks)
-    and mise run $result
+    set -l task (tv mise-tasks)
+    or return
+    test -n "$task"
+    or return
+    set -l required_args (mise tasks info $task --json | jq '[.usage_spec.cmd.args[]] | length')
+    if test "$required_args" -gt 0
+      commandline -r "mise run $task "
+    else
+      mise run $task
+    end
   '';
 
   programs.television.channels.mise-tasks = {

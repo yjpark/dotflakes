@@ -1,10 +1,14 @@
 [settings]
 disable_tools = ["*"]
 
-[tasks.activate-home]
+[tasks._activate-home]
 description = "Activate Home Manager config"
 depends = ["vcs-status"]
 run = "nix run"
+
+[tasks._beans-serve]
+description = "Start beans server"
+run = 'beans-serve --cors-origin "*"'
 
 [tasks.vcs-status]
 description = "Show VCS status"
@@ -49,7 +53,7 @@ description = "Build NixOS config for current host"
 depends = ["vcs-status"]
 run = "nixos-rebuild {{arg(name='command', default='build')}} --flake .#$(hostname)"
 
-[tasks.switch-host]
+[tasks._switch-host]
 description = "Switch NixOS config (requires sudo)"
 depends = ["vcs-status"]
 run = """
@@ -85,6 +89,6 @@ incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yo
 incus image list | grep yolo
 """
 
-[tasks.beans-serve]
-description = "Start beans server"
-run = 'beans-serve --cors-origin "*"'
+[tasks.test-echo]
+description = "Echo a message (for testing tv-mise-tasks)"
+run = "echo {{arg(name='message')}}"
