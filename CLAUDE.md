@@ -12,14 +12,14 @@ Nix Flakes-based dotfiles and system configuration repository managing NixOS sys
 # Home Manager activation (applies user-level config)
 just activate-home
 
-# Build NixOS config for current host (dry run by default)
+# Build NixOS config for current host (builds without switching by default)
 just build-host
 
 # Switch NixOS config (applies system-level config, requires sudo)
 just switch-host
 
 # Update flake inputs (dependencies)
-just update
+just flake-update
 
 # Show flake outputs
 just show
@@ -46,9 +46,21 @@ flake.nix                          # Entry point, declares all inputs
   → configurations/{home,nixos}/   # Per-host final configurations
 ```
 
-- **modules/**: Core reusable modules, organized by `packages/`, `programs/`, `services/`, `settings/`, `scripts/`, `files/`
-- **mixins/**: Platform-specific (linux/darwin) and version-specific (25.05, 24.11) configuration layers
-- **configurations/**: Per-host configs that compose modules + mixins. Each host imports `self.homeModules.default` or `self.nixosConfigurations` plus version and platform mixins
+- **modules/**: Core reusable modules
+- **mixins/**: Platform-specific (linux/darwin) and version-specific configuration layers
+- **configurations/**: Per-host configs that compose modules + mixins. Each host imports `self.homeModules.default` or `self.nixosConfigurations`
+
+### Home Manager Activation
+
+Two user profiles exist:
+- `yjpark`: used on physical hosts; base config (`configurations/home/yjpark.nix`) sets `stateVersion = "25.05"`
+- `yj`: used in containers; base config (`configurations/home/yj.nix`) sets `stateVersion = "26.05"`
+
+Host/container mixins live in `mixins/home/hosts/` and `mixins/home/containers/` — adding a `.nix` file there registers a new host/container automatically.
+
+`modules/flake/activate-home.nix`: The `just activate-home` command matches the current hostname against known hosts (→ `yjpark@<host>`) then containers (→ `yj@<host>`), falling back to `<username>@` for unknown hosts (trailing `@` is required by nixos-unified for bare username fallback configs).
+
+`modules/flake/home-configs.nix`: Generates `username@host` entries for each host/container mixin plus a bare `username` fallback (without host suffix).
 
 ### Custom Options
 
@@ -56,7 +68,7 @@ flake.nix                          # Entry point, declares all inputs
 
 ### Overlays and Custom Packages
 
-`overlays/default.nix` autowires from `./packages/`. Custom packages placed in the `packages/` directory are automatically available as overlays.
+`overlays/default.nix` autowires from `./` (picking up `packages.nix` in the overlays dir). Custom packages are automatically available as overlays.
 
 ### Secrets
 
@@ -71,6 +83,8 @@ SOPS-nix with age encryption (`.sops.yaml`). Each host has its own age key. Encr
 Primary: `nixpkgs` (nixos-unstable), `home-manager`, `flake-parts`, `nixos-unified`, `autowire` (custom fork at `github:yjpark/autowire.nix`)
 
 Software: `sops-nix`, `nixvim`, `flox`, `nixidy` (k8s), `nixos-vscode-server`, `solaar` (Logitech), `llm-agents`
+
+Desktop/UI: `claude-desktop`, `niri` (Wayland compositor), `xremap-flake`, `antigravity`, `jjui`
 
 ## Nix Conventions
 
