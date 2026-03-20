@@ -1,15 +1,4 @@
-{
-  flake,
-  lib,
-  ...
-}: {
-  home.file =
-    (lib.mapAttrs'
-      (flake.inputs.autowire.doPrefixName ".config/niri/")
-      (flake.inputs.autowire.gatherFiles_kdl ./.))
-    // {
-      ".config/niri/justfile" = {
-        source = ./niri.justfile;
-      };
-    };
+{ config, ... }: {
+  home.file.".config/niri/config.kdl".text =
+    builtins.readFile ./config.common.kdl + config.me.niri.extraConfig;
 }

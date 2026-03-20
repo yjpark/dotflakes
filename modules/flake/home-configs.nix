@@ -8,8 +8,10 @@ let
         if entries.${name} == "regular" then lib.removeSuffix ".nix" name else name
       ) (builtins.filter (name: name != "default.nix")
         (builtins.attrNames entries));
-      mkHostModule = host: {
-        imports = [ (self + baseConfigPath) (self + mixinDir + "/${host}.nix") ];
+      mkHostModule = host: let
+        hostPath = if entries ? "${host}.nix" then "/${host}.nix" else "/${host}";
+      in {
+        imports = [ (self + baseConfigPath) (self + mixinDir + hostPath) ];
       };
       hostConfigs = lib.listToAttrs (map (host:
         lib.nameValuePair "${username}@${host}"

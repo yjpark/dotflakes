@@ -18,6 +18,11 @@
         type = lib.types.str;
         description = "Your email for use in Git config";
       };
+      niri.extraConfig = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "Extra niri KDL config appended to config.common.kdl";
+      };
     };
   };
   config = {
