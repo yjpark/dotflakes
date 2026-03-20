@@ -20,6 +20,7 @@
     h = "hx";
     j = {
       function = "_j_abbr";
+      setCursor = true;
     };
     jl = {
       function = "_jl_abbr";
