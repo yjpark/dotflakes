@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-19T16:48:11Z
-updated_at: 2026-03-19T16:48:44Z
+updated_at: 2026-03-20T05:24:41Z
+order: "y"
 ---
 
 Replace flat knownHosts list with separate hosts/containers lists so activate-home.nix determines username (yjpark vs yj) from which dir the hostname is found in, rather than using $(id -un). Also update home-configs.nix fallback key to use 'username@' format.

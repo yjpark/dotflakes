@@ -342,6 +342,7 @@ binds {
     Ctrl+Alt+Grave repeat=false { spawn-sh "nirius focus-or-spawn --app-id org.wezfurlong.wezterm wezterm"; }
 
     Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+    Mod+V repeat=false { spawn-sh "cliphist list | fuzzel --dmenu | cliphist decode | wl-copy"; }
 
 
     Alt+Tab repeat=false { focus-window-previous; }

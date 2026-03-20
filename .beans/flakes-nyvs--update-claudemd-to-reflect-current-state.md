@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-20T01:42:11Z
-updated_at: 2026-03-20T01:43:52Z
+updated_at: 2026-03-20T05:24:41Z
+order: zV
 ---
 
 Fix outdated command names, module descriptions, overlays, flake inputs, and add Home Manager activation subsection

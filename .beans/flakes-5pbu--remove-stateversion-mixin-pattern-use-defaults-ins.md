@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-19T17:08:13Z
-updated_at: 2026-03-19T17:15:02Z
+updated_at: 2026-03-20T05:24:41Z
+order: w
 ---
 
 Set default stateVersion in base configs, delete nearly-empty mixin files, fix fallback key mismatch in activate-home.nix

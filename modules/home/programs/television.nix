@@ -15,6 +15,18 @@
   };
   programs.nix-search-tv.enable = true;
 
+  xdg.configFile."television/cable/cliphist.toml".text = ''
+    [metadata]
+    name = "cliphist"
+    description = "Clipboard history (via cliphist)"
+
+    [source]
+    command = "cliphist list"
+
+    [preview]
+    command = "cliphist decode <<< '{}'"
+  '';
+
   home.packages = [
     (pkgs.writeShellScriptBin "update-television-fish-completion"  ''
       #!/usr/bin/env bash

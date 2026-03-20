@@ -35,6 +35,7 @@
     sp = "sync-pass";
     top = "btm";
     tree = "exa -T";
+    tc = "clear-buffer ; clip";
     tn = "clear-buffer ; tv nix-search-tv";
     "t." = "clear-buffer ; tv text";
     tp = "clear-buffer ; tv files";

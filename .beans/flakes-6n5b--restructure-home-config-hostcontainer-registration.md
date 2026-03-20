@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-19T16:39:36Z
-updated_at: 2026-03-19T16:41:28Z
+updated_at: 2026-03-20T05:24:41Z
+order: z
 ---
 
 Move host/container registration to mixins/home/hosts/ and mixins/home/containers/, update home-configs.nix and activate-home.nix accordingly

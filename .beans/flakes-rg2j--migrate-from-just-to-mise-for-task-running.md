@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-20T03:08:14Z
-updated_at: 2026-03-20T03:09:04Z
+updated_at: 2026-03-20T05:24:41Z
+order: s
 ---
 
 Add mise.toml files and shell abbreviations to migrate task running from just to mise. Keep justfiles intact during transition.

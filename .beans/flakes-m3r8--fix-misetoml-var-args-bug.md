@@ -5,7 +5,8 @@ status: completed
 type: bug
 priority: normal
 created_at: 2026-03-20T03:30:52Z
-updated_at: 2026-03-20T03:31:07Z
+updated_at: 2026-03-20T05:24:41Z
+order: k
 ---
 
 Remove unused args and fix the var=true arg to be optional (default='') in mise.toml

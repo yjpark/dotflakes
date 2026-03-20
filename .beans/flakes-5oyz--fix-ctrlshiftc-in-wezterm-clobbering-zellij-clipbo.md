@@ -5,7 +5,8 @@ status: completed
 type: bug
 priority: normal
 created_at: 2026-03-20T05:12:34Z
-updated_at: 2026-03-20T05:12:43Z
+updated_at: 2026-03-20T05:24:41Z
+order: V
 ---
 
 Copy (to system clipboard) doesn't work when using wezterm → incus shell → zellij. Root cause: Ctrl+Shift+C runs CopyTo('Clipboard') which copies empty terminal selection, overwriting what zellij put in clipboard via OSC 52. Fix: only copy when there's an actual selection.
