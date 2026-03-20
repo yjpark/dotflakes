@@ -1,8 +1,8 @@
 {
   programs.fish.shellAbbrs = {
-    c = "claude --permission-mode bypassPermissions";
-    cs = "claude --permission-mode bypassPermissions --model sonnet";
-    co = "claude --permission-mode bypassPermissions --model opus";
-    ch = "claude --permission-mode bypassPermissions --model haiku";
+    c = "claude --dangerously-skip-permissions";
+    cs = "claude --dangerously-skip-permissions --model sonnet";
+    co = "claude --dangerously-skip-permissions --model opus";
+    ch = "claude --dangerously-skip-permissions --model haiku";
   };
 }

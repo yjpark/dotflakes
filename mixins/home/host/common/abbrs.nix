@@ -1,10 +1,9 @@
 {
   programs.fish.shellAbbrs = {
-    c = "claude";
-    cs = "claude --model sonnet";
-    co = "claude --model opus";
-    ch = "claude --model haiku";
-    cy = "claude --permission-mode bypassPermissions";
+    c = "claude --allow-dangerously-skip-permissions";
+    cs = "claude --allow-dangerously-skip-permissions --model sonnet";
+    co = "claude --allow-dangerously-skip-permissions --model opus";
+    ch = "claude --allow-dangerously-skip-permissions --model haiku";
     x = "flox";
     xa = "flox activate";
     xe = "flox envs";
