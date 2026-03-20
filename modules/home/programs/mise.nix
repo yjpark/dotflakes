@@ -2,7 +2,7 @@
   programs.mise.enable = true;
   programs.fish.functions._j_abbr = ''
     if test "$(mise config --json 2>/dev/null)" != "[]"
-        echo "mise run"
+        echo "mise run _"
     else
         echo just
     end
