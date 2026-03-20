@@ -86,5 +86,6 @@
   programs.difftastic = {
     enable = true;
     jujutsu.enable = true; # Injects the difftastic config into jj automatically
+    options.display = "inline";
   };
 }
