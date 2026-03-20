@@ -5,7 +5,7 @@
     if test "$cmd" = "j"
         if test "$(mise config --json 2>/dev/null)" != "[]"
             commandline -r "mise run _"
-            commandline -f complete
+            commandline -f complete complete
         else
             commandline -r "just "
         end
