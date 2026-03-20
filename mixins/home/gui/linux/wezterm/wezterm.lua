@@ -57,9 +57,11 @@ return {
         { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
         { key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
         { key = '\\', mods = 'CTRL', action = wezterm.action_callback(function(window, pane)
+            -- This is for multiple line editing in Claude Code, the delay is needed here
+            -- otherwise an extra \ will be left in last line
             window:perform_action(act.SendKey { key = 'Space' }, pane)
             window:perform_action(act.SendKey { key = 'Backslash' }, pane)
-            wezterm.sleep_ms(50) -- Delay 500ms
+            wezterm.sleep_ms(50) -- Delay 50ms
             window:perform_action(act.SendKey { key = 'Enter' }, pane)
         end)},
     },
