@@ -20,7 +20,6 @@ return {
     --font = wezterm.font 'FiraCode Nerd Font Mono',
     font = wezterm.font 'Hurmit Nerd Font Mono',
 
-    --color_scheme = "Molokai",
     --color_scheme = 'Pencil Dark (Gogh)',
     color_scheme = 'Gruvbox Dark (Gogh)',
 
