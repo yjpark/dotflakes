@@ -77,7 +77,10 @@
   programs.jjui = {
     enable = true;
     package = flake.inputs.jjui.packages.${pkgs.stdenv.hostPlatform.system}.jjui;
-    settings.preview.width_percentage = 0.65;
+    settings = {
+      preview.width_percentage = 75;
+      revisions.revset = "present(@) | ancestors(tracked_remote_bookmarks() | visible_heads(), 10) | trunk()";
+    };
   };
   programs.mergiraf = {
     enable = true;
