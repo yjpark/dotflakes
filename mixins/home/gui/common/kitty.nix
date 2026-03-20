@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   programs.kitty = {
     enable = true;
+    themeFile = "tokyo_night_night";
     # Kitty doesn't set COLORTERM by default; apps like jjui (lipgloss) use it
     # to detect 24-bit color support. Without it, hex colors fall back to ANSI 16.
     environment.COLORTERM = "truecolor";
