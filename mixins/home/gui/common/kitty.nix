@@ -26,6 +26,7 @@
       "ctrl+right" = "next_tab";
       "ctrl+alt+left" = "move_tab_backward";
       "ctrl+alt+right" = "move_tab_forward";
+      "ctrl+backslash" = "send_text all \\\x0d";
     };
   };
   home.packages = [
