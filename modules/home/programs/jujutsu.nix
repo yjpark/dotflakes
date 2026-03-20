@@ -77,6 +77,24 @@
   programs.jjui = {
     enable = true;
     package = flake.inputs.jjui.packages.${pkgs.stdenv.hostPlatform.system}.jjui;
+    settings = {
+      ui.colors = {
+        # Key readability fixes for Pencil Dark (Gogh) terminal theme
+        # The default dark theme uses "bright black" which is too dark/invisible in Pencil Dark
+        dimmed = "#808080";
+        selected = { fg = "cyan"; bg = "#3a3a3a"; };
+        title = { fg = "magenta"; bold = true; };
+        shortcut = "magenta";
+        matched = "cyan";
+        "flash selected" = "cyan";
+        "revisions details selected" = { bg = "#3a3a3a"; };
+        "revset completion" = { bg = "#1a1a1a"; };
+        "revset completion dimmed" = { fg = "#808080"; };
+        "status title" = { fg = "black"; bg = "magenta"; bold = true; };
+        "menu title" = { fg = "#ffffd7"; bg = "#5f5fd7"; bold = true; };
+        "menu subtitle" = { fg = "#ffffd7"; bold = true; };
+      };
+    };
   };
   programs.mergiraf = {
     enable = true;
