@@ -8,6 +8,14 @@
     end
   '';
 
+  programs.fish.functions._jl_abbr = ''
+    if test "$(mise config --json 2>/dev/null)" != "[]"
+        echo "mise tasks"
+    else
+        echo "just -l"
+    end
+  '';
+
   programs.fish.functions.tv-mise-tasks = ''
     set -l task (tv mise-tasks)
     or return

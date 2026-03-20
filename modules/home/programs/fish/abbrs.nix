@@ -21,6 +21,9 @@
     j = {
       function = "_j_abbr";
     };
+    jl = {
+      function = "_jl_abbr";
+    };
     m = "mise";
     mr = "mise run";
     ml = "mise tasks";
