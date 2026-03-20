@@ -21,7 +21,8 @@ return {
     font = wezterm.font 'Hurmit Nerd Font Mono',
 
     --color_scheme = "Molokai",
-    color_scheme = 'Pencil Dark (Gogh)',
+    --color_scheme = 'Pencil Dark (Gogh)',
+    color_scheme = 'Gruvbox Dark (Gogh)',
 
     hide_tab_bar_if_only_one_tab = true,
 
