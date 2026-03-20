@@ -1,69 +1,8 @@
-activate-home *ARGS:
-    @just vcs-status
-    nix run {{ARGS}}
+activate-home:
+  mise run activate-home
 
-[private]
-vcs-status:
-    #!/usr/bin/env bash
-    if command -v jj &>/dev/null && [ -d .jj ]; then
-        jj status
-    else
-        git status
-    fi
-
-show:
-    @just vcs-status
-    om show .
-
-flake-lock-niri:
-    nix flake lock --update-input niri
-
-flake-update-llm-agents:
-    @just flake-update llm-agents
-
-flake-update *ARGS:
-    nix flake update {{ARGS}}
-    @just vcs-status
-
-# Sometime stuck with nurHash not matched issue, need to remove flake.lock to fix this
-flake-reset:
-    rm flake.lock
-    nix flake update
-    jj new
-
-build-host command="build" *ARGS:
-    @just vcs-status
-    nixos-rebuild {{command}} --flake .#`hostname` {{ARGS}}
-
-switch-host *ARGS:
-    @just vcs-status
-    sudo nixos-rebuild switch --flake .#`hostname` {{ARGS}}
-    sudo chown $USER:wheel flake.lock
-
-build-yolo-image:
-    nixos-rebuild build-image --image-variant lxc --flake .#yolo
-    mkdir -p images/yolo/
-    rm -vf images/yolo/*
-    cp -v result/tarball/*.tar.xz images/yolo/
-    rm result
-
-build-yolo-metadata:
-    nixos-rebuild build-image --image-variant lxc-metadata --flake .#yolo
-    mkdir -p images/yolo-metadata/
-    rm -vf images/yolo-metadata/*
-    cp -v result/tarball/*.tar.xz images/yolo-metadata/
-    rm result
-
-build-and-import-yolo:
-    incus image list | grep yolo
-    echo ""
-    @just build-yolo-image
-    echo ""
-    @just build-yolo-metadata
-    echo ""
-    incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yolo
-    echo ""
-    incus image list | grep yolo
+switch-host:
+  mise run switch-host
 
 beans-serve:
-    beans-serve --cors-origin "*"
+  mise run beans-serve
