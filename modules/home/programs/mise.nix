@@ -1,11 +1,23 @@
 {...}: {
   programs.mise.enable = true;
-  programs.fish.functions._j_abbr = ''
-    if test "$(mise config --json 2>/dev/null)" != "[]"
-        echo "mise run _%"
+  programs.fish.functions._j_expand = ''
+    set -l cmd (commandline -b)
+    if test "$cmd" = "j"
+        if test "$(mise config --json 2>/dev/null)" != "[]"
+            commandline -r "mise run _"
+            commandline -f complete
+        else
+            commandline -r "just "
+        end
     else
-        echo "just %"
+        commandline -i " "
+        commandline -f expand-abbr
     end
+  '';
+
+  programs.fish.interactiveShellInit = ''
+    bind ' ' _j_expand
+    bind -M insert ' ' _j_expand
   '';
 
   programs.fish.functions._jl_abbr = ''

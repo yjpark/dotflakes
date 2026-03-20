@@ -18,10 +18,7 @@
     gwp = "git-commit-wip-and-push";
     gsp = "git-commit-sync-and-push";
     h = "hx";
-    j = {
-      function = "_j_abbr";
-      setCursor = true;
-    };
+    # j is handled by _j_expand bound to Space in mise.nix (triggers completion after expansion)
     jl = {
       function = "_jl_abbr";
     };
