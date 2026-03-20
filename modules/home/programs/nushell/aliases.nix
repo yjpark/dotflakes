@@ -7,6 +7,8 @@
     h = "hx";
     j = "just";
     jl = "just -l";
+    m = "mise run";
+    ml = "mise tasks";
     jj = "just --justfile ~/.config/justfile --working-directory .";
     jt = "just --justfile ~/projects/edger-dev/templates/justfile";
     k = "kubectl";

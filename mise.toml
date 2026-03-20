@@ -1,0 +1,87 @@
+[tasks.activate-home]
+description = "Activate Home Manager config"
+depends = ["vcs-status"]
+run = "nix run {{arg(name='args', var=true)}}"
+
+[tasks.vcs-status]
+description = "Show VCS status"
+hide = true
+run = """
+if command -v jj &>/dev/null && [ -d .jj ]; then
+    jj status
+else
+    git status
+fi
+"""
+
+[tasks.show]
+description = "Show flake outputs"
+depends = ["vcs-status"]
+run = "om show ."
+
+[tasks.flake-lock-niri]
+description = "Lock niri input"
+run = "nix flake lock --update-input niri"
+
+[tasks.flake-update-llm-agents]
+description = "Update llm-agents input"
+run = "nix flake update llm-agents"
+depends_post = ["vcs-status"]
+
+[tasks.flake-update]
+description = "Update flake inputs"
+run = "nix flake update {{arg(name='args', var=true)}}"
+depends_post = ["vcs-status"]
+
+[tasks.flake-reset]
+description = "Reset flake lock (fixes nurHash issues)"
+run = """
+rm flake.lock
+nix flake update
+jj new
+"""
+
+[tasks.build-host]
+description = "Build NixOS config for current host"
+depends = ["vcs-status"]
+run = "nixos-rebuild {{arg(name='command', default='build')}} --flake .#$(hostname) {{arg(name='args', var=true)}}"
+
+[tasks.switch-host]
+description = "Switch NixOS config (requires sudo)"
+depends = ["vcs-status"]
+run = """
+sudo nixos-rebuild switch --flake .#$(hostname) {{arg(name='args', var=true)}}
+sudo chown $USER:wheel flake.lock
+"""
+
+[tasks.build-yolo-image]
+description = "Build Yolo LXC image"
+run = """
+nixos-rebuild build-image --image-variant lxc --flake .#yolo
+mkdir -p images/yolo/
+rm -vf images/yolo/*
+cp -v result/tarball/*.tar.xz images/yolo/
+rm result
+"""
+
+[tasks.build-yolo-metadata]
+description = "Build Yolo LXC metadata"
+run = """
+nixos-rebuild build-image --image-variant lxc-metadata --flake .#yolo
+mkdir -p images/yolo-metadata/
+rm -vf images/yolo-metadata/*
+cp -v result/tarball/*.tar.xz images/yolo-metadata/
+rm result
+"""
+
+[tasks.build-and-import-yolo]
+description = "Build and import Yolo LXC into incus"
+depends = ["build-yolo-image", "build-yolo-metadata"]
+run = """
+incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yolo
+incus image list | grep yolo
+"""
+
+[tasks.beans-serve]
+description = "Start beans server"
+run = 'beans-serve --cors-origin "*"'

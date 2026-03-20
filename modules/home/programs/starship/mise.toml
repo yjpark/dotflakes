@@ -1,0 +1,36 @@
+[tasks.update-presets]
+description = "Update all starship presets"
+depends = ["update-preset-pastel", "update-preset-tokyo", "update-preset-gruvbox"]
+
+[tasks.update-preset-pastel]
+description = "Update pastel-powerline preset"
+run = """
+starship preset pastel-powerline -o /tmp/pastel-powerline.toml
+cp segments/header.toml pastel-powerline.toml
+printf '\n\n\n' >> pastel-powerline.toml
+cat /tmp/pastel-powerline.toml >> pastel-powerline.toml
+printf '\n\n\n' >> pastel-powerline.toml
+cat segments/footer.toml >> pastel-powerline.toml
+"""
+
+[tasks.update-preset-tokyo]
+description = "Update tokyo-night preset"
+run = """
+starship preset tokyo-night -o /tmp/tokyo-night.toml
+cp segments/header.toml tokyo-night.toml
+printf '\n\n\n' >> tokyo-night.toml
+cat /tmp/tokyo-night.toml >> tokyo-night.toml
+printf '\n\n\n' >> tokyo-night.toml
+cat segments/footer.toml >> tokyo-night.toml
+"""
+
+[tasks.update-preset-gruvbox]
+description = "Update gruvbox-rainbow preset"
+run = """
+starship preset gruvbox-rainbow -o /tmp/gruvbox-rainbow.toml
+cp segments/header.toml gruvbox-rainbow.toml
+printf '\n\n\n' >> gruvbox-rainbow.toml
+cat /tmp/gruvbox-rainbow.toml >> gruvbox-rainbow.toml
+printf '\n\n\n' >> gruvbox-rainbow.toml
+cat segments/footer.toml >> gruvbox-rainbow.toml
+"""
