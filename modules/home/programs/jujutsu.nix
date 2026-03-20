@@ -77,6 +77,7 @@
   programs.jjui = {
     enable = true;
     package = flake.inputs.jjui.packages.${pkgs.stdenv.hostPlatform.system}.jjui;
+    settings.preview.width_percentage = 0.65;
   };
   programs.mergiraf = {
     enable = true;
