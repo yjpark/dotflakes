@@ -9,7 +9,7 @@ spawn-at-startup "cosmic-ext-alternative-startup"
 spawn-at-startup "niriusd"
 spawn-at-startup "niriswitcher"
 spawn-at-startup "hypridle"
-//spawn-at-startup "sh" "-c" "systemctl --user import-environment WAYLAND_DISPLAY && systemctl --user restart graphical-session.target"
+spawn-at-startup "sh" "-c" "systemctl --user import-environment WAYLAND_DISPLAY DISPLAY && systemctl --user start cliphist.service"
 
 input {
     keyboard {
