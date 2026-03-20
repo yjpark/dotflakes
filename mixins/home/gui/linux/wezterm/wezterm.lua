@@ -54,7 +54,12 @@ return {
         { key = 'RightArrow', mods = 'CTRL|ALT',   action = act.MoveTabRelative(1) },
         -- on linux, this cause ` key not working for some reason
         -- { key = '`', modes = "CTRL", action = act.SendString('\x1b[96;5u')},
-        { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
+        { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action_callback(function(window, pane)
+            local sel = window:get_selection_text_for_pane(pane)
+            if sel and sel ~= '' then
+                window:perform_action(act.CopyTo('Clipboard'), pane)
+            end
+        end)},
         { key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
         { key = '\\', mods = 'CTRL', action = wezterm.action_callback(function(window, pane)
             -- This is for multiple line editing in Claude Code, the delay is needed here
