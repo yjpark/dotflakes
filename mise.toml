@@ -4,7 +4,7 @@ disable_tools = ["*"]
 [tasks.activate-home]
 description = "Activate Home Manager config"
 depends = ["vcs-status"]
-run = "nix run {{arg(name='args', var=true)}}"
+run = "nix run"
 
 [tasks.vcs-status]
 description = "Show VCS status"
@@ -33,7 +33,7 @@ depends_post = ["vcs-status"]
 
 [tasks.flake-update]
 description = "Update flake inputs"
-run = "nix flake update {{arg(name='args', var=true)}}"
+run = "nix flake update {{arg(name='inputs', var=true, default='')}}"
 depends_post = ["vcs-status"]
 
 [tasks.flake-reset]
@@ -47,13 +47,13 @@ jj new
 [tasks.build-host]
 description = "Build NixOS config for current host"
 depends = ["vcs-status"]
-run = "nixos-rebuild {{arg(name='command', default='build')}} --flake .#$(hostname) {{arg(name='args', var=true)}}"
+run = "nixos-rebuild {{arg(name='command', default='build')}} --flake .#$(hostname)"
 
 [tasks.switch-host]
 description = "Switch NixOS config (requires sudo)"
 depends = ["vcs-status"]
 run = """
-sudo nixos-rebuild switch --flake .#$(hostname) {{arg(name='args', var=true)}}
+sudo nixos-rebuild switch --flake .#$(hostname)
 sudo chown $USER:wheel flake.lock
 """
 

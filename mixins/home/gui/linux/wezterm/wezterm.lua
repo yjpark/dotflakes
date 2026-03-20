@@ -53,6 +53,7 @@ return {
         { key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
         { key = '\\', mods = 'CTRL', action = act.Multiple {
             act.SendString('\\'),
+            act.SleepMs(50),
             act.SendKey { key = 'Enter' },
         } },
     },
