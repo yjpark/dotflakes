@@ -51,6 +51,9 @@ return {
         -- { key = '`', modes = "CTRL", action = act.SendString('\x1b[96;5u')},
         { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
         { key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
-        { key = '\\', mods = 'CTRL', action = act.SendString('\\\n') },
+        { key = '\\', mods = 'CTRL', action = act.Multiple {
+            act.SendString('\\'),
+            act.SendKey { key = 'Enter' },
+        } },
     },
 }
