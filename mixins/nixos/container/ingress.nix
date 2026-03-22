@@ -23,10 +23,14 @@
         tls internal
         reverse_proxy 127.0.0.1:''${PORT}
       }
+      http://''${PORT}.''${DOMAIN} {
+        reverse_proxy 127.0.0.1:''${PORT}
+      }
       "
       done < <(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un${excludeFilter})
 
       echo "$CONFIG" > "${dynamicConf}"
+
       systemctl reload caddy.service 2>/dev/null || systemctl restart caddy.service
 
       # Update combined CA bundle so wget/curl trust Caddy's internal CA
@@ -112,6 +116,7 @@ in {
         log {
           level ERROR
         }
+        auto_https disable_redirects
       }
       import /var/lib/caddy/*.conf
     '';
