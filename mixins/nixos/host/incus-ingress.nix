@@ -16,7 +16,7 @@
   # ZeroTier IPs are private so HTTP-01/TLS-ALPN-01 are not reachable by Let's Encrypt.
   # IMPORTANT: replace lib.fakeHash with the real hash after the first failed build.
   caddyWithCloudflare = pkgs.caddy.withPlugins {
-    plugins = [ "github.com/caddy-dns/cloudflare@latest" ];
+    plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
     hash = "sha256-bL1cpMvDogD/pdVxGA8CAMEXazWpFDBiGBxG83SmXLA=";
   };
 
