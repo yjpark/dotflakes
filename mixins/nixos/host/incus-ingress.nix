@@ -126,8 +126,7 @@ in {
 
   sops.secrets."cloudflare-caddy-env" = {
     sopsFile = ./secrets/cloudflare-caddy.txt;
-    format = "dotenv";
-    key = "";
+    format = "binary";
     owner = "caddy";
   };
 
