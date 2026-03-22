@@ -1,9 +1,10 @@
 {pkgs, lib, ...}: let
-  # Fixed Incus bridge IP (set in incus.nix preseed)
-  bridgeIp = "10.100.0.1";
-
-  # Containers that have ingress enabled — add names here to support more
-  ingressContainers = ["yolo"];
+  # Containers with ingress enabled.
+  # Each entry needs a static IP assigned via:
+  #   incus config device override <name> eth0 ipv4.address=<ip>
+  ingressContainers = [
+    { name = "yolo"; ip = "10.100.0.100"; }
+  ];
 
   pullCaCertScript = pkgs.writeShellApplication {
     name = "incus-pull-ca";
@@ -16,7 +17,7 @@
       mkdir -p "$(dirname "$COMBINED")"
       cp "$SYSTEM_CA" "$COMBINED"
 
-      CONTAINERS=(${lib.concatStringsSep " " ingressContainers})
+      CONTAINERS=(${lib.concatStringsSep " " (map (c: c.name) ingressContainers)})
       for CONTAINER in "''${CONTAINERS[@]}"; do
         if ! incus info "$CONTAINER" 2>/dev/null | grep -q "Status: RUNNING"; then
           echo "SKIP: $CONTAINER is not running"
@@ -37,8 +38,8 @@
   };
 in {
   # dnsmasq on port 5354 for *.incus wildcard DNS resolution.
-  # Forwards .incus queries to the Incus bridge DNS, with wildcard CNAMEs
-  # so 3000.yolo.incus → yolo.incus → container's bridge IP.
+  # Uses address rules with static IPs — dnsmasq's cname requires the target
+  # to be locally known, which forwarded entries are not.
   services.dnsmasq = {
     enable = true;
     settings = {
@@ -46,8 +47,7 @@ in {
       listen-address = "127.0.0.1";
       bind-interfaces = true;
       no-resolv = true;
-      server = ["/.incus/${bridgeIp}"];
-      cname = map (c: "*.${c}.incus,${c}.incus") ingressContainers;
+      address = map (c: "/.${c.name}.incus/${c.ip}") ingressContainers;
     };
   };
 
