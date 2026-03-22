@@ -21,7 +21,7 @@
   };
 
   # Generate per-container matcher + handle blocks for the Caddyfile.
-  # host_regexp name captures the port from the subdomain prefix (e.g., "yolo-8080").
+  # vars_regexp captures the port from the subdomain prefix (e.g., "yolo-8080").
   containerBlocks = lib.concatMapStrings (c: ''
     @${c.name} vars_regexp ${c.name} {http.request.host} ^${c.name}-(?P<port>\d+)\.${config.networking.hostName}\.${domain}$
     handle @${c.name} {
@@ -88,6 +88,10 @@
     '';
   };
 in {
+  # Disable k3s's bundled Traefik ingress controller when k3s is enabled,
+  # so its iptables DNAT rules don't intercept ports 80/443 before host Caddy.
+  services.k3s.extraFlags = lib.mkIf config.services.k3s.enable [ "--disable=traefik" ];
+
   # dnsmasq on port 5354 for *.incus wildcard DNS resolution.
   # Uses address rules with static IPs — dnsmasq's cname requires the target
   # to be locally known, which forwarded entries are not.
@@ -116,7 +120,7 @@ in {
 
   # Host-level Caddy reverse proxy: *.${hostName}.yjpark.org → container services
   # Cloudflare API token is read from the SOPS-decrypted env file at runtime.
-  # Secret file: mixins/nixos/host/secrets/cloudflare-caddy.txt (create manually)
+  # Secret file: mixins/nixos/services/secrets/cloudflare-caddy.txt (create manually)
   # Content: CLOUDFLARE_API_TOKEN=<token-with-Zone/DNS/Edit-permission>
   services.caddy = {
     enable = true;
