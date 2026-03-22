@@ -19,6 +19,7 @@
     curl
     wget
     inetutils
+    dig
     doggo     # dig alternative
 
     # Secret
