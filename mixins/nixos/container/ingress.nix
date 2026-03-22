@@ -28,6 +28,14 @@
 
       echo "$CONFIG" > "${dynamicConf}"
       systemctl reload caddy.service 2>/dev/null || systemctl restart caddy.service
+
+      # Update combined CA bundle so wget/curl trust Caddy's internal CA
+      CADDY_CA="/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt"
+      SYSTEM_CA="/etc/ssl/certs/ca-certificates.crt"
+      COMBINED="/var/lib/ingress/ca-bundle.crt"
+      if [ -f "$CADDY_CA" ]; then
+        cat "$SYSTEM_CA" "$CADDY_CA" > "$COMBINED"
+      fi
     '';
   };
 
@@ -153,6 +161,27 @@ in {
       ];
     }
   ];
+
+  # Create ingress state dir and copy system CAs to bundle on every boot
+  # (tmpfiles 'C' creates a symlink to the nix store instead of a real copy)
+  systemd.tmpfiles.rules = ["d /var/lib/ingress 0755 root root -"];
+
+  systemd.services.init-ingress-ca = {
+    description = "Initialize ingress CA bundle";
+    wantedBy = ["sysinit.target"];
+    before = ["network.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.coreutils}/bin/cp --remove-destination /etc/ssl/certs/ca-certificates.crt /var/lib/ingress/ca-bundle.crt";
+    };
+  };
+
+  # Point SSL tools at combined bundle (system CAs + Caddy internal CA)
+  environment.variables = {
+    SSL_CERT_FILE = "/var/lib/ingress/ca-bundle.crt";
+    NIX_SSL_CERT_FILE = "/var/lib/ingress/ca-bundle.crt";
+  };
 
   environment.systemPackages = [
     ingressScript

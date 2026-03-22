@@ -9,7 +9,7 @@
           name = "incusbr0";
           type = "bridge";
           config = {
-            "ipv4.address" = "auto";
+            "ipv4.address" = "10.100.0.1/24";
             "ipv4.nat" = "true";
           };
         }
