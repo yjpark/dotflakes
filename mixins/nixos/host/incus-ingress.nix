@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs, lib, ...}: let
   # Fixed Incus bridge IP (set in incus.nix preseed)
   bridgeIp = "10.100.0.1";
 
@@ -16,7 +16,8 @@
       mkdir -p "$(dirname "$COMBINED")"
       cp "$SYSTEM_CA" "$COMBINED"
 
-      for CONTAINER in ${builtins.concatStringsSep " " ingressContainers}; do
+      CONTAINERS=(${lib.concatStringsSep " " ingressContainers})
+      for CONTAINER in "''${CONTAINERS[@]}"; do
         if ! incus info "$CONTAINER" 2>/dev/null | grep -q "Status: RUNNING"; then
           echo "SKIP: $CONTAINER is not running"
           continue
@@ -53,15 +54,13 @@ in {
   # systemd-resolved as primary resolver, forwarding .incus to dnsmasq
   services.resolved = {
     enable = true;
-    dnsovertls = "true";
-    fallbackDns = ["1.1.1.1" "8.8.8.8"];
   };
 
-  services.resolved.settings = {
-    Resolve = {
-      DNS = "127.0.0.1:5354";
-      Domains = "~incus";
-    };
+  services.resolved.settings.Resolve = {
+    DNS = "127.0.0.1:5354";
+    Domains = "~incus";
+    DNSOverTLS = "yes";
+    FallbackDNS = "1.1.1.1 8.8.8.8";
   };
 
   # Create ingress state dir and copy system CAs to bundle on every boot
