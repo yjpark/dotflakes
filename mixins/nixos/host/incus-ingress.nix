@@ -23,9 +23,9 @@
   # Generate per-container matcher + handle blocks for the Caddyfile.
   # host_regexp name captures the port from the subdomain prefix (e.g., "yolo-8080").
   containerBlocks = lib.concatMapStrings (c: ''
-    @${c.name} host_regexp ${c.name} ^${c.name}-(?P<port>\d+)\.${config.networking.hostName}\.${domain}$
+    @${c.name} header_regexp ${c.name} Host ^${c.name}-(?P<port>\d+)\.${config.networking.hostName}\.${domain}$
     handle @${c.name} {
-      reverse_proxy http://${c.ip}:{re.${c.name}.port}
+      reverse_proxy ${c.ip}:{re.${c.name}.port}
     }
   '') ingressContainers;
 
