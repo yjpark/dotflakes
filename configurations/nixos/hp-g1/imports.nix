@@ -4,6 +4,7 @@
 in {
   imports = [
     self.nixosModules.default
+    flake.inputs.sops-nix.nixosModules.sops
     (self + /mixins/nixos/versions/22.05.nix)
     (self + /mixins/nixos/zfs)
     (self + /mixins/nixos/host)
