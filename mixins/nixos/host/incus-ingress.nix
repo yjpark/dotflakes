@@ -1,10 +1,61 @@
-{pkgs, lib, ...}: let
+{pkgs, lib, config, ...}: let
   # Containers with ingress enabled.
   # Each entry needs a static IP assigned via:
   #   incus config device override <name> eth0 ipv4.address=<ip>
   ingressContainers = [
     { name = "yolo"; ip = "10.100.0.100"; }
   ];
+
+  # Domain for LAN-facing ingress (host-level Caddy).
+  # DNS: *.${hostName}.${domain} → host's ZeroTier IP (one wildcard A record per host on Cloudflare).
+  # URL pattern: ${container}-${port}.${hostName}.${domain} → http://${container.ip}:${port}
+  # e.g., yolo-8080.edger.yjpark.org → http://10.100.0.100:8080
+  domain = "yjpark.org";
+
+  # Caddy built with the Cloudflare DNS plugin for ACME DNS-01 challenge.
+  # ZeroTier IPs are private so HTTP-01/TLS-ALPN-01 are not reachable by Let's Encrypt.
+  # IMPORTANT: replace lib.fakeHash with the real hash after the first failed build.
+  caddyWithCloudflare = pkgs.caddy.withPlugins {
+    plugins = [ "github.com/caddy-dns/cloudflare@latest" ];
+    hash = "sha256-bL1cpMvDogD/pdVxGA8CAMEXazWpFDBiGBxG83SmXLA=";
+  };
+
+  # Generate per-container matcher + handle blocks for the Caddyfile.
+  # host_regexp name captures the port from the subdomain prefix (e.g., "yolo-8080").
+  containerBlocks = lib.concatMapStrings (c: ''
+    @${c.name} host_regexp ${c.name} ^${c.name}-(?P<port>\d+)\.${config.networking.hostName}\.${domain}$
+    handle @${c.name} {
+      reverse_proxy http://${c.ip}:{re.${c.name}.port}
+    }
+  '') ingressContainers;
+
+  caddyConfigFile = pkgs.writeText "Caddyfile" ''
+    {
+      log {
+        level ERROR
+      }
+    }
+
+    # HTTPS with Let's Encrypt wildcard cert via Cloudflare DNS-01
+    *.${config.networking.hostName}.${domain} {
+      tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+      }
+
+      ${containerBlocks}
+      handle {
+        respond "Unknown service" 404
+      }
+    }
+
+    # HTTP fallback (same routing, no TLS)
+    http://*.${config.networking.hostName}.${domain} {
+      ${containerBlocks}
+      handle {
+        respond "Unknown service" 404
+      }
+    }
+  '';
 
   pullCaCertScript = pkgs.writeShellApplication {
     name = "incus-pull-ca";
@@ -62,6 +113,29 @@ in {
     DNSOverTLS = "opportunistic";
     FallbackDNS = "1.1.1.1 8.8.8.8";
   };
+
+  # Host-level Caddy reverse proxy: *.${hostName}.yjpark.org → container services
+  # Cloudflare API token is read from the SOPS-decrypted env file at runtime.
+  # Secret file: mixins/nixos/host/secrets/cloudflare-caddy.txt (create manually)
+  # Content: CLOUDFLARE_API_TOKEN=<token-with-Zone/DNS/Edit-permission>
+  services.caddy = {
+    enable = true;
+    package = caddyWithCloudflare;
+    configFile = caddyConfigFile;
+  };
+
+  sops.secrets."cloudflare-caddy-env" = {
+    sopsFile = ./secrets/cloudflare-caddy.txt;
+    format = "dotenv";
+    key = "";
+    owner = "caddy";
+  };
+
+  systemd.services.caddy.serviceConfig.EnvironmentFile =
+    config.sops.secrets."cloudflare-caddy-env".path;
+
+  # Open HTTP and HTTPS on the public zone (covers ZeroTier interface) for LAN access
+  services.firewalld.zones.public.services = [ "http" "https" ];
 
   # Create ingress state dir and copy system CAs to bundle on every boot
   systemd.tmpfiles.rules = ["d /var/lib/ingress 0755 root root -"];
