@@ -1,11 +1,9 @@
 {
   pkgs,
-  lib,
   ...
 }: let
-  # System ports to exclude from ingress (Caddy itself, DNS, mDNS/LLMNR)
-  excludedPorts = ["80" "443" "2019" "53" "5354" "5355"];
-  excludeFilter = lib.concatMapStrings (p: " | grep -v '^${p}$'") excludedPorts;
+  # Ports <=1000 are filtered by awk; only exclude 2019 (Caddy admin API) above that threshold
+  portFilter = "| awk '$1 > 1000' | grep -v '^2019$'";
 
   # Dynamic config lives here; Caddy imports it at reload time
   dynamicConf = "/var/lib/caddy/ingress.conf";
@@ -27,7 +25,7 @@
         reverse_proxy 127.0.0.1:''${PORT}
       }
       "
-      done < <(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un${excludeFilter} || true)
+      done < <(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un ${portFilter} || true)
 
       echo "$CONFIG" > "${dynamicConf}"
 
@@ -59,7 +57,7 @@
       DOMAIN="$(hostname).incus"
 
       # Collect listening ports (excluding system/caddy ports)
-      LISTENING=$(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un${excludeFilter} || true)
+      LISTENING=$(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un ${portFilter} || true)
 
       # Collect ports from dynamic config
       CADDY_PORTS=""

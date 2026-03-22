@@ -6,6 +6,9 @@
   # LXC/Incus containers lack user namespaces required by Nix sandboxing
   nix.settings.sandbox = false;
 
+  # Containers are accessed via incus exec, not SSH
+  services.openssh.enable = false;
+
   # LXC containers lack CAP_SYS_NICE — any CPUSchedulingPolicy triggers sched_setscheduler()
   # which is blocked in containers. Force-remove it from the nix-daemon service unit.
   systemd.services.nix-daemon.serviceConfig = {
