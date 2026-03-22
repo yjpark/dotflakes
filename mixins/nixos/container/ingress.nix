@@ -27,7 +27,7 @@
         reverse_proxy 127.0.0.1:''${PORT}
       }
       "
-      done < <(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un${excludeFilter})
+      done < <(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un${excludeFilter} || true)
 
       echo "$CONFIG" > "${dynamicConf}"
 
@@ -47,7 +47,8 @@
     name = "ingress-sync";
     runtimeInputs = with pkgs; [systemd];
     text = ''
-      exec /run/wrappers/bin/sudo systemctl restart ingress-sync.service
+      /run/wrappers/bin/sudo systemctl restart ingress-sync.service
+      ${ingressScript}/bin/ingress
     '';
   };
 
@@ -58,7 +59,7 @@
       DOMAIN="$(hostname).incus"
 
       # Collect listening ports (excluding system/caddy ports)
-      LISTENING=$(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un${excludeFilter})
+      LISTENING=$(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un${excludeFilter} || true)
 
       # Collect ports from dynamic config
       CADDY_PORTS=""

@@ -7,7 +7,7 @@
     bt = "beans-tui";
     cat = "bat";
     catcmd = "catwhich";
-    dig = "dog";
+    dig = "doggo";
     du = "dust";
     e = "vim";
     f = "fd";

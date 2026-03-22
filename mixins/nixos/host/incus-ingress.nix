@@ -59,7 +59,7 @@ in {
   services.resolved.settings.Resolve = {
     DNS = "127.0.0.1:5354";
     Domains = "~incus";
-    DNSOverTLS = "yes";
+    DNSOverTLS = "opportunistic";
     FallbackDNS = "1.1.1.1 8.8.8.8";
   };
 
