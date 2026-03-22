@@ -10,25 +10,27 @@ Nix Flakes-based dotfiles and system configuration repository managing NixOS sys
 
 ```bash
 # Home Manager activation (applies user-level config)
-just activate-home
+mise run _activate-home
 
 # Build NixOS config for current host (builds without switching by default)
-just build-host
+mise run build-host
 
 # Switch NixOS config (applies system-level config, requires sudo)
-just switch-host
+mise run _switch-host
 
 # Update flake inputs (dependencies)
-just flake-update
+mise run flake-update
 
 # Show flake outputs
-just show
+mise run show
 
 # Format Nix files
 nix fmt
 ```
 
 The formatter is `nixpkgs-fmt` (configured in `modules/flake/toplevel.nix`).
+
+Tasks are defined in `mise.toml`. Use `mise tasks` to list all available tasks.
 
 ## Architecture
 
@@ -58,7 +60,7 @@ Two user profiles exist:
 
 Host/container mixins live in `mixins/home/hosts/` and `mixins/home/containers/` — adding a `.nix` file there registers a new host/container automatically.
 
-`modules/flake/activate-home.nix`: The `just activate-home` command matches the current hostname against known hosts (→ `yjpark@<host>`) then containers (→ `yj@<host>`), falling back to `<username>@` for unknown hosts (trailing `@` is required by nixos-unified for bare username fallback configs).
+`modules/flake/activate-home.nix`: The `mise run _activate-home` command matches the current hostname against known hosts (→ `yjpark@<host>`) then containers (→ `yj@<host>`), falling back to `<username>@` for unknown hosts (trailing `@` is required by nixos-unified for bare username fallback configs).
 
 `modules/flake/home-configs.nix`: Generates `username@host` entries for each host/container mixin plus a bare `username` fallback (without host suffix).
 
@@ -91,4 +93,4 @@ Desktop/UI: `claude-desktop`, `niri` (Wayland compositor), `xremap-flake`, `anti
 - All configuration is declarative Nix — no imperative scripts
 - Module files should follow existing patterns in their directory (look at sibling files)
 - `nix run` activates Home Manager; `nixos-rebuild` handles system configs
-- Host configs reference hostname via `` `hostname` `` (backtick subshell in justfile)
+- Host configs reference hostname via `$(hostname)` (shell subshell in mise tasks)

@@ -4,6 +4,8 @@
     interfaces = [ "eth0" ];
     sources = [ { address = "10.0.0.0/16"; } ];
     ports = [
+      { port = 80; protocol = "tcp"; }
+      { port = 443; protocol = "tcp"; }
       { port = { from = 1000; to = 65535; }; protocol = "tcp"; }
       { port = { from = 1000; to = 65535; }; protocol = "udp"; }
     ];
