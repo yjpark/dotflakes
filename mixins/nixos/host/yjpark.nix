@@ -5,7 +5,10 @@ let
   baseConfigPath = self + /configurations/home/yjpark.nix;
   hostMixinDir = self + /mixins/home/hosts;
   hostname = config.networking.hostName;
-  hasHostMixin = builtins.pathExists (hostMixinDir + "/${hostname}.nix");
+  hasHostMixinFile = builtins.pathExists (hostMixinDir + "/${hostname}.nix");
+  hasHostMixinDir = builtins.pathExists (hostMixinDir + "/${hostname}");
+  hostMixinPath = if hasHostMixinFile then hostMixinDir + "/${hostname}.nix" else hostMixinDir + "/${hostname}";
+  hasHostMixin = hasHostMixinFile || hasHostMixinDir;
 in {
   programs.fish.enable = true;
 
@@ -41,6 +44,6 @@ in {
 
   home-manager.users.yjpark = {
       imports = [ baseConfigPath ]
-        ++ lib.optional hasHostMixin (hostMixinDir + "/${hostname}.nix");
+        ++ lib.optional hasHostMixin hostMixinPath;
   };
 }
