@@ -18,6 +18,7 @@ YAML_EOF
 )"
 
 incus config set ubuntu security.nesting true
+incus config set ubuntu raw.lxc "lxc.cap.keep = net_raw"
 
 incus config device add ubuntu agents disk \
   source=/home/yjpark/agents \
