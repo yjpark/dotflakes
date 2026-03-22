@@ -46,6 +46,7 @@
   services.firewalld.zones.incus = {
     interfaces = [ "incusbr0" ];
     target = "ACCEPT";
+    masquerade = true;
   };
 
   users.extraUsers.yjpark.extraGroups = ["incus-admin"];
