@@ -5,7 +5,7 @@ status: in-progress
 type: feature
 priority: normal
 created_at: 2026-03-23T03:40:59Z
-updated_at: 2026-03-23T03:43:06Z
+updated_at: 2026-03-23T05:11:30Z
 ---
 
 Set up OneCLI (MITM proxy) on edger host to inject API keys for agents running in the yolo Incus LXC container. Agents get placeholder keys; OneCLI injects real credentials at the network layer.
@@ -17,3 +17,8 @@ Set up OneCLI (MITM proxy) on edger host to inject API keys for agents running i
 - [x] Modify configurations/nixos/edger/imports.nix (enable onecli)
 - [x] Modify mixins/home/ai/tools/claude-mcp-add-context7.bash (use placeholder key)
 - [x] Modify mixins/home/host/linux/scripts/incus/incus-launch-yolo.bash (push CA cert)
+
+## context7 Rule Fix
+
+- [x] Update seeder to use per-secret config (hostPattern + headerName + valuePrefix)
+- [x] Add CONTEXT7_API_KEY entry targeting context7.com with Authorization: Bearer injection

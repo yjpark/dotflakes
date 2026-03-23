@@ -11,11 +11,30 @@
   #
   # Container proxy setup is declared in mixins/nixos/container/onecli-proxy.nix.
 
+  # Per-secret injection configuration.
+  # Keys must match the names in the SOPS secrets file (onecli-secrets.txt).
+  # Secrets not listed here get the _default config.
+  secretConfigs = {
+    _default = {
+      hostPattern = "*";
+      headerName = "x-api-key";
+    };
+    CONTEXT7_API_KEY = {
+      hostPattern = "context7.com";
+      headerName = "Authorization";
+      valuePrefix = "Bearer ";
+    };
+  };
+
+  secretConfigsJson = pkgs.writeText "onecli-secret-configs.json"
+    (builtins.toJSON secretConfigs);
+
   seederScript = pkgs.writeShellApplication {
     name = "onecli-seed-secrets";
     runtimeInputs = with pkgs; [ curl gnugrep coreutils jq ];
     text = ''
       SECRETS_FILE="${config.sops.secrets."onecli-secrets".path}"
+      CONFIG_FILE="${secretConfigsJson}"
       BASE_URL="http://10.100.0.1:10254"
 
       # Wait for OneCLI to be healthy
@@ -45,19 +64,31 @@
         [[ "$key" =~ ^# ]] && continue
         [[ -z "$key" ]] && continue
 
-        echo "Seeding: $key"
+        # Look up per-secret config, fall back to _default
+        secret_config=$(jq -r --arg k "$key" \
+          'if .[$k] then .[$k] else ._default end' "$CONFIG_FILE")
+
+        host_pattern=$(echo "$secret_config" | jq -r '.hostPattern')
+        header_name=$(echo "$secret_config" | jq -r '.headerName')
+        value_prefix=$(echo "$secret_config" | jq -r '.valuePrefix // ""')
+        final_value="''${value_prefix}''${value}"
+
+        echo "Seeding: $key (host=$host_pattern, header=$header_name)"
         curl -sf -X POST "$BASE_URL/api/secrets" \
           -H "Authorization: Bearer $API_KEY" \
           -H "Content-Type: application/json" \
-          -d "{
-            \"name\": \"$key\",
-            \"type\": \"generic\",
-            \"value\": \"$value\",
-            \"hostPattern\": \"*\",
-            \"injectionConfig\": {
-              \"headerName\": \"x-api-key\"
-            }
-          }" && echo "OK: $key" || echo "WARN: Failed to seed $key (may already exist)"
+          -d "$(jq -n \
+            --arg name "$key" \
+            --arg value "$final_value" \
+            --arg hp "$host_pattern" \
+            --arg hn "$header_name" \
+            '{
+              name: $name,
+              type: "generic",
+              value: $value,
+              hostPattern: $hp,
+              injectionConfig: { headerName: $hn }
+            }')" && echo "OK: $key" || echo "WARN: Failed to seed $key (may already exist)"
       done < "$SECRETS_FILE"
 
       echo "Done. Verify secrets at $BASE_URL"
@@ -120,6 +151,8 @@ in {
   systemd.services.onecli-seed-secrets = {
     description = "Seed API secrets into OneCLI vault";
     after = [ "podman-onecli.service" ];
+    # Re-run on every nixos-rebuild switch (toplevel changes every build).
+    restartTriggers = [ config.system.build.toplevel ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${seederScript}/bin/onecli-seed-secrets";
