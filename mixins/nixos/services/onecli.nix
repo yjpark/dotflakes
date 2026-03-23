@@ -110,7 +110,8 @@
       # Push authenticated proxy URL to agent containers so they can inject credentials.
       # Written to /etc/onecli-proxy-auth, sourced by /etc/profile.d/onecli-proxy.sh.
       PROXY_URL="http://x:''${API_KEY}@10.100.0.1:10255"
-      for container in ${builtins.concatStringsSep " " agentContainers}; do
+      AGENT_CONTAINERS=(${builtins.concatStringsSep " " agentContainers})
+      for container in "''${AGENT_CONTAINERS[@]}"; do
         if incus list --format json | jq -e --arg n "$container" \
             '.[] | select(.name == $n) | select(.status == "Running")' > /dev/null 2>&1; then
           printf 'HTTPS_PROXY="%s"\nHTTP_PROXY="%s"\n' "$PROXY_URL" "$PROXY_URL" | \
