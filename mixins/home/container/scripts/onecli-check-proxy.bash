@@ -27,6 +27,7 @@ if [[ -z "${HTTPS_PROXY:-}" ]]; then
   info "HTTPS_PROXY not set in environment, sourcing /etc/onecli-proxy-auth ..."
   # shellcheck source=/dev/null
   source /etc/onecli-proxy-auth
+  export HTTPS_PROXY HTTP_PROXY
   if [[ -z "${HTTPS_PROXY:-}" ]]; then
     error "HTTPS_PROXY still not set after sourcing /etc/onecli-proxy-auth"
     exit 1
@@ -36,9 +37,10 @@ else
   info "HTTPS_PROXY already set in environment (from profile.d or manual export)"
 fi
 
-MASKED_PROXY=$(echo "$HTTPS_PROXY" | sed 's|:\([^:]*\)@|:***@|')
+# Show token prefix (e.g. aoc_ or oc_) to help debug auth issues
+MASKED_PROXY=$(echo "$HTTPS_PROXY" | sed 's|:\([^:]\{4\}\)[^@]*@|:\1***@|')
 info "HTTPS_PROXY: $MASKED_PROXY"
-info "HTTP_PROXY:  $(echo "${HTTP_PROXY:-<not set>}" | sed 's|:\([^:]*\)@|:***@|')"
+info "HTTP_PROXY:  $(echo "${HTTP_PROXY:-<not set>}" | sed 's|:\([^:]\{4\}\)[^@]*@|:\1***@|')"
 info "NODE_EXTRA_CA_CERTS: ${NODE_EXTRA_CA_CERTS:-<not set>}"
 
 # Verify CA cert exists
@@ -50,18 +52,24 @@ if [[ -n "${NODE_EXTRA_CA_CERTS:-}" ]]; then
   fi
 fi
 
-info "Testing injection via httpbin.org/headers ..."
-if ! RESPONSE=$(curl -sf https://httpbin.org/headers); then
+# OneCLI replaces existing headers — it does not add missing ones.
+# Send a placeholder Authorization header so OneCLI can inject the real value.
+info "Testing injection via httpbin.org/anything ..."
+info "  (sending placeholder Authorization header for OneCLI to replace)"
+if ! RESPONSE=$(curl -sf -H "Authorization: Bearer PLACEHOLDER" https://httpbin.org/anything); then
   error "curl to httpbin.org failed — check proxy connectivity and CA cert"
   info "Trying without proxy for comparison ..."
-  curl -sf --noproxy '*' https://httpbin.org/headers | jq . || error "Direct connection also failed"
+  curl -sf --noproxy '*' https://httpbin.org/anything | jq . || error "Direct connection also failed"
   exit 1
 fi
-echo "$RESPONSE" | jq .
+echo "$RESPONSE" | jq '.headers'
 
-INJECTED=$(echo "$RESPONSE" | jq -r '.headers | to_entries[] | select(.value | contains("ONECLI") or contains("WELCOME")) | "\(.key): \(.value)"')
-if [[ -n "$INJECTED" ]]; then
-  info "Injection confirmed: $INJECTED"
+AUTH_HEADER=$(echo "$RESPONSE" | jq -r '.headers.Authorization // .headers.authorization // empty')
+if [[ -n "$AUTH_HEADER" && "$AUTH_HEADER" != "Bearer PLACEHOLDER" ]]; then
+  info "Injection confirmed — Authorization header was replaced by OneCLI"
+elif [[ "$AUTH_HEADER" == "Bearer PLACEHOLDER" ]]; then
+  warn "Authorization header still has placeholder value — OneCLI did not inject"
+  warn "Check hostPattern matches httpbin.org and secrets are seeded"
 else
-  warn "No OneCLI injection detected in response headers — check hostPattern and secrets"
+  warn "No Authorization header in response — check proxy and OneCLI config"
 fi
