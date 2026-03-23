@@ -22,25 +22,12 @@
   };
 
   # Sources /etc/onecli-proxy-auth (written by host seeder) to set authenticated proxy URL.
-  # profile.d for bash/POSIX shells:
+  # For bash/POSIX login shells via profile.d:
   environment.etc."profile.d/onecli-proxy.sh".text = ''
     if [ -r /etc/onecli-proxy-auth ]; then
       . /etc/onecli-proxy-auth
       export HTTPS_PROXY HTTP_PROXY
     fi
   '';
-
-  # fish config for fish shell (fish doesn't source profile.d/*.sh):
-  environment.etc."fish/conf.d/onecli-proxy.fish".text = ''
-    if test -r /etc/onecli-proxy-auth
-      while read -l line
-        if string match -qr '^[A-Z_]+=.+' -- $line
-          set -l parts (string split '=' -- $line)
-          set -l key $parts[1]
-          set -l val (string trim -c '"' -- (string join '=' -- $parts[2..]))
-          set -gx $key $val
-        end
-      end < /etc/onecli-proxy-auth
-    end
-  '';
+  # Fish shell sourcing is handled by Home Manager in mixins/home/container/onecli-proxy.nix.
 }
