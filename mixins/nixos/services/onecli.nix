@@ -29,9 +29,12 @@
   secretConfigsJson = pkgs.writeText "onecli-secret-configs.json"
     (builtins.toJSON secretConfigs);
 
+  # Containers to push the authenticated proxy URL to after seeding.
+  agentContainers = [ "yolo" ];
+
   seederScript = pkgs.writeShellApplication {
     name = "onecli-seed-secrets";
-    runtimeInputs = with pkgs; [ curl gnugrep coreutils jq ];
+    runtimeInputs = with pkgs; [ curl gnugrep coreutils jq incus ];
     text = ''
       SECRETS_FILE="${config.sops.secrets."onecli-secrets".path}"
       CONFIG_FILE="${secretConfigsJson}"
@@ -103,6 +106,20 @@
       done < "$SECRETS_FILE"
 
       echo "Done. Verify secrets at $BASE_URL"
+
+      # Push authenticated proxy URL to agent containers so they can inject credentials.
+      # Written to /etc/onecli-proxy-auth, sourced by /etc/profile.d/onecli-proxy.sh.
+      PROXY_URL="http://x:''${API_KEY}@10.100.0.1:10255"
+      for container in ${builtins.concatStringsSep " " agentContainers}; do
+        if incus list --format json | jq -e --arg n "$container" \
+            '.[] | select(.name == $n) | select(.status == "Running")' > /dev/null 2>&1; then
+          printf 'HTTPS_PROXY="%s"\nHTTP_PROXY="%s"\n' "$PROXY_URL" "$PROXY_URL" | \
+            incus file push - "$container/etc/onecli-proxy-auth"
+          echo "Pushed proxy auth to $container"
+        else
+          echo "Skipping proxy push to $container (not running)"
+        fi
+      done
     '';
   };
 in {
