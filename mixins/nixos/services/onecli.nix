@@ -111,24 +111,19 @@ in {
     format = "binary";
   };
 
-  # Admin key sops secret and seeder service — uncomment after bootstrap:
-  # 1. Visit http://10.100.0.1:10254, create admin account, generate API key
-  # 2. sops -e --input-type=dotenv <(echo "ONECLI_API_KEY=oc_xxx") > mixins/nixos/services/secrets/onecli-admin-key.txt
-  # 3. Uncomment the block below and rebuild, then: systemctl start onecli-seed-secrets
-  #
-  # sops.secrets."onecli-admin-key" = {
-  #   sopsFile = ./secrets/onecli-admin-key.txt;
-  #   format = "binary";
-  # };
-  #
-  # systemd.services.onecli-seed-secrets = {
-  #   description = "Seed API secrets into OneCLI vault";
-  #   after = [ "podman-onecli.service" ];
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     ExecStart = "${seederScript}/bin/onecli-seed-secrets";
-  #   };
-  # };
+  sops.secrets."onecli-admin-key" = {
+    sopsFile = ./secrets/onecli-admin-key.txt;
+    format = "binary";
+  };
+
+  systemd.services.onecli-seed-secrets = {
+    description = "Seed API secrets into OneCLI vault";
+    after = [ "podman-onecli.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${seederScript}/bin/onecli-seed-secrets";
+    };
+  };
 
   # Convenience script to fetch and push the OneCLI CA cert into containers
   environment.systemPackages = [
