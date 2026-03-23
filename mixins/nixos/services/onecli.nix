@@ -22,7 +22,7 @@
     CONTEXT7_API_KEY = {
       hostPattern = "context7.com";
       headerName = "Authorization";
-      valuePrefix = "Bearer ";
+      valueFormat = "Bearer {value}";
     };
   };
 
@@ -70,10 +70,9 @@
 
         host_pattern=$(echo "$secret_config" | jq -r '.hostPattern')
         header_name=$(echo "$secret_config" | jq -r '.headerName')
-        value_prefix=$(echo "$secret_config" | jq -r '.valuePrefix // ""')
-        final_value="''${value_prefix}''${value}"
+        value_format=$(echo "$secret_config" | jq -r '.valueFormat // "{value}"')
 
-        header_display="''${header_name}$([ -n "$value_prefix" ] && echo ": ''${value_prefix}***" || echo ": ***")"
+        header_display="$header_name: $(echo "$value_format" | sed 's/{value}/***/')"
         echo "Seeding: $key (host=$host_pattern, injects '$header_display')"
 
         # Delete existing secret with the same name before re-seeding
@@ -90,15 +89,16 @@
           -H "Content-Type: application/json" \
           -d "$(jq -n \
             --arg name "$key" \
-            --arg value "$final_value" \
+            --arg value "$value" \
             --arg hp "$host_pattern" \
             --arg hn "$header_name" \
+            --arg vf "$value_format" \
             '{
               name: $name,
               type: "generic",
               value: $value,
               hostPattern: $hp,
-              injectionConfig: { headerName: $hn }
+              injectionConfig: { headerName: $hn, valueFormat: $vf }
             }')" && echo "OK: $key" || echo "ERROR: Failed to seed $key"
       done < "$SECRETS_FILE"
 
