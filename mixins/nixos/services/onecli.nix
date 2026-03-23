@@ -25,7 +25,7 @@
       SECRETS_FILE="${config.sops.secrets."onecli-secrets".path}"
 
       API_KEY=$(grep -oP '(?<=ONECLI_API_KEY=).+' "$ADMIN_KEY_FILE")
-      BASE_URL="http://127.0.0.1:10254"
+      BASE_URL="http://10.100.0.1:10254"
 
       # Wait for OneCLI to be healthy
       for i in $(seq 1 30); do
