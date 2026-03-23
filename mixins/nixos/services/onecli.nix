@@ -11,11 +11,10 @@
   # 3. Encrypt the API key: echo "ONECLI_API_KEY=oc_xxx" | sops -e --input-type=dotenv > mixins/nixos/services/secrets/onecli-admin-key.txt
   # 4. Encrypt the secrets to seed: echo "CONTEXT7_API_KEY=xxx" | sops -e --input-type=dotenv > mixins/nixos/services/secrets/onecli-secrets.txt
   # 5. Rebuild again and run `systemctl start onecli-seed-secrets`
-  # 6. Create an agent in the dashboard, copy its token, and sops-encrypt it for the container config
   #
-  # Container proxy setup (in yolo or any agent container):
-  #   HTTPS_PROXY=http://x:<agent-token>@10.100.0.1:10255
-  #   NODE_EXTRA_CA_CERTS=/run/secrets/onecli-ca.pem   (or system trust store)
+  # Container proxy setup is declared in mixins/nixos/container/onecli-proxy.nix:
+  #   HTTPS_PROXY=http://10.100.0.1:10255  (no token needed in URL)
+  #   NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/onecli-ca.crt
   #   NODE_USE_ENV_PROXY=1
 
   seederScript = pkgs.writeShellApplication {
