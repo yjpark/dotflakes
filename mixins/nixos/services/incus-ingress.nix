@@ -29,6 +29,14 @@
     }
   '') ingressContainers;
 
+  # Static named-service blocks (exact hostname match, must come before containerBlocks).
+  staticBlocks = ''
+    @onecli expression `{http.request.host} == "onecli.${config.networking.hostName}.${domain}"`
+    handle @onecli {
+      reverse_proxy 10.100.0.1:10254
+    }
+  '';
+
   caddyConfigFile = pkgs.writeText "Caddyfile" ''
     {
       log {
@@ -42,6 +50,7 @@
         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
       }
 
+      ${staticBlocks}
       ${containerBlocks}
       handle {
         respond "Unknown service" 404
@@ -50,6 +59,7 @@
 
     # HTTP fallback (same routing, no TLS)
     http://*.${config.networking.hostName}.${domain} {
+      ${staticBlocks}
       ${containerBlocks}
       handle {
         respond "Unknown service" 404
