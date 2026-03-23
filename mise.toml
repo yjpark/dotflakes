@@ -63,6 +63,13 @@ echo "Starting onecli-seed-secrets (check progress: journalctl -fu onecli-seed-s
 sudo systemctl start onecli-seed-secrets || true
 """
 
+[tasks.restart-onecli]
+description = "Restart OneCLI containers (use after image update)"
+run = """
+sudo systemctl restart podman-onecli-postgres podman-onecli
+sudo systemctl start onecli-seed-secrets
+"""
+
 [tasks.build-yolo-image]
 description = "Build Yolo LXC image"
 run = """

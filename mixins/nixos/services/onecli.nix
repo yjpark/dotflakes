@@ -128,6 +128,8 @@ in {
     description = "Create OneCLI podman network";
     before = [ "podman-onecli-postgres.service" "podman-onecli.service" ];
     requiredBy = [ "podman-onecli-postgres.service" "podman-onecli.service" ];
+    # Don't restart on nixos-rebuild switch — network persists across updates.
+    restartIfChanged = false;
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -169,6 +171,11 @@ in {
       extraOptions = [ "--network=onecli" ];
     };
   };
+
+  # Don't restart containers on nixos-rebuild switch — they persist across updates.
+  # Use `mise run restart-onecli` to explicitly restart when upgrading the image.
+  systemd.services.podman-onecli.restartIfChanged = false;
+  systemd.services.podman-onecli-postgres.restartIfChanged = false;
 
   # SOPS secrets for seeding
   sops.secrets."onecli-secrets" = {
