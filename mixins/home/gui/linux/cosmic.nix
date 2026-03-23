@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    cosmic-ext-tweaks   
+    cosmic-ext-tweaks
+    cosmic-ext-applet-minimon
     jq
     (writeShellScriptBin "install-cos-cli" ''
       #!/usr/bin/env bash
