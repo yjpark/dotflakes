@@ -716,6 +716,11 @@ window-rule {
     }
 }
 
+window-rule {
+    match app-id="cage"
+    open-floating true
+}
+
 gestures {
     hot-corners {
         // Disables all hot corners, including the default top-left overview toggle
