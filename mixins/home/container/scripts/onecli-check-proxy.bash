@@ -44,23 +44,19 @@ info "HTTP_PROXY:  $(echo "${HTTP_PROXY:-<not set>}" | sed 's|:\([^:]\{4\}\)[^@]
 info "NODE_EXTRA_CA_CERTS: ${NODE_EXTRA_CA_CERTS:-<not set>}"
 info "SSL_CERT_FILE: ${SSL_CERT_FILE:-<not set>}"
 
-# Set SSL_CERT_FILE if not already set (for curl and other TLS tools)
-if [[ -z "${SSL_CERT_FILE:-}" ]]; then
-  if [[ -r /etc/ssl/certs/ca-bundle-with-onecli.crt ]]; then
-    export SSL_CERT_FILE=/etc/ssl/certs/ca-bundle-with-onecli.crt
-    info "  SSL_CERT_FILE set to combined bundle"
+# Verify OneCLI CA is present in the active CA bundle
+ONECLI_CA="/usr/local/share/ca-certificates/onecli-ca.crt"
+if [[ -r "$ONECLI_CA" ]]; then
+  info "  OneCLI CA cert exists: $ONECLI_CA"
+  # Check if it's been appended to the active bundle
+  ACTIVE_BUNDLE="${SSL_CERT_FILE:-/etc/ssl/certs/ca-certificates.crt}"
+  if [[ -r "$ACTIVE_BUNDLE" ]] && grep -q "# OneCLI CA" "$ACTIVE_BUNDLE" 2>/dev/null; then
+    info "  OneCLI CA found in $ACTIVE_BUNDLE"
   else
-    warn "  Combined CA bundle not found — run onecli-push-ca on the host"
+    warn "  OneCLI CA NOT found in $ACTIVE_BUNDLE — run onecli-push-ca on the host"
   fi
-fi
-
-# Verify CA files exist
-if [[ -n "${NODE_EXTRA_CA_CERTS:-}" ]]; then
-  if [[ -r "$NODE_EXTRA_CA_CERTS" ]]; then
-    info "  OneCLI CA cert exists and is readable"
-  else
-    warn "  OneCLI CA cert missing or not readable: $NODE_EXTRA_CA_CERTS"
-  fi
+else
+  warn "  OneCLI CA cert missing — run onecli-push-ca on the host"
 fi
 
 # OneCLI replaces existing headers — it does not add missing ones.
