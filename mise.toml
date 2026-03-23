@@ -59,6 +59,7 @@ depends = ["vcs-status"]
 run = """
 sudo nixos-rebuild switch --flake .#$(hostname)
 sudo chown $USER:wheel flake.lock
+sudo systemctl start onecli-seed-secrets || true
 """
 
 [tasks.build-yolo-image]

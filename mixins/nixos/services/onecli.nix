@@ -151,8 +151,6 @@ in {
   systemd.services.onecli-seed-secrets = {
     description = "Seed API secrets into OneCLI vault";
     after = [ "podman-onecli.service" ];
-    # Re-run on every nixos-rebuild switch (toplevel changes every build).
-    restartTriggers = [ config.system.build.toplevel ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${seederScript}/bin/onecli-seed-secrets";
