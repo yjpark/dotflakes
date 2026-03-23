@@ -69,8 +69,8 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.podman}/bin/podman network create onecli || true";
-      ExecStop = "${pkgs.podman}/bin/podman network rm -f onecli || true";
+      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.podman}/bin/podman network create onecli || true'";
+      ExecStop = "${pkgs.bash}/bin/bash -c '${pkgs.podman}/bin/podman network rm -f onecli || true'";
     };
   };
 
