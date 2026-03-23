@@ -16,7 +16,7 @@ if [[ -z "$API_KEY" || "$API_KEY" == "null" ]]; then
   exit 1
 fi
 
-log_info "Secrets in OneCLI ($BASE_URL):"
+info "Secrets in OneCLI ($BASE_URL):"
 curl -sf "$BASE_URL/api/secrets" \
   -H "Authorization: Bearer $API_KEY" | \
   jq -r '.[] | "  \(.name)\n    host:   \(.hostPattern)\n    header: \(.injectionConfig.headerName): \(.injectionConfig.valueFormat // "{value}")"'
