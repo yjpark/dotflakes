@@ -193,26 +193,6 @@ in {
     };
   };
 
-  # Convenience script to fetch and push the OneCLI CA cert into containers
-  environment.systemPackages = [
-    (pkgs.writeShellApplication {
-      name = "onecli-push-ca";
-      runtimeInputs = with pkgs; [ curl incus ];
-      text = ''
-        CONTAINERS=("''${@:-yolo}")
-        CA_PEM=$(curl -sf http://10.100.0.1:10254/api/gateway/ca)
-
-        for CONTAINER in "''${CONTAINERS[@]}"; do
-          echo "Pushing OneCLI CA to $CONTAINER..."
-          incus exec "$CONTAINER" -- mkdir -p /usr/local/share/ca-certificates
-          echo "$CA_PEM" | incus file push - "$CONTAINER/usr/local/share/ca-certificates/onecli-ca.crt"
-          incus exec "$CONTAINER" -- update-ca-certificates
-          echo "Done: $CONTAINER"
-        done
-      '';
-    })
-  ];
-
   # Explicitly open OneCLI ports on the incus bridge zone.
   # The incus zone already has target=ACCEPT, but this makes the intent explicit.
   services.firewalld.services.onecli = {
