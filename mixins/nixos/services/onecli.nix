@@ -5,26 +5,17 @@
   # Dashboard:   http://10.100.0.1:10254  (Incus bridge — accessible from containers)
   # Proxy:       http://10.100.0.1:10255  (set HTTPS_PROXY in agent containers)
   #
-  # Bootstrap process (first time only):
-  # 1. After `nixos-rebuild switch`, visit http://10.100.0.1:10254 and create an admin account
-  # 2. Generate an admin API key in the dashboard settings
-  # 3. Encrypt the API key: echo "ONECLI_API_KEY=oc_xxx" | sops -e --input-type=dotenv > mixins/nixos/services/secrets/onecli-admin-key.txt
-  # 4. Encrypt the secrets to seed: echo "CONTEXT7_API_KEY=xxx" | sops -e --input-type=dotenv > mixins/nixos/services/secrets/onecli-secrets.txt
-  # 5. Rebuild again and run `systemctl start onecli-seed-secrets`
+  # AUTH_MODE=local means OneCLI auto-creates a hardcoded local admin (admin@localhost)
+  # with no OAuth setup needed. The seeder fetches the API key automatically via
+  # GET /api/auth/session then GET /api/user/api-key — no manual bootstrap required.
   #
-  # Container proxy setup is declared in mixins/nixos/container/onecli-proxy.nix:
-  #   HTTPS_PROXY=http://10.100.0.1:10255  (no token needed in URL)
-  #   NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/onecli-ca.crt
-  #   NODE_USE_ENV_PROXY=1
+  # Container proxy setup is declared in mixins/nixos/container/onecli-proxy.nix.
 
   seederScript = pkgs.writeShellApplication {
     name = "onecli-seed-secrets";
-    runtimeInputs = with pkgs; [ curl gnugrep coreutils ];
+    runtimeInputs = with pkgs; [ curl gnugrep coreutils jq ];
     text = ''
-      ADMIN_KEY_FILE="${config.sops.secrets."onecli-admin-key".path}"
       SECRETS_FILE="${config.sops.secrets."onecli-secrets".path}"
-
-      API_KEY=$(grep -oP '(?<=ONECLI_API_KEY=).+' "$ADMIN_KEY_FILE")
       BASE_URL="http://10.100.0.1:10254"
 
       # Wait for OneCLI to be healthy
@@ -35,6 +26,18 @@
         echo "Waiting for OneCLI... ($i/30)"
         sleep 2
       done
+
+      # Trigger local admin session creation and retrieve the API key.
+      # AUTH_MODE=local auto-creates admin@localhost on first /api/auth/session call.
+      echo "Fetching local admin API key..."
+      curl -sf "$BASE_URL/api/auth/session" > /dev/null
+      API_KEY=$(curl -sf "$BASE_URL/api/user/api-key" | jq -r '.apiKey')
+
+      if [[ -z "$API_KEY" || "$API_KEY" == "null" ]]; then
+        echo "ERROR: Could not retrieve API key from OneCLI"
+        exit 1
+      fi
+      echo "Got API key: ''${API_KEY:0:8}..."
 
       echo "Seeding secrets into OneCLI..."
 
@@ -95,6 +98,9 @@ in {
         DATABASE_URL = "postgresql://onecli:onecli@onecli-postgres:5432/onecli";
         GATEWAY_HOST = "10.100.0.1";
         GATEWAY_PORT = "10255";
+        # Local mode: auto-creates admin@localhost, no OAuth/manual signup needed.
+        # The seeder fetches the API key via /api/auth/session + /api/user/api-key.
+        AUTH_MODE = "local";
       };
       volumes = [ "onecli-data:/app/data" ];
       ports = [
@@ -108,11 +114,6 @@ in {
   # SOPS secrets for seeding
   sops.secrets."onecli-secrets" = {
     sopsFile = ./secrets/onecli-secrets.txt;
-    format = "binary";
-  };
-
-  sops.secrets."onecli-admin-key" = {
-    sopsFile = ./secrets/onecli-admin-key.txt;
     format = "binary";
   };
 
