@@ -40,19 +40,19 @@
       CONFIG_FILE="${secretConfigsJson}"
       BASE_URL="http://10.100.0.1:10254"
 
-      # Wait for OneCLI to be healthy
+      # Wait for OneCLI to be ready (no /healthz endpoint — use /api/auth/session)
       for i in $(seq 1 30); do
-        if curl -sf "$BASE_URL/healthz" > /dev/null 2>&1; then
+        if curl -sf "$BASE_URL/api/auth/session" > /dev/null 2>&1; then
+          echo "OneCLI is ready"
           break
         fi
         echo "Waiting for OneCLI... ($i/30)"
         sleep 2
       done
 
-      # Trigger local admin session creation and retrieve the API key.
-      # AUTH_MODE=local auto-creates admin@localhost on first /api/auth/session call.
+      # Retrieve the admin API key (AUTH_MODE=local auto-creates admin@localhost
+      # on first /api/auth/session call, which the health check above already triggers).
       echo "Fetching local admin API key..."
-      curl -sf "$BASE_URL/api/auth/session" > /dev/null
       API_KEY=$(curl -sf "$BASE_URL/api/user/api-key" | jq -r '.apiKey')
 
       if [[ -z "$API_KEY" || "$API_KEY" == "null" ]]; then
