@@ -2,7 +2,7 @@ overview {
   zoom 0.15
 }
 animations {
-  slowdown 0.2
+  off
 }
 
 spawn-at-startup "cosmic-ext-alternative-startup"
