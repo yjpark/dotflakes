@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-20T16:34:35Z
-updated_at: 2026-03-20T16:35:07Z
+updated_at: 2026-03-23T07:48:19Z
+order: w
 ---
 
 Replace _j_abbr function with _j_expand fish function that handles expansion and triggers completion automatically when in a mise directory. Bind Space to _j_expand.

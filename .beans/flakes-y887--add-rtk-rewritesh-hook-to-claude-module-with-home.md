@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-23T04:52:54Z
-updated_at: 2026-03-23T04:53:28Z
+updated_at: 2026-03-23T07:48:19Z
+order: s
 ---
 
 Add the rtk-rewrite.sh hook file to modules/home/programs/claude/hooks/ and set up home.file linking to ~/.claude/hooks/rtk-rewrite.sh

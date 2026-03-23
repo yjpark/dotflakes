@@ -5,7 +5,8 @@ status: completed
 type: feature
 priority: normal
 created_at: 2026-03-23T03:40:59Z
-updated_at: 2026-03-23T07:39:45Z
+updated_at: 2026-03-23T07:48:19Z
+order: V
 ---
 
 Set up OneCLI (MITM proxy) on edger host to inject API keys for agents running in the yolo Incus LXC container. Agents get placeholder keys; OneCLI injects real credentials at the network layer.

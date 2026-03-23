@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-20T07:28:26Z
-updated_at: 2026-03-20T07:29:37Z
+updated_at: 2026-03-23T07:48:19Z
+order: "y"
 ---
 
 Add settings.ui.colors overrides to programs.jjui in modules/home/programs/jujutsu.nix to fix readability issues with the Pencil Dark (Gogh) WezTerm color scheme. The default dark theme uses 'bright black' for dimmed text and selected backgrounds, which is too dark/invisible in Pencil Dark.

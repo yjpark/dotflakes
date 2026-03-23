@@ -103,6 +103,14 @@ incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yo
 incus image list | grep yolo
 """
 
+[tasks.docs-serve]
+description = "Serve docs locally (hot-reload)"
+run = "mdbook serve docs/"
+
+[tasks.docs-build]
+description = "Build static docs site"
+run = "mdbook build docs/"
+
 [tasks.test-echo]
 description = "Echo a message (for testing tv-mise-tasks)"
 run = "echo {{arg(name='message')}}"

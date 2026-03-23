@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-23T02:20:53Z
-updated_at: 2026-03-23T02:21:40Z
+updated_at: 2026-03-23T07:48:19Z
+order: zw
 ---
 
 Convert mixins/home/host/common/ai.nix into a folder (ai/), moving scripts/installs/ under ai/installs/ and extracting inline scripts into bash files.
