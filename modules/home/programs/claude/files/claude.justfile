@@ -8,5 +8,8 @@ edit-ccline-config:
   cp ccline/config.backup.toml ccline/config.toml
   chmod 644 ccline/config.toml
 
+backup-settings:
+  cp settings.json ~/.flakes/modules/home/programs/claude/files/settings.json
+
 backup-ccline-config:
   cp ccline/config.toml ~/.flakes/modules/home/programs/claude/files/ccline.config.toml
