@@ -109,14 +109,23 @@
 
       # Push authenticated proxy URL to agent containers so they can inject credentials.
       # Written to /etc/onecli-proxy-auth, sourced by /etc/profile.d/onecli-proxy.sh.
-      PROXY_URL="http://x:''${API_KEY}@10.100.0.1:10255"
+      # The gateway proxy expects agent tokens (aoc_ prefix), not user API keys (oc_ prefix).
+      echo "Fetching default agent token for proxy auth..."
+      AGENT_TOKEN=$(curl -sf "$BASE_URL/api/agents/default" | jq -r '.accessToken')
+      if [[ -z "$AGENT_TOKEN" || "$AGENT_TOKEN" == "null" ]]; then
+        echo "ERROR: Could not retrieve agent token from /api/agents/default"
+        exit 1
+      fi
+      echo "Got agent token: ''${AGENT_TOKEN:0:4}..."
+      PROXY_URL="http://x:''${AGENT_TOKEN}@10.100.0.1:10255"
       AGENT_CONTAINERS=(${builtins.concatStringsSep " " agentContainers})
       for container in "''${AGENT_CONTAINERS[@]}"; do
         if incus list --format json | jq -e --arg n "$container" \
             '.[] | select(.name == $n) | select(.status == "Running")' > /dev/null 2>&1; then
           printf 'HTTPS_PROXY="%s"\nHTTP_PROXY="%s"\n' "$PROXY_URL" "$PROXY_URL" | \
             incus file push - "$container/etc/onecli-proxy-auth"
-          echo "Pushed proxy auth to $container"
+          incus exec "$container" -- chmod 644 /etc/onecli-proxy-auth
+          echo "Pushed proxy auth to $container (mode 644)"
         else
           echo "Skipping proxy push to $container (not running)"
         fi
