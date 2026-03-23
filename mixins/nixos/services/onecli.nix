@@ -204,6 +204,7 @@ in {
 
         for CONTAINER in "''${CONTAINERS[@]}"; do
           echo "Pushing OneCLI CA to $CONTAINER..."
+          incus exec "$CONTAINER" -- mkdir -p /usr/local/share/ca-certificates
           echo "$CA_PEM" | incus file push - "$CONTAINER/usr/local/share/ca-certificates/onecli-ca.crt"
           incus exec "$CONTAINER" -- update-ca-certificates
           echo "Done: $CONTAINER"
