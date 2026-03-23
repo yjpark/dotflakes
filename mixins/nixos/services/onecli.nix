@@ -73,7 +73,18 @@
         value_prefix=$(echo "$secret_config" | jq -r '.valuePrefix // ""')
         final_value="''${value_prefix}''${value}"
 
-        echo "Seeding: $key (host=$host_pattern, header=$header_name)"
+        header_display="''${header_name}$([ -n "$value_prefix" ] && echo ": ''${value_prefix}***" || echo ": ***")"
+        echo "Seeding: $key (host=$host_pattern, injects '$header_display')"
+
+        # Delete existing secret with the same name before re-seeding
+        existing_id=$(curl -sf "$BASE_URL/api/secrets" \
+          -H "Authorization: Bearer $API_KEY" | \
+          jq -r --arg name "$key" '.[] | select(.name == $name) | .id // empty')
+        if [[ -n "$existing_id" ]]; then
+          curl -sf -X DELETE "$BASE_URL/api/secrets/$existing_id" \
+            -H "Authorization: Bearer $API_KEY" && echo "Deleted existing: $key"
+        fi
+
         curl -sf -X POST "$BASE_URL/api/secrets" \
           -H "Authorization: Bearer $API_KEY" \
           -H "Content-Type: application/json" \
@@ -88,7 +99,7 @@
               value: $value,
               hostPattern: $hp,
               injectionConfig: { headerName: $hn }
-            }')" && echo "OK: $key" || echo "WARN: Failed to seed $key (may already exist)"
+            }')" && echo "OK: $key" || echo "ERROR: Failed to seed $key"
       done < "$SECRETS_FILE"
 
       echo "Done. Verify secrets at $BASE_URL"

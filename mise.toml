@@ -59,6 +59,7 @@ depends = ["vcs-status"]
 run = """
 sudo nixos-rebuild switch --flake .#$(hostname)
 sudo chown $USER:wheel flake.lock
+echo "Starting onecli-seed-secrets (check progress: journalctl -fu onecli-seed-secrets)..."
 sudo systemctl start onecli-seed-secrets || true
 """
 
