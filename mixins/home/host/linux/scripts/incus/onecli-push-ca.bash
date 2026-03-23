@@ -12,9 +12,9 @@ CONTAINERS=("${@:-yolo}")
 CA_PEM=$(curl -sf http://10.100.0.1:10254/api/gateway/ca)
 
 for CONTAINER in "${CONTAINERS[@]}"; do
-  log_info "Pushing OneCLI CA to $CONTAINER..."
+  info "Pushing OneCLI CA to $CONTAINER..."
   incus exec "$CONTAINER" -- mkdir -p /usr/local/share/ca-certificates
   echo "$CA_PEM" | incus file push - "$CONTAINER/usr/local/share/ca-certificates/onecli-ca.crt"
   incus exec "$CONTAINER" -- update-ca-certificates
-  log_info "Done: $CONTAINER"
+  info "Done: $CONTAINER"
 done
