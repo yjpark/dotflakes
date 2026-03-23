@@ -72,7 +72,7 @@
         header_name=$(echo "$secret_config" | jq -r '.headerName')
         value_format=$(echo "$secret_config" | jq -r '.valueFormat // "{value}"')
 
-        header_display="$header_name: $(echo "$value_format" | sed 's/{value}/***/')"
+        header_display="$header_name: ''${value_format/\{value\}/***}"
         echo "Seeding: $key (host=$host_pattern, injects '$header_display')"
 
         # Delete existing secret with the same name before re-seeding
