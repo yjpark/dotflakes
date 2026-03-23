@@ -148,4 +148,14 @@ in {
       '';
     })
   ];
+
+  # Explicitly open OneCLI ports on the incus bridge zone.
+  # The incus zone already has target=ACCEPT, but this makes the intent explicit.
+  services.firewalld.services.onecli = {
+    ports = [
+      { port = 10254; protocol = "tcp"; }  # Dashboard
+      { port = 10255; protocol = "tcp"; }  # Proxy gateway
+    ];
+  };
+  services.firewalld.zones.incus.services = [ "onecli" ];
 }
