@@ -5,6 +5,8 @@
     fd
     just
     shadowenv
+    omnix
+    mdbook
 
     # Basic utils
     sd # sed alternative

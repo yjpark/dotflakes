@@ -19,10 +19,10 @@
         CONFIG+="
       ''${PORT}.''${DOMAIN} {
         tls internal
-        reverse_proxy 127.0.0.1:''${PORT}
+        reverse_proxy localhost:''${PORT}
       }
       http://''${PORT}.''${DOMAIN} {
-        reverse_proxy 127.0.0.1:''${PORT}
+        reverse_proxy localhost:''${PORT}
       }
       "
       done < <(ss -tlnp | awk 'NR>1 {print $4}' | grep -oP '\d+$' | sort -un ${portFilter} || true)

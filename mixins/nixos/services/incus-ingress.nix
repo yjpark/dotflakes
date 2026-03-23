@@ -25,7 +25,9 @@
   containerBlocks = lib.concatMapStrings (c: ''
     @${c.name} vars_regexp ${c.name} {http.request.host} ^${c.name}-(?P<port>\d+)\.${config.networking.hostName}\.${domain}$
     handle @${c.name} {
-      reverse_proxy ${c.ip}:{re.${c.name}.port}
+      reverse_proxy ${c.ip}:80 {
+        header_up Host {re.${c.name}.port}.${c.name}.incus
+      }
     }
   '') ingressContainers;
 
