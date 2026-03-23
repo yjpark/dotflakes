@@ -59,14 +59,19 @@ depends = ["vcs-status"]
 run = """
 sudo nixos-rebuild switch --flake .#$(hostname)
 sudo chown $USER:wheel flake.lock
-echo "Starting onecli-seed-secrets (check progress: journalctl -fu onecli-seed-secrets)..."
-sudo systemctl start onecli-seed-secrets || true
+if systemctl list-unit-files onecli-seed-secrets.service &>/dev/null; then
+  echo "Starting onecli-seed-secrets (check progress: journalctl -fu onecli-seed-secrets)..."
+  sudo systemctl start onecli-seed-secrets || true
+else
+  echo "Skipping onecli-seed-secrets (service not found on this host)"
+fi
 """
 
 [tasks.restart-onecli]
 description = "Restart OneCLI containers (use after image update)"
 run = """
 sudo systemctl restart podman-onecli-postgres podman-onecli
+echo "Starting onecli-seed-secrets (check progress: journalctl -fu onecli-seed-secrets)..."
 sudo systemctl start onecli-seed-secrets
 """
 

@@ -42,13 +42,24 @@ MASKED_PROXY=$(echo "$HTTPS_PROXY" | sed 's|:\([^:]\{4\}\)[^@]*@|:\1***@|')
 info "HTTPS_PROXY: $MASKED_PROXY"
 info "HTTP_PROXY:  $(echo "${HTTP_PROXY:-<not set>}" | sed 's|:\([^:]\{4\}\)[^@]*@|:\1***@|')"
 info "NODE_EXTRA_CA_CERTS: ${NODE_EXTRA_CA_CERTS:-<not set>}"
+info "SSL_CERT_FILE: ${SSL_CERT_FILE:-<not set>}"
 
-# Verify CA cert exists
+# Set SSL_CERT_FILE if not already set (for curl and other TLS tools)
+if [[ -z "${SSL_CERT_FILE:-}" ]]; then
+  if [[ -r /etc/ssl/certs/ca-bundle-with-onecli.crt ]]; then
+    export SSL_CERT_FILE=/etc/ssl/certs/ca-bundle-with-onecli.crt
+    info "  SSL_CERT_FILE set to combined bundle"
+  else
+    warn "  Combined CA bundle not found — run onecli-push-ca on the host"
+  fi
+fi
+
+# Verify CA files exist
 if [[ -n "${NODE_EXTRA_CA_CERTS:-}" ]]; then
   if [[ -r "$NODE_EXTRA_CA_CERTS" ]]; then
-    info "  CA cert file exists and is readable"
+    info "  OneCLI CA cert exists and is readable"
   else
-    warn "  CA cert file missing or not readable: $NODE_EXTRA_CA_CERTS"
+    warn "  OneCLI CA cert missing or not readable: $NODE_EXTRA_CA_CERTS"
   fi
 fi
 
