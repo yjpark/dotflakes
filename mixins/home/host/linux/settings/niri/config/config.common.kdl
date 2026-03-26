@@ -719,6 +719,7 @@ window-rule {
 window-rule {
     match app-id="wlroots"
     open-floating true
+    open-on-output "DVI-I-1"
 }
 
 gestures {
