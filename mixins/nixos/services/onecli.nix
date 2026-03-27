@@ -24,6 +24,11 @@
       headerName = "Authorization";
       valueFormat = "Bearer {value}";
     };
+    GITHUB_TOKEN = {
+      hostPattern = "*.github.com";
+      headerName = "Authorization";
+      valueFormat = "token {value}";
+    };
   };
 
   secretConfigsJson = pkgs.writeText "onecli-secret-configs.json"
