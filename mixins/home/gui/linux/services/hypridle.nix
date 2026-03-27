@@ -13,5 +13,6 @@
   # Having issue with systemd service, missing WAYLAND_DISPLAY environment
   home.packages = with pkgs; [
     hypridle
+    sway-audio-idle-inhibit
   ];
 }
