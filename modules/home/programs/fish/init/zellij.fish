@@ -160,6 +160,7 @@ end
 
 function zellij_update_panename_cmd --on-event fish_preexec
     zellij_update_panename "$argv"
+    zellij_check_tab
 end
 
 # Compute tab name from a state file's projects
@@ -177,8 +178,8 @@ function zellij_tabname_for_state_file
     end
 end
 
-# Detect pane moves between tabs on each prompt
-function zellij_check_tab --on-event fish_prompt
+# Detect pane moves between tabs (called from fish_preexec)
+function zellij_check_tab
     if set -q ZELLIJ
         set -l tab_id (zellij_tab_id)
         if test -n "$tab_id" -a "$tab_id" != "$ZELLIJ_CURRENT_TAB_ID"
