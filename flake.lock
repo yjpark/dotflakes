@@ -460,7 +460,7 @@
       },
       "locked": {
         "lastModified": 1774158874,
-        "narHash": "sha256-Z7FW4u9F2eprz70fX/C4NIAfPYve2TG/KsMH6vCgjOI=",
+        "narHash": "sha256-x9Hs+J7azxj/TH9P0qIju7maVj3/9kFiHQeMBC5Fjuk=",
         "owner": "yjpark",
         "repo": "niri",
         "rev": "f04599249303a6bd0c2264a49b1ef40a727bd9a7",
