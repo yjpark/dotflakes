@@ -160,38 +160,18 @@ end
 
 function zellij_update_panename_cmd --on-event fish_preexec
     zellij_update_panename "$argv"
-    zellij_check_tab
-end
-
-# Compute tab name from a state file's projects
-function zellij_tabname_for_state_file
-    set -l state_file "$argv[1]"
-    if test -f "$state_file"
-        set -l projects (cut -d= -f2 "$state_file" | awk '!seen[$0]++')
-        if test (count $projects) -gt 1
-            string join " | " $projects
-            return
-        else if test (count $projects) -eq 1
-            echo $projects[1]
-            return
-        end
-    end
-end
-
-# Detect pane moves between tabs (called from fish_preexec)
-function zellij_check_tab
+    # Always reconcile tab state — handles pane moves between tabs
     if set -q ZELLIJ
-        set -l tab_id (zellij_tab_id)
-        if test -n "$tab_id" -a "$tab_id" != "$ZELLIJ_CURRENT_TAB_ID"
-            set -l old_tab_id $ZELLIJ_CURRENT_TAB_ID
-            # Re-register in new tab (also updates ZELLIJ_CURRENT_TAB_ID)
-            zellij_state_write
+        set -l old_tab_id $ZELLIJ_CURRENT_TAB_ID
+        zellij_state_write
+        if test -n "$old_tab_id" -a "$old_tab_id" != "$ZELLIJ_CURRENT_TAB_ID"
             zellij_update_tabname
-            # Update the source tab's name after removing this pane
-            if test -n "$old_tab_id"
-                set -l old_name (zellij_tabname_for_state_file (zellij_state_file $old_tab_id))
-                if test -n "$old_name"
-                    nohup zellij action rename-tab-by-id $old_tab_id "$old_name" >/dev/null 2>&1
+            # Update the source tab's name
+            set -l old_state_file (zellij_state_file $old_tab_id)
+            if test -f "$old_state_file"
+                set -l old_projects (cut -d= -f2 "$old_state_file" | awk '!seen[$0]++')
+                if test (count $old_projects) -gt 0
+                    nohup zellij action rename-tab-by-id $old_tab_id (string join " | " $old_projects) >/dev/null 2>&1
                 end
             end
         end
