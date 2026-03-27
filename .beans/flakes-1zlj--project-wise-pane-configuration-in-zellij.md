@@ -1,11 +1,11 @@
 ---
 # flakes-1zlj
 title: Project-wise pane configuration in Zellij
-status: in-progress
+status: completed
 type: feature
 priority: normal
 created_at: 2026-03-27T06:26:31Z
-updated_at: 2026-03-27T07:20:59Z
+updated_at: 2026-03-27T07:27:17Z
 ---
 
 Configure Zellij pane/tab naming to visually identify projects in multi-project sessions.
@@ -50,3 +50,13 @@ On every `PWD` change in any pane:
 - [x] Update tab name logic: aggregate unique projects from state file
 - [x] Add cleanup on fish_exit
 - [x] Add stale entry pruning on shell init (simplified: natural overwrite on pane ID reuse)
+
+## Summary of Changes
+
+Implemented in `modules/home/programs/fish/init/zellij.fish`:
+- `zellij_project_name`: resolves git repo root basename, fallback to basename PWD
+- `ZELLIJ_SESSION_PROJECT`: captured at shell init to detect foreign projects
+- State file (`/tmp/zellij-tab-{SESSION}`): per-pane project tracking, scoped by session name
+- Pane names: `<project> command` when in foreign project, just `command` otherwise
+- Tab names: aggregated unique projects in pane order, joined with ` | `
+- Cleanup on `fish_exit` removes pane entry and rebuilds tab name
