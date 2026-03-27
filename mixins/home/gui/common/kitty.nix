@@ -8,6 +8,7 @@
     settings = {
       font_family = "Hurmit Nerd Font Mono";
       font_size = "16";
+      enable_audio_bell = "no";
       hide_window_decorations = "yes";
       tab_bar_edge = "top";
       tab_bar_style = "powerline";

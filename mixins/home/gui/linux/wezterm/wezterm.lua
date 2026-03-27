@@ -12,6 +12,7 @@ wezterm.on('format-tab-title', function(tab)
 end)
 
 return {
+    audible_bell = 'Disabled',
     enable_wayland = true,
     -- window_decorations = 'INTEGRATED_BUTTONS|RESIZE',
     window_decorations = 'NONE',
