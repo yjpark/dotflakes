@@ -88,6 +88,16 @@ Software: `sops-nix`, `nixvim`, `flox`, `nixidy` (k8s), `nixos-vscode-server`, `
 
 Desktop/UI: `claude-desktop`, `niri` (Wayland compositor), `xremap-flake`, `antigravity`, `jjui`
 
+## Planning
+
+Do NOT write design docs or plans to `docs/plans/`. All planning and design
+work should be captured directly in beans (description + body). Beans are the
+single source of truth for tracking work.
+
+Do NOT start implementation during the planning stage. The outcome of planning
+is beans with clear specs — enough detail for a clean design and implementation
+stage later.
+
 ## Nix Conventions
 
 - All configuration is declarative Nix — no imperative scripts
