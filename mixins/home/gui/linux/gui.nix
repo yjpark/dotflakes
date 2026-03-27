@@ -8,7 +8,7 @@
     nomacs
     kdePackages.kimageformats
     # synergy
-    oculante
+    # oculante
     darktable
     # mattermost-desktop
     vulkan-tools
