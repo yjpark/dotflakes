@@ -1,1 +1,1 @@
-set -x ANTHROPIC_MODEL opusplan
+set -x ANTHROPIC_MODEL opus
