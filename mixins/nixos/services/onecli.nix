@@ -37,9 +37,9 @@
   # Containers to push the authenticated proxy URL to after seeding.
   agentContainers = [ "yolo" ];
 
-  seederScript = pkgs.writeShellApplication {
-    name = "onecli-seed-secrets";
-    runtimeInputs = with pkgs; [ curl gnugrep coreutils jq incus ];
+  initScript = pkgs.writeShellApplication {
+    name = "onecli-init-ca-and-secrets";
+    runtimeInputs = with pkgs; [ curl gnugrep coreutils jq incus gnused ];
     text = ''
       SECRETS_FILE="${config.sops.secrets."onecli-secrets".path}"
       CONFIG_FILE="${secretConfigsJson}"
@@ -133,7 +133,42 @@
           echo "Pushed proxy auth to $container (mode 644)"
         else
           echo "Skipping proxy push to $container (not running)"
+          continue
         fi
+
+        # Push OneCLI CA cert so containers trust the MITM proxy.
+        # Appends to CA bundles (handling Nix store symlinks + idempotency).
+        echo "Pushing OneCLI CA to $container..."
+        CA_PEM=$(curl -sf "$BASE_URL/api/gateway/ca")
+        if [[ -z "$CA_PEM" ]]; then
+          echo "WARNING: Could not fetch OneCLI CA from $BASE_URL/api/gateway/ca"
+          continue
+        fi
+        incus exec "$container" -- mkdir -p /usr/local/share/ca-certificates
+        echo "$CA_PEM" | incus file push - "$container/usr/local/share/ca-certificates/onecli-ca.crt"
+        incus exec "$container" -- bash -c '
+          ONECLI_CA=/usr/local/share/ca-certificates/onecli-ca.crt
+          BUNDLES=(/etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-bundle.crt /var/lib/ingress/ca-bundle.crt)
+          for bundle in "''${BUNDLES[@]}"; do
+            [ -e "$bundle" ] || continue
+            # If it is a symlink (e.g. to Nix store), replace with a mutable copy
+            if [ -L "$bundle" ]; then
+              target=$(readlink -f "$bundle")
+              rm "$bundle"
+              cp "$target" "$bundle"
+              chmod 644 "$bundle"
+              echo "  Replaced symlink with mutable copy: $bundle"
+            fi
+            if grep -q "# OneCLI CA" "$bundle" 2>/dev/null; then
+              echo "  OneCLI CA already in $bundle"
+            else
+              printf "\n# OneCLI CA\n" >> "$bundle"
+              cat "$ONECLI_CA" >> "$bundle"
+              echo "  Appended OneCLI CA to $bundle"
+            fi
+          done
+        '
+        echo "Pushed CA to $container"
       done
     '';
   };
@@ -198,12 +233,13 @@ in {
     format = "binary";
   };
 
-  systemd.services.onecli-seed-secrets = {
-    description = "Seed API secrets into OneCLI vault";
-    after = [ "podman-onecli.service" ];
+  systemd.services.onecli-init-ca-and-secrets = {
+    description = "Seed API secrets into OneCLI and push CA + proxy auth to containers";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "podman-onecli.service" "incus.service" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${seederScript}/bin/onecli-seed-secrets";
+      ExecStart = "${initScript}/bin/onecli-init-ca-and-secrets";
     };
   };
 

@@ -62,11 +62,11 @@ SYSTEM_PATH=$(readlink -f result)
 rm -f result
 sudo nix-env -p /nix/var/nix/profiles/system --set "$SYSTEM_PATH"
 sudo "$SYSTEM_PATH/bin/switch-to-configuration" switch
-if systemctl list-unit-files onecli-seed-secrets.service &>/dev/null; then
-  echo "Starting onecli-seed-secrets (check progress: journalctl -fu onecli-seed-secrets)..."
-  sudo systemctl start onecli-seed-secrets || true
+if systemctl list-unit-files onecli-init-ca-and-secrets.service &>/dev/null; then
+  echo "Starting onecli-init-ca-and-secrets (check progress: journalctl -fu onecli-init-ca-and-secrets)..."
+  sudo systemctl start onecli-init-ca-and-secrets || true
 else
-  echo "Skipping onecli-seed-secrets (service not found on this host)"
+  echo "Skipping onecli-init-ca-and-secrets (service not found on this host)"
 fi
 """
 
@@ -74,8 +74,8 @@ fi
 description = "Restart OneCLI containers (use after image update)"
 run = """
 sudo systemctl restart podman-onecli-postgres podman-onecli
-echo "Starting onecli-seed-secrets (check progress: journalctl -fu onecli-seed-secrets)..."
-sudo systemctl start onecli-seed-secrets
+echo "Starting onecli-init-ca-and-secrets (check progress: journalctl -fu onecli-init-ca-and-secrets)..."
+sudo systemctl start onecli-init-ca-and-secrets
 """
 
 [tasks.build-yolo-image]

@@ -14,11 +14,11 @@ if [[ -e /etc/onecli-proxy-auth ]]; then
   if [[ -r /etc/onecli-proxy-auth ]]; then
     info "  file is readable by current user ($(whoami))"
   else
-    error "  file is NOT readable by current user ($(whoami)) — run onecli-push-proxy-auth on the host to fix permissions"
+    error "  file is NOT readable by current user ($(whoami)) — run onecli-init-ca-and-secrets on the host to fix"
     exit 1
   fi
 else
-  error "  file does not exist — run onecli-push-proxy-auth on the host"
+  error "  file does not exist — run onecli-init-ca-and-secrets on the host"
   exit 1
 fi
 
@@ -53,11 +53,26 @@ if [[ -r "$ONECLI_CA" ]]; then
   if [[ -r "$ACTIVE_BUNDLE" ]] && grep -q "# OneCLI CA" "$ACTIVE_BUNDLE" 2>/dev/null; then
     info "  OneCLI CA found in $ACTIVE_BUNDLE"
   else
-    warn "  OneCLI CA NOT found in $ACTIVE_BUNDLE — run onecli-push-ca on the host"
+    warn "  OneCLI CA NOT found in $ACTIVE_BUNDLE — run onecli-init-ca-and-secrets on the host"
   fi
 else
-  warn "  OneCLI CA cert missing — run onecli-push-ca on the host"
+  warn "  OneCLI CA cert missing — run onecli-init-ca-and-secrets on the host"
 fi
+
+# Quick TLS verification: if HTTPS through the proxy fails but direct works,
+# the OneCLI CA is missing from the CA bundle.
+info "Verifying TLS through proxy ..."
+if ! curl -sf https://github.com > /dev/null 2>&1; then
+  if curl -sf --noproxy '*' https://github.com > /dev/null 2>&1; then
+    error "TLS through proxy FAILED but direct HTTPS works — OneCLI CA is missing from CA bundle"
+    error "Fix: run onecli-init-ca-and-secrets on the host to re-push the CA cert"
+    exit 1
+  else
+    error "Both proxied and direct HTTPS failed — network issue (not CA related)"
+    exit 1
+  fi
+fi
+info "  TLS through proxy OK"
 
 # OneCLI replaces existing headers — it does not add missing ones.
 # Send a placeholder Authorization header so OneCLI can inject the real value.
