@@ -4,7 +4,7 @@
     cs = "claude --allow-dangerously-skip-permissions --model sonnet";
     co = "claude --allow-dangerously-skip-permissions --model opus";
     ch = "claude --allow-dangerously-skip-permissions --model haiku";
-    cp = "claude --allow-dangerously-skip-permissions --model opusplan";
+    cn = "claude --allow-dangerously-skip-permissions --model opusplan";
     x = "flox";
     xa = "flox activate";
     xe = "flox envs";
