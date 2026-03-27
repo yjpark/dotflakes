@@ -43,6 +43,44 @@ function zellij_state_projects
     end
 end
 
+# Palette of subtle Gruvbox-adjacent background tints
+set -g ZELLIJ_PANE_COLORS \
+    '#2e1a1a' \
+    '#1a2e1a' \
+    '#1a1a2e' \
+    '#2e2e1a' \
+    '#2e1a2e' \
+    '#1a2e2e' \
+    '#2e241a' \
+    '#1a2e24'
+
+# Simple string hash → palette index (deterministic per project name)
+function zellij_project_color_index
+    set -l name "$argv[1]"
+    set -l hash 0
+    for i in (string split '' "$name")
+        set -l ord (printf '%d' "'$i")
+        set hash (math "$hash * 31 + $ord")
+    end
+    set -l palette_size (count $ZELLIJ_PANE_COLORS)
+    math --scale=0 (math --scale=0 "abs($hash)") % $palette_size
+end
+
+# Set pane background color based on project
+function zellij_update_pane_color
+    if set -q ZELLIJ
+        set -l project (zellij_project_name)
+        if test "$project" != "$ZELLIJ_SESSION_PROJECT"
+            set -l idx (zellij_project_color_index "$project")
+            set -l color_idx (math --scale=0 "$idx + 1")
+            set -l color $ZELLIJ_PANE_COLORS[$color_idx]
+            nohup zellij action set-pane-color --bg "$color" >/dev/null 2>&1
+        else
+            nohup zellij action set-pane-color --reset >/dev/null 2>&1
+        end
+    end
+end
+
 function zellij_update_tabname
     if set -q ZELLIJ
         set -l projects (zellij_state_projects)
@@ -82,8 +120,9 @@ function zellij_update_tabname_pwd --on-variable PWD
     if set -q ZELLIJ
         zellij_state_write
         zellij_update_tabname
-        # Update pane name on directory change (no command, show project if foreign)
+        # Update pane name and color on directory change
         zellij_update_panename
+        zellij_update_pane_color
     end
 end
 
@@ -111,4 +150,5 @@ if set -q ZELLIJ
     zellij_state_write
     zellij_update_tabname
     zellij_update_panename
+    zellij_update_pane_color
 end
