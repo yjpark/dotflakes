@@ -10,7 +10,8 @@
     settings = {
       init.defaultBranch = "main";
       # url."git@github.com:".insteadOf = "https://github.com/";
-      remote.pushDefault = config.me.username;
+      # remote.pushDefault = config.me.username;
+      remote.pushDefault = "yjpark";
       push.default = "current";
       pull.rebase = "false";
       diff.tool = "difftastic";
