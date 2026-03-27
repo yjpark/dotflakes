@@ -8,14 +8,21 @@ function zellij_project_name
     end
 end
 
-# State file path for tracking pane→project mappings in this session
+# Get the current tab's stable ID from Zellij
+function zellij_tab_id
+    zellij action current-tab-info --json 2>/dev/null | string match -rg '"tab_id":\s*(\d+)'
+end
+
+# State file path for tracking pane→project mappings per tab
 function zellij_state_file
-    echo "/tmp/zellij-tab-$ZELLIJ_SESSION_NAME"
+    echo "/tmp/zellij-tab-$ZELLIJ_SESSION_NAME-$argv[1]"
 end
 
 # Write this pane's project to the state file
 function zellij_state_write
-    set -l state_file (zellij_state_file)
+    set -l tab_id (zellij_tab_id)
+    if test -z "$tab_id"; return; end
+    set -l state_file (zellij_state_file $tab_id)
     set -l project (zellij_project_name)
     # Remove existing entry for this pane, then append
     if test -f "$state_file"
@@ -25,20 +32,22 @@ function zellij_state_write
     echo "$ZELLIJ_PANE_ID=$project" >>"$state_file"
 end
 
-# Remove this pane's entry from the state file
+# Remove this pane's entry from all tab state files in this session
 function zellij_state_remove
-    set -l state_file (zellij_state_file)
-    if test -f "$state_file"
-        grep -v "^$ZELLIJ_PANE_ID=" "$state_file" >"$state_file.tmp" 2>/dev/null
-        mv "$state_file.tmp" "$state_file"
+    for state_file in /tmp/zellij-tab-$ZELLIJ_SESSION_NAME-*
+        if test -f "$state_file"
+            grep -v "^$ZELLIJ_PANE_ID=" "$state_file" >"$state_file.tmp" 2>/dev/null
+            mv "$state_file.tmp" "$state_file"
+        end
     end
 end
 
-# Read unique project names from state file
+# Read unique project names from the current tab's state file
 function zellij_state_projects
-    set -l state_file (zellij_state_file)
+    set -l tab_id (zellij_tab_id)
+    if test -z "$tab_id"; return; end
+    set -l state_file (zellij_state_file $tab_id)
     if test -f "$state_file"
-        # Extract project names, deduplicate while preserving pane order
         cut -d= -f2 "$state_file" | awk '!seen[$0]++'
     end
 end
@@ -86,13 +95,12 @@ function zellij_update_tabname
         set -l projects (zellij_state_projects)
         if test (count $projects) -le 1
             # Single project or empty — use project name or cwd
-            set -l current_dir $PWD
-            if test $current_dir = $HOME
-                set current_dir "~"
+            if test $PWD = $HOME
+                set -l tab_name "~"
             else
-                set current_dir (zellij_project_name)
+                set -l tab_name (zellij_project_name)
             end
-            nohup zellij action rename-tab "$current_dir" >/dev/null 2>&1
+            nohup zellij action rename-tab "$tab_name" >/dev/null 2>&1
         else
             # Multiple projects — join with " | "
             set -l tab_name (string join " | " $projects)
