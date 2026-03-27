@@ -13,15 +13,21 @@ function zellij_tab_id
     zellij action current-tab-info --json 2>/dev/null | string match -rg '"tab_id":\s*(\d+)'
 end
 
-# State file path for tracking pane→project mappings per tab
-function zellij_state_file
-    echo "/tmp/zellij-tab-$ZELLIJ_SESSION_NAME-$argv[1]"
+# State directory and file path for tracking pane→project mappings per tab
+function zellij_state_dir
+    echo "/tmp/zellij-tabs-$ZELLIJ_SESSION_NAME"
 end
 
-# Write this pane's project to the state file
+function zellij_state_file
+    echo (zellij_state_dir)"/$argv[1]"
+end
+
+# Write this pane's project to the current tab's state file
 function zellij_state_write
     set -l tab_id (zellij_tab_id)
     if test -z "$tab_id"; return; end
+    set -l state_dir (zellij_state_dir)
+    mkdir -p "$state_dir"
     set -l state_file (zellij_state_file $tab_id)
     set -l project (zellij_project_name)
     # Remove existing entry for this pane, then append
@@ -34,10 +40,13 @@ end
 
 # Remove this pane's entry from all tab state files in this session
 function zellij_state_remove
-    for state_file in /tmp/zellij-tab-$ZELLIJ_SESSION_NAME-*
-        if test -f "$state_file"
-            grep -v "^$ZELLIJ_PANE_ID=" "$state_file" >"$state_file.tmp" 2>/dev/null
-            mv "$state_file.tmp" "$state_file"
+    set -l state_dir (zellij_state_dir)
+    if test -d "$state_dir"
+        for state_file in "$state_dir"/*
+            if test -f "$state_file"
+                grep -v "^$ZELLIJ_PANE_ID=" "$state_file" >"$state_file.tmp" 2>/dev/null
+                mv "$state_file.tmp" "$state_file"
+            end
         end
     end
 end
@@ -50,6 +59,25 @@ function zellij_state_projects
     if test -f "$state_file"
         cut -d= -f2 "$state_file" | awk '!seen[$0]++'
     end
+end
+
+# Clean up stale tab state files that no longer correspond to open tabs
+function zellij_state_cleanup
+    set -l state_dir (zellij_state_dir)
+    if not test -d "$state_dir"; return; end
+    # Get valid tab IDs from Zellij
+    set -l valid_ids (zellij action list-tabs --json 2>/dev/null | string match -rga '"tab_id":\s*(\d+)')
+    if test (count $valid_ids) -eq 0; return; end
+    for state_file in "$state_dir"/*
+        if test -f "$state_file"
+            set -l file_id (basename "$state_file")
+            if not contains "$file_id" $valid_ids
+                rm -f "$state_file"
+            end
+        end
+    end
+    # Clean up legacy flat state files from old format
+    rm -f /tmp/zellij-tab-$ZELLIJ_SESSION_NAME /tmp/zellij-tab-$ZELLIJ_SESSION_NAME-*
 end
 
 # Palette of subtle Tokyo Night-adjacent background tints (base: #1a1b26)
@@ -151,6 +179,9 @@ if set -q ZELLIJ
     if not set -q ZELLIJ_SESSION_PROJECT
         set -gx ZELLIJ_SESSION_PROJECT (zellij_project_name)
     end
+
+    # Clean up stale state files from closed tabs or previous sessions
+    zellij_state_cleanup
 
     # Register this pane and update names
     # Note: stale entries from crashed panes are naturally overwritten when
