@@ -7,4 +7,9 @@
   # Prevent git from prompting for credentials interactively.
   # OneCLI handles auth injection; if it's down, fail fast instead of hanging.
   home.sessionVariables.GIT_TERMINAL_PROMPT = "0";
+
+  # gh CLI requires a token to be set before it will make API requests.
+  # Use a placeholder — OneCLI proxy replaces the Authorization header with
+  # the real GITHUB_TOKEN for all *.github.com traffic.
+  home.sessionVariables.GH_TOKEN = "onecli-managed";
 }
