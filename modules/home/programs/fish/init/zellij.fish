@@ -49,13 +49,13 @@ function zellij_state_remove
     end
 end
 
-# Read unique project names from the current tab's state file
+# Read unique project names from the current tab's state file (sorted by pane ID)
 function zellij_state_projects
     set -l tab_id (zellij_tab_id)
     if test -z "$tab_id"; return; end
     set -l state_file (zellij_state_file $tab_id)
     if test -f "$state_file"
-        cut -d= -f2 "$state_file" | awk '!seen[$0]++'
+        sort -t= -k1 -n "$state_file" | cut -d= -f2 | awk '!seen[$0]++'
     end
 end
 
