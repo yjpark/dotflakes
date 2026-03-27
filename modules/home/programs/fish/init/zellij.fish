@@ -43,16 +43,16 @@ function zellij_state_projects
     end
 end
 
-# Palette of subtle Gruvbox-adjacent background tints
+# Palette of subtle Tokyo Night-adjacent background tints (base: #1a1b26)
 set -g ZELLIJ_PANE_COLORS \
-    '#2e1a1a' \
-    '#1a2e1a' \
-    '#1a1a2e' \
-    '#2e2e1a' \
-    '#2e1a2e' \
-    '#1a2e2e' \
-    '#2e241a' \
-    '#1a2e24'
+    '#261a1e' \
+    '#1a2620' \
+    '#1a1e2e' \
+    '#26241a' \
+    '#241a26' \
+    '#1a2426' \
+    '#26201a' \
+    '#1a2624'
 
 # Simple string hash → palette index (deterministic per project name)
 function zellij_project_color_index
