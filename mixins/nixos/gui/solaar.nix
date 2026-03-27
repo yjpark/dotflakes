@@ -1,3 +1,5 @@
+# Logitech device manager — use Solaar to set scroll wheel to ratchet mode
+# to prevent accidental tab switching in Chrome when moving the mouse over the tab bar.
 {flake, pkgs, ...}: {
   imports = [
     flake.inputs.solaar.nixosModules.default
