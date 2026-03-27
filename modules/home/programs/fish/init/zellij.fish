@@ -76,11 +76,6 @@ function zellij_state_cleanup
             end
         end
     end
-    # Clean up legacy flat state files from old format
-    rm -f "/tmp/zellij-tab-$ZELLIJ_SESSION_NAME"
-    for tab_id in $valid_ids
-        rm -f "/tmp/zellij-tab-$ZELLIJ_SESSION_NAME-$tab_id"
-    end
 end
 
 # Palette of subtle Tokyo Night-adjacent background tints (base: #1a1b26)
