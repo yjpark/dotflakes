@@ -13,65 +13,58 @@ function zellij_tab_id
     zellij action current-tab-info --json 2>/dev/null | string match -rg '"tab_id":\s*(\d+)'
 end
 
-# State directory and file path for tracking pane→project mappings per tab
+# State directory: /tmp/zellij-tabs-$SESSION/$TAB_ID/$PANE_ID
+# Each pane owns its own file — no concurrent writes to shared files.
 function zellij_state_dir
     echo "/tmp/zellij-tabs-$ZELLIJ_SESSION_NAME"
 end
 
-function zellij_state_file
-    echo (zellij_state_dir)"/$argv[1]"
-end
-
-# Write this pane's project to the current tab's state file
+# Write this pane's project to its own state file under the current tab
 function zellij_state_write
     set -l tab_id (zellij_tab_id)
     if test -z "$tab_id"; return; end
-    # Remove this pane from ALL tabs first (handles pane moves between tabs)
-    zellij_state_remove
     set -l state_dir (zellij_state_dir)
-    mkdir -p "$state_dir"
-    set -l state_file (zellij_state_file $tab_id)
-    set -l project (zellij_project_name)
-    echo "$ZELLIJ_PANE_ID=$project" >>"$state_file"
+    # If tab changed (pane was moved), remove old pane file
+    if test -n "$ZELLIJ_CURRENT_TAB_ID" -a "$ZELLIJ_CURRENT_TAB_ID" != "$tab_id"
+        rm -f "$state_dir/$ZELLIJ_CURRENT_TAB_ID/$ZELLIJ_PANE_ID"
+        rmdir "$state_dir/$ZELLIJ_CURRENT_TAB_ID" 2>/dev/null
+    end
+    mkdir -p "$state_dir/$tab_id"
+    zellij_project_name >"$state_dir/$tab_id/$ZELLIJ_PANE_ID"
     set -g ZELLIJ_CURRENT_TAB_ID $tab_id
 end
 
-# Remove this pane's entry from all tab state files in this session
+# Remove this pane's state file on exit
 function zellij_state_remove
     set -l state_dir (zellij_state_dir)
-    if test -d "$state_dir"
-        for state_file in "$state_dir"/*
-            if test -f "$state_file"
-                grep -v "^$ZELLIJ_PANE_ID=" "$state_file" >"$state_file.tmp" 2>/dev/null
-                mv "$state_file.tmp" "$state_file"
-            end
-        end
+    if test -n "$ZELLIJ_CURRENT_TAB_ID"
+        rm -f "$state_dir/$ZELLIJ_CURRENT_TAB_ID/$ZELLIJ_PANE_ID"
+        rmdir "$state_dir/$ZELLIJ_CURRENT_TAB_ID" 2>/dev/null
     end
 end
 
-# Read unique project names from the current tab's state file (sorted by pane ID)
+# Read unique project names from the current tab (sorted by pane ID for stable order)
 function zellij_state_projects
     set -l tab_id (zellij_tab_id)
     if test -z "$tab_id"; return; end
-    set -l state_file (zellij_state_file $tab_id)
-    if test -f "$state_file"
-        sort -t= -k1 -n "$state_file" | cut -d= -f2 | awk '!seen[$0]++'
+    set -l tab_dir (zellij_state_dir)"/$tab_id"
+    if test -d "$tab_dir"
+        for f in (ls "$tab_dir" | sort -n)
+            cat "$tab_dir/$f"
+        end | awk '!seen[$0]++'
     end
 end
 
-# Clean up stale tab state files that no longer correspond to open tabs
+# Clean up stale tab directories that no longer correspond to open tabs
 function zellij_state_cleanup
     set -l state_dir (zellij_state_dir)
     if not test -d "$state_dir"; return; end
-    # Get valid tab IDs from Zellij
     set -l valid_ids (zellij action list-tabs --json 2>/dev/null | string match -rga '"tab_id":\s*(\d+)')
     if test (count $valid_ids) -eq 0; return; end
-    for state_file in "$state_dir"/*
-        if test -f "$state_file"
-            set -l file_id (basename "$state_file")
-            if not contains "$file_id" $valid_ids
-                rm -f "$state_file"
-            end
+    for tab_dir in "$state_dir"/*/
+        set -l dir_id (basename "$tab_dir")
+        if not contains "$dir_id" $valid_ids
+            rm -rf "$tab_dir"
         end
     end
 end
@@ -140,33 +133,19 @@ function zellij_update_panename
     end
 end
 
+# On directory change: update state, tab name, pane name, and color
 function zellij_update_tabname_pwd --on-variable PWD
     if set -q ZELLIJ
         zellij_state_write
         zellij_update_tabname
-        # Update pane name and color on directory change
         zellij_update_panename
         zellij_update_pane_color
     end
 end
 
+# On command execution: only update pane name (no shared state I/O)
 function zellij_update_panename_cmd --on-event fish_preexec
     zellij_update_panename "$argv"
-    if set -q ZELLIJ
-        set -l old_tab_id $ZELLIJ_CURRENT_TAB_ID
-        zellij_state_write
-        zellij_update_tabname
-        # If pane was moved, also update the source tab's name
-        if test -n "$old_tab_id" -a "$old_tab_id" != "$ZELLIJ_CURRENT_TAB_ID"
-            set -l old_state_file (zellij_state_file $old_tab_id)
-            if test -f "$old_state_file"
-                set -l old_projects (cut -d= -f2 "$old_state_file" | awk '!seen[$0]++')
-                if test (count $old_projects) -gt 0
-                    nohup zellij action rename-tab-by-id $old_tab_id (string join " | " $old_projects) >/dev/null 2>&1
-                end
-            end
-        end
-    end
 end
 
 function zellij_cleanup --on-event fish_exit
@@ -178,12 +157,10 @@ end
 
 # --- Initialization ---
 if set -q ZELLIJ
-    # Clean up stale state files from closed tabs or previous sessions
+    # Clean up stale state from closed tabs or previous sessions
     zellij_state_cleanup
 
     # Register this pane and update names (also sets ZELLIJ_CURRENT_TAB_ID)
-    # Note: stale entries from crashed panes are naturally overwritten when
-    # pane IDs are reused. Normal cleanup happens via fish_exit.
     zellij_state_write
     zellij_update_tabname
     zellij_update_panename
