@@ -162,14 +162,37 @@ function zellij_update_panename_cmd --on-event fish_preexec
     zellij_update_panename "$argv"
 end
 
+# Compute tab name from a state file's projects
+function zellij_tabname_for_state_file
+    set -l state_file "$argv[1]"
+    if test -f "$state_file"
+        set -l projects (cut -d= -f2 "$state_file" | awk '!seen[$0]++')
+        if test (count $projects) -gt 1
+            string join " | " $projects
+            return
+        else if test (count $projects) -eq 1
+            echo $projects[1]
+            return
+        end
+    end
+end
+
 # Detect pane moves between tabs on each prompt
 function zellij_check_tab --on-event fish_prompt
     if set -q ZELLIJ
         set -l tab_id (zellij_tab_id)
         if test -n "$tab_id" -a "$tab_id" != "$ZELLIJ_CURRENT_TAB_ID"
-            # Pane was moved to a different tab — re-register
+            set -l old_tab_id $ZELLIJ_CURRENT_TAB_ID
+            # Re-register in new tab (also updates ZELLIJ_CURRENT_TAB_ID)
             zellij_state_write
             zellij_update_tabname
+            # Update the source tab's name after removing this pane
+            if test -n "$old_tab_id"
+                set -l old_name (zellij_tabname_for_state_file (zellij_state_file $old_tab_id))
+                if test -n "$old_name"
+                    nohup zellij action rename-tab-by-id $old_tab_id "$old_name" >/dev/null 2>&1
+                end
+            end
         end
     end
 end
