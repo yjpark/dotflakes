@@ -26,16 +26,14 @@ end
 function zellij_state_write
     set -l tab_id (zellij_tab_id)
     if test -z "$tab_id"; return; end
+    # Remove this pane from ALL tabs first (handles pane moves between tabs)
+    zellij_state_remove
     set -l state_dir (zellij_state_dir)
     mkdir -p "$state_dir"
     set -l state_file (zellij_state_file $tab_id)
     set -l project (zellij_project_name)
-    # Remove existing entry for this pane, then append
-    if test -f "$state_file"
-        grep -v "^$ZELLIJ_PANE_ID=" "$state_file" >"$state_file.tmp" 2>/dev/null
-        mv "$state_file.tmp" "$state_file"
-    end
     echo "$ZELLIJ_PANE_ID=$project" >>"$state_file"
+    set -g ZELLIJ_CURRENT_TAB_ID $tab_id
 end
 
 # Remove this pane's entry from all tab state files in this session
@@ -119,19 +117,19 @@ end
 function zellij_update_tabname
     if set -q ZELLIJ
         set -l projects (zellij_state_projects)
+        set -l tab_name
         if test (count $projects) -le 1
             # Single project or empty — use project name or cwd
             if test $PWD = $HOME
-                set -l tab_name "~"
+                set tab_name "~"
             else
-                set -l tab_name (zellij_project_name)
+                set tab_name (zellij_project_name)
             end
-            nohup zellij action rename-tab "$tab_name" >/dev/null 2>&1
         else
             # Multiple projects — join with " | "
-            set -l tab_name (string join " | " $projects)
-            nohup zellij action rename-tab "$tab_name" >/dev/null 2>&1
+            set tab_name (string join " | " $projects)
         end
+        nohup zellij action rename-tab "$tab_name" >/dev/null 2>&1
     end
 end
 
@@ -164,6 +162,18 @@ function zellij_update_panename_cmd --on-event fish_preexec
     zellij_update_panename "$argv"
 end
 
+# Detect pane moves between tabs on each prompt
+function zellij_check_tab --on-event fish_prompt
+    if set -q ZELLIJ
+        set -l tab_id (zellij_tab_id)
+        if test -n "$tab_id" -a "$tab_id" != "$ZELLIJ_CURRENT_TAB_ID"
+            # Pane was moved to a different tab — re-register
+            zellij_state_write
+            zellij_update_tabname
+        end
+    end
+end
+
 function zellij_cleanup --on-event fish_exit
     if set -q ZELLIJ
         zellij_state_remove
@@ -181,7 +191,7 @@ if set -q ZELLIJ
     # Clean up stale state files from closed tabs or previous sessions
     zellij_state_cleanup
 
-    # Register this pane and update names
+    # Register this pane and update names (also sets ZELLIJ_CURRENT_TAB_ID)
     # Note: stale entries from crashed panes are naturally overwritten when
     # pane IDs are reused. Normal cleanup happens via fish_exit.
     zellij_state_write
