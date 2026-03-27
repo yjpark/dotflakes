@@ -28,7 +28,7 @@ run = "om show ."
 
 [tasks.flake-lock-niri]
 description = "Lock niri input"
-run = "nix flake lock --update-input niri"
+run = "nix flake update niri"
 
 [tasks.flake-update-llm-agents]
 description = "Update llm-agents input"
@@ -57,8 +57,11 @@ run = "nixos-rebuild {{arg(name='command', default='build')}} --flake .#$(hostna
 description = "Switch NixOS config (requires sudo)"
 depends = ["vcs-status"]
 run = """
-sudo nixos-rebuild switch --flake .#$(hostname)
-sudo chown $USER:wheel flake.lock
+nixos-rebuild build --flake .#$(hostname)
+SYSTEM_PATH=$(readlink -f result)
+rm -f result
+sudo nix-env -p /nix/var/nix/profiles/system --set "$SYSTEM_PATH"
+sudo "$SYSTEM_PATH/bin/switch-to-configuration" switch
 if systemctl list-unit-files onecli-seed-secrets.service &>/dev/null; then
   echo "Starting onecli-seed-secrets (check progress: journalctl -fu onecli-seed-secrets)..."
   sudo systemctl start onecli-seed-secrets || true
