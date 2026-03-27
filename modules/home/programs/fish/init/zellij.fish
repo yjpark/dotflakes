@@ -103,14 +103,10 @@ end
 function zellij_update_pane_color
     if set -q ZELLIJ
         set -l project (zellij_project_name)
-        if test "$project" != "$ZELLIJ_SESSION_PROJECT"
-            set -l idx (zellij_project_color_index "$project")
-            set -l color_idx (math --scale=0 "$idx + 1")
-            set -l color $ZELLIJ_PANE_COLORS[$color_idx]
-            nohup zellij action set-pane-color --bg "$color" >/dev/null 2>&1
-        else
-            nohup zellij action set-pane-color --reset >/dev/null 2>&1
-        end
+        set -l idx (zellij_project_color_index "$project")
+        set -l color_idx (math --scale=0 "$idx + 1")
+        set -l color $ZELLIJ_PANE_COLORS[$color_idx]
+        nohup zellij action set-pane-color --bg "$color" >/dev/null 2>&1
     end
 end
 
@@ -136,14 +132,10 @@ end
 function zellij_update_panename
     if set -q ZELLIJ
         set -l project (zellij_project_name)
-        if test "$project" != "$ZELLIJ_SESSION_PROJECT"
-            if test -n "$argv"
-                nohup zellij action rename-pane "<$project> $argv" >/dev/null 2>&1
-            else
-                nohup zellij action rename-pane "<$project>" >/dev/null 2>&1
-            end
+        if test -n "$argv"
+            nohup zellij action rename-pane "<$project> $argv" >/dev/null 2>&1
         else
-            nohup zellij action rename-pane "$argv" >/dev/null 2>&1
+            nohup zellij action rename-pane "<$project>" >/dev/null 2>&1
         end
     end
 end
@@ -160,13 +152,12 @@ end
 
 function zellij_update_panename_cmd --on-event fish_preexec
     zellij_update_panename "$argv"
-    # Always reconcile tab state — handles pane moves between tabs
     if set -q ZELLIJ
         set -l old_tab_id $ZELLIJ_CURRENT_TAB_ID
         zellij_state_write
+        zellij_update_tabname
+        # If pane was moved, also update the source tab's name
         if test -n "$old_tab_id" -a "$old_tab_id" != "$ZELLIJ_CURRENT_TAB_ID"
-            zellij_update_tabname
-            # Update the source tab's name
             set -l old_state_file (zellij_state_file $old_tab_id)
             if test -f "$old_state_file"
                 set -l old_projects (cut -d= -f2 "$old_state_file" | awk '!seen[$0]++')
@@ -187,11 +178,6 @@ end
 
 # --- Initialization ---
 if set -q ZELLIJ
-    # Capture session's home project (only set once per pane)
-    if not set -q ZELLIJ_SESSION_PROJECT
-        set -gx ZELLIJ_SESSION_PROJECT (zellij_project_name)
-    end
-
     # Clean up stale state files from closed tabs or previous sessions
     zellij_state_cleanup
 
