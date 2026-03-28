@@ -29,6 +29,13 @@
       headerName = "Authorization";
       valueFormat = "token {value}";
     };
+    # Same PAT as GITHUB_TOKEN, but for the GitHub Copilot MCP endpoint.
+    # Separate entry because the host and Authorization format differ.
+    GITHUB_COPILOT_TOKEN = {
+      hostPattern = "api.githubcopilot.com";
+      headerName = "Authorization";
+      valueFormat = "Bearer {value}";
+    };
   };
 
   secretConfigsJson = pkgs.writeText "onecli-secret-configs.json"
