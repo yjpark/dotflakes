@@ -1,14 +1,18 @@
-{ lib, ... }: {
+{ ... }: {
   # Container-specific git config for OneCLI proxy integration.
   # Rewrites SSH URLs to HTTPS so all git traffic routes through the OneCLI
   # MITM proxy on the host, which injects real credentials transparently.
   programs.git.settings.url."https://github.com/".insteadOf = "git@github.com:";
 
-  # Disable gh's credential helper — OneCLI proxy only injects Authorization
-  # when none is present, so git must NOT send its own auth header.
-  # The extraHeader provides auth that the proxy replaces with the real token.
-  programs.git.settings.credential."https://github.com".helper = lib.mkForce "";
-  programs.git.settings.http."https://github.com/".extraHeader = "Authorization: token onecli-managed";
+  # Force git to send proxy credentials (Basic auth) on the initial CONNECT request.
+  # Without this, git opens an unauthenticated tunnel and OneCLI can't identify
+  # the agent — so it passes traffic through without MITM/header injection.
+  programs.git.settings.http.proxyAuthMethod = "basic";
+
+  # Disable gh's credential helper — OneCLI proxy handles auth injection.
+  # Without this, gh adds `gh auth git-credential` which uses the placeholder
+  # GH_TOKEN and fails, causing "could not read Username" errors.
+  programs.gh.gitCredentialHelper.enable = false;
 
   # Prevent git from prompting for credentials interactively.
   # OneCLI handles auth injection; if it's down, fail fast instead of hanging.
