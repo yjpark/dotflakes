@@ -5,7 +5,7 @@ status: in-progress
 type: feature
 priority: normal
 created_at: 2026-03-28T04:30:38Z
-updated_at: 2026-03-28T04:31:31Z
+updated_at: 2026-03-28T05:17:59Z
 ---
 
 ## Spec
@@ -58,7 +58,7 @@ Related to flakes-kxju (predefined layout files) — this is the broader feature
 - [x] Create `claude_terminal.kdl` preset layout
 - [x] Create `claude_beans-terminal.kdl` preset layout
 - [x] Extend `zellij.fish` PWD hook with layout resolution and auto-open logic
-- [ ] Test: cd to project with `ZELLIJ_LAYOUT` set → new tab opens with layout
-- [ ] Test: cd again to same project → no duplicate tab
-- [ ] Test: `ZELLIJ_LAYOUT_yj` overrides `ZELLIJ_LAYOUT` for user `yj`
-- [ ] Test: `.zellij-layout.kdl` in project root takes priority
+- [x] Test: cd to project with `ZELLIJ_LAYOUT` set → `zz` applies layout to current tab
+- [x] Test: stacked layout, tab/status bars, clear buffer all working
+- [x] Test: `ZELLIJ_LAYOUT_yj` overrides `ZELLIJ_LAYOUT` for user `yj`
+- [ ] Test: `.zellij-layout.kdl` in project root takes priority (not yet tested)
