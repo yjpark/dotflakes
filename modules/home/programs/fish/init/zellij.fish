@@ -82,12 +82,72 @@ function zellij_update_panename
     end
 end
 
+# Resolve layout file for the current project root.
+# Priority: .zellij-layout.kdl in project root > ZELLIJ_LAYOUT_{USER} > ZELLIJ_LAYOUT
+function zellij_resolve_layout
+    set -l project_root "$argv[1]"
+
+    # 1. Inline layout in project root
+    if test -f "$project_root/.zellij-layout.kdl"
+        echo "$project_root/.zellij-layout.kdl"
+        return 0
+    end
+
+    # 2. User-specific preset (e.g., ZELLIJ_LAYOUT_yj)
+    set -l user_var "ZELLIJ_LAYOUT_$USER"
+    if set -q $user_var
+        set -l preset_name $$user_var
+        set -l preset_file "$HOME/.config/zellij/layouts/$preset_name.kdl"
+        if test -f "$preset_file"
+            echo "$preset_file"
+            return 0
+        end
+    end
+
+    # 3. Generic preset
+    if set -q ZELLIJ_LAYOUT
+        set -l preset_file "$HOME/.config/zellij/layouts/$ZELLIJ_LAYOUT.kdl"
+        if test -f "$preset_file"
+            echo "$preset_file"
+            return 0
+        end
+    end
+
+    return 1
+end
+
+# Auto-open a new Zellij tab with a project layout on first cd.
+function zellij_auto_layout
+    if not set -q ZELLIJ
+        return
+    end
+
+    set -l project_root (git rev-parse --show-toplevel 2>/dev/null)
+    if test -z "$project_root"
+        return
+    end
+
+    # Guard: skip if already opened a layout for this project root
+    if contains -- "$project_root" $__zellij_opened_layouts
+        return
+    end
+
+    set -l layout_file (zellij_resolve_layout "$project_root")
+    if test $status -ne 0
+        return
+    end
+
+    set -ga __zellij_opened_layouts "$project_root"
+    zellij action new-tab --layout "$layout_file" --cwd "$project_root"
+end
+
 # On directory change: rename pane first (so dump-layout sees it), then update tab name
 function zellij_update_on_pwd --on-variable PWD
     if set -q ZELLIJ
         zellij_update_panename
         zellij_update_pane_color
         zellij_update_tabname
+        zellij_auto_layout
     end
 end
 

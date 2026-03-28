@@ -1,0 +1,16 @@
+layout {
+    tab {
+        pane split_direction="vertical" {
+            pane command="claude" size="50%"
+            pane split_direction="horizontal" size="50%" {
+                pane command="beans-serve" {
+                    args "--cors-origin" "*"
+                }
+                pane stacked=true {
+                    pane
+                    pane expanded=true
+                }
+            }
+        }
+    }
+}
