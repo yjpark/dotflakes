@@ -386,36 +386,44 @@ let
   syncApiScript = pkgs.writeScriptBin "ingress-sync-api" ''
     #!${pkgs.python3}/bin/python3
     from http.server import HTTPServer, BaseHTTPRequestHandler
-    import subprocess, json, urllib.request, re
+    import subprocess, json, http.client, re
+
+    def _get(port, path, timeout=2):
+        conn = http.client.HTTPConnection("localhost", int(port), timeout=timeout)
+        conn.request("GET", path, headers={"Host": f"localhost:{port}", "User-Agent": "Mozilla/5.0"})
+        r = conn.getresponse()
+        data = r.read()
+        ct = r.getheader("Content-Type", "")
+        conn.close()
+        return r.status, ct, data
+
+    def _is_html(ct, data):
+        return ct.startswith("text/html") or data[:5] in (b"<!DOC", b"<html")
 
     def fetch_favicon(port):
-        base = f"http://localhost:{port}"
-        ua = {"User-Agent": "Mozilla/5.0"}
         # Try /favicon.ico first
         try:
-            r = urllib.request.urlopen(urllib.request.Request(f"{base}/favicon.ico", headers=ua), timeout=2)
-            if r.status == 200:
-                ct = r.headers.get("Content-Type", "")
-                data = r.read()
-                # Reject HTML responses (SPA catch-all routes return 200 with HTML)
-                if not ct.startswith("text/html") and not data[:5] == b"<!DOC" and not data[:5] == b"<html":
-                    return data, ct or "image/x-icon"
+            status, ct, data = _get(port, "/favicon.ico")
+            if status == 200 and not _is_html(ct, data):
+                return data, ct or "image/x-icon"
         except Exception:
             pass
         # Parse HTML for <link rel="icon" href="...">
         try:
-            r = urllib.request.urlopen(urllib.request.Request(base, headers=ua), timeout=3)
-            html = r.read().decode("utf-8", errors="ignore")
+            status, ct, data = _get(port, "/", timeout=3)
+            if status != 200:
+                return None, None
+            html = data.decode("utf-8", errors="ignore")
             m = re.search(r'<link[^>]*rel=["\x27]?[^"\']*icon[^>]*href=["\x27]([^"\']+)', html, re.I)
             if not m:
                 m = re.search(r'<link[^>]*href=["\x27]([^"\']+)[^>]*rel=["\x27]?[^"\']*icon', html, re.I)
             if m:
                 href = m.group(1)
-                if not href.startswith("http"):
-                    href = base.rstrip("/") + "/" + href.lstrip("/")
-                r2 = urllib.request.urlopen(urllib.request.Request(href, headers=ua), timeout=2)
-                if r2.status == 200:
-                    return r2.read(), r2.headers.get("Content-Type", "image/x-icon")
+                if href.startswith("http"):
+                    return None, None  # skip external URLs for simplicity
+                status2, ct2, data2 = _get(port, "/" + href.lstrip("/"))
+                if status2 == 200 and not _is_html(ct2, data2):
+                    return data2, ct2 or "image/x-icon"
         except Exception:
             pass
         return None, None
