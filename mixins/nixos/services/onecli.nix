@@ -153,6 +153,7 @@
         fi
         incus exec "$container" -- mkdir -p /usr/local/share/ca-certificates
         echo "$CA_PEM" | incus file push - "$container/usr/local/share/ca-certificates/onecli-ca.crt"
+        # shellcheck disable=SC2016
         incus exec "$container" -- bash -c '
           ONECLI_CA=/usr/local/share/ca-certificates/onecli-ca.crt
           BUNDLES=(/etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-bundle.crt /var/lib/ingress/ca-bundle.crt)
