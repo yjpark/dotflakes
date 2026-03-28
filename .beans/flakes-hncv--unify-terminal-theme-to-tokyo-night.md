@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-27T10:40:30Z
-updated_at: 2026-03-27T10:40:50Z
+updated_at: 2026-03-28T05:20:15Z
+order: zzz
 ---
 
 Switch wezterm from Gruvbox Dark to Tokyo Night theme, and update Zellij pane background color palette from Gruvbox-adjacent tints to Tokyo Night-adjacent tints. Kitty already uses tokyo_night_night.

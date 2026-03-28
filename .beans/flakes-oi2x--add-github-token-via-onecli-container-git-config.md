@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-27T12:20:41Z
-updated_at: 2026-03-27T12:23:16Z
+updated_at: 2026-03-28T05:20:15Z
+order: zzk
 ---
 
 Add GitHub fine-grained token to OneCLI for transparent auth injection into yolo container. Add container-specific git config to rewrite SSH URLs to HTTPS.

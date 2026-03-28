@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-27T14:46:14Z
-updated_at: 2026-03-27T14:57:18Z
+updated_at: 2026-03-28T05:20:15Z
+order: zzs
 ---
 
 OneCLI CA cert gets wiped from container CA bundles on reboot/rebuild. Extend onecli-seed-secrets to also push the CA, and add wantedBy=multi-user.target + after=incus.service so it runs on every boot.

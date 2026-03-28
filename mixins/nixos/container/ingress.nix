@@ -55,7 +55,7 @@ let
     #toolbar a { color: #7aa2f7; text-decoration: none; font-size: 11px; }
     #toolbar a:hover { text-decoration: underline; }
     #frame-container { flex: 1; position: relative; background: #000; }
-    #frame-container iframe { width: 100%; height: 100%; border: none; }
+    #frame-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     #empty { display: flex; align-items: center; justify-content: center; height: 100%; color: #333; font-size: 16px; }
     #error { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #666; }
     #error a { color: #7aa2f7; }
@@ -136,7 +136,7 @@ let
         var bg = "hsl(" + hue + ",40%,30%)";
         html += '<div class="service" data-idx="' + i + '" onclick="selectService(' + i + ')">' +
           '<div class="svc-icon" data-label="' + label + '" style="background:' + bg + '">' +
-          '<img src="/api/icon/' + s.port + '" onerror="iconFallback(this)">' +
+          '<img src="/api/icon/' + s.port + '?v=' + Date.now() + '" onerror="iconFallback(this)">' +
           '</div>' +
           '<div class="cwd">' + esc(s.cwd || "?") + '</div>' +
           '<div class="info"><span class="process">' + esc(s.process || "?") + '</span> ' +
@@ -157,6 +157,8 @@ let
       return "http://" + port + "." + host;
     }
 
+    var activePort = null;
+
     function selectService(idx) {
       var s = services[idx];
       var url = getServiceUrl(s.port);
@@ -171,13 +173,31 @@ let
       document.getElementById("reload-frame").style.display = "inline";
 
       var container = document.getElementById("frame-container");
-      container.innerHTML = '<iframe src="' + esc(url) + '" id="service-frame"></iframe>' +
-        '<div id="error">Cannot embed this service.<br><a href="' + esc(url) + '" target="_blank">Open in new tab instead</a></div>';
+      var empty = document.getElementById("empty");
+      if (empty) empty.style.display = "none";
+
+      // Hide all iframes
+      var frames = container.querySelectorAll("iframe");
+      for (var i = 0; i < frames.length; i++) frames[i].style.display = "none";
+
+      // Find or create iframe for this port
+      var frameId = "frame-" + s.port;
+      var frame = document.getElementById(frameId);
+      if (!frame) {
+        frame = document.createElement("iframe");
+        frame.id = frameId;
+        frame.src = url;
+        container.appendChild(frame);
+      }
+      frame.style.display = "block";
+      activePort = s.port;
     }
 
     function reloadFrame() {
-      var f = document.getElementById("service-frame");
-      if (f) f.src = f.src;
+      if (activePort) {
+        var f = document.getElementById("frame-" + activePort);
+        if (f) f.src = f.src;
+      }
     }
 
     function doSync() {
@@ -403,7 +423,7 @@ let
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             if self.path.startswith("/api/icon/"):
-                port = self.path.split("/")[-1]
+                port = self.path.split("/")[-1].split("?")[0]
                 if not port.isdigit():
                     self.send_response(400)
                     self.end_headers()

@@ -5,7 +5,8 @@ status: completed
 type: feature
 priority: normal
 created_at: 2026-03-27T07:27:24Z
-updated_at: 2026-03-27T08:01:25Z
+updated_at: 2026-03-28T05:20:15Z
+order: zz
 ---
 
 Visually distinguish panes belonging to different projects by assigning each project a unique background color in Zellij. Builds on the project-wise pane naming from flakes-1zlj.

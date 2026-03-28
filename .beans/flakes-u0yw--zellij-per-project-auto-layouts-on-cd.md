@@ -1,11 +1,12 @@
 ---
 # flakes-u0yw
 title: Zellij per-project auto-layouts on cd
-status: in-progress
+status: completed
 type: feature
 priority: normal
 created_at: 2026-03-28T04:30:38Z
-updated_at: 2026-03-28T05:17:59Z
+updated_at: 2026-03-28T05:20:15Z
+order: u
 ---
 
 ## Spec

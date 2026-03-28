@@ -5,7 +5,8 @@ status: completed
 type: feature
 priority: normal
 created_at: 2026-03-27T06:26:31Z
-updated_at: 2026-03-27T07:27:17Z
+updated_at: 2026-03-28T05:20:15Z
+order: zzV
 ---
 
 Configure Zellij pane/tab naming to visually identify projects in multi-project sessions.

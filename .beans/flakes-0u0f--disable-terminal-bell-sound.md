@@ -5,7 +5,8 @@ status: completed
 type: task
 priority: normal
 created_at: 2026-03-27T10:54:56Z
-updated_at: 2026-03-27T10:55:07Z
+updated_at: 2026-03-28T05:20:15Z
+order: zzw
 ---
 
 Disable audible bell in kitty and wezterm to prevent loud alert sounds during terminal work.
