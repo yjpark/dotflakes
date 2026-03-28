@@ -32,12 +32,12 @@ set -g ZELLIJ_PANE_COLORS \
 # Simple string hash → palette index (deterministic per project name)
 function zellij_project_color_index
     set -l name "$argv[1]"
+    set -l palette_size (count $ZELLIJ_PANE_COLORS)
     set -l hash 0
     for i in (string split '' "$name")
         set -l ord (printf '%d' "'$i")
-        set hash (math "$hash * 31 + $ord")
+        set hash (math --scale=0 "($hash * 31 + $ord) % 1000000007")
     end
-    set -l palette_size (count $ZELLIJ_PANE_COLORS)
     math --scale=0 (math --scale=0 "abs($hash)") % $palette_size
 end
 
