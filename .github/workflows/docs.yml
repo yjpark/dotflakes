@@ -1,0 +1,57 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - docs/**
+      - .beans/**
+      - .beans.yml
+      - .github/workflows/docs.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install mdbook
+        run: |
+          MDBOOK_VERSION="v0.5.2"
+          curl -sSL "https://github.com/rust-lang/mdBook/releases/download/${MDBOOK_VERSION}/mdbook-${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz" | tar -xz
+          echo "$PWD" >> $GITHUB_PATH
+
+      - name: Install mdbook-beans
+        run: cargo install mdbook-beans --git https://github.com/edger-dev/mdbook-beans --tag v0.1.0
+
+      - name: Build docs
+        run: mdbook build docs/
+
+      - name: Add CNAME
+        run: echo "flakes.yjpark.org" > docs/book/CNAME
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/book
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

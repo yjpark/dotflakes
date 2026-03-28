@@ -43,6 +43,10 @@
     antigravity.url = "github:jacopone/antigravity-nix";
     antigravity.inputs.nixpkgs.follows = "nixpkgs";
 
+    # https://github.com/edger-dev/mdbook-beans
+    mdbook-beans.url = "github:edger-dev/mdbook-beans";
+    mdbook-beans.inputs.nixpkgs.follows = "nixpkgs";
+
     # the unrealsed v0.10 version is much better
     # https://github.com/idursun/jjui/discussions/319
     jjui.url = "github:idursun/jjui";

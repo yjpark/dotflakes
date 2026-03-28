@@ -108,11 +108,11 @@ incus image list | grep yolo
 
 [tasks.docs-serve]
 description = "Serve docs locally (hot-reload)"
-run = "mdbook serve docs/"
+run = "nix run .#docs-serve -- --port 8812 --hostname 0.0.0.0"
 
 [tasks.docs-build]
 description = "Build static docs site"
-run = "mdbook build docs/"
+run = "nix build .#docs"
 
 [tasks.test-echo]
 description = "Echo a message (for testing tv-mise-tasks)"

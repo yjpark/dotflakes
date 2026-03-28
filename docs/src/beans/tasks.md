@@ -1,0 +1,1 @@
+{{#beans-all-tasks}}
