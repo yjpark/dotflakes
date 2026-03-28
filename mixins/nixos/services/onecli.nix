@@ -32,7 +32,10 @@
     GITHUB_TOKEN = {
       hostPattern = "github.com";
       headerName = "Authorization";
-      valueFormat = "token {value}";
+      valueFormat = "Basic {value}";
+      # GitHub's git smart HTTP endpoint requires Basic auth, not token auth.
+      # The seeder base64-encodes "x-access-token:<PAT>" before sending to OneCLI.
+      encoding = "basic-auth";
     };
     # Same PAT as GITHUB_TOKEN, but for the GitHub Copilot MCP endpoint.
     # Separate entry because the host and Authorization format differ.
@@ -92,6 +95,12 @@
         host_pattern=$(echo "$secret_config" | jq -r '.hostPattern')
         header_name=$(echo "$secret_config" | jq -r '.headerName')
         value_format=$(echo "$secret_config" | jq -r '.valueFormat // "{value}"')
+        encoding=$(echo "$secret_config" | jq -r '.encoding // "none"')
+
+        # GitHub's git HTTP endpoint requires Basic auth (base64-encoded credentials).
+        if [[ "$encoding" == "basic-auth" ]]; then
+          value=$(printf 'x-access-token:%s' "$value" | base64 -w0)
+        fi
 
         header_display="$header_name: ''${value_format/\{value\}/***}"
         echo "Seeding: $key (host=$host_pattern, injects '$header_display')"
