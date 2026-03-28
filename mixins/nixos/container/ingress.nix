@@ -159,6 +159,17 @@ let
 
     var activePort = null;
 
+    function proxyPath(port) {
+      return "/s/" + port + "/";
+    }
+
+    function proxyToRealUrl(proxyHref) {
+      // Convert /s/<port>/path → real service URL
+      var m = proxyHref.match(/\/s\/(\d+)(\/.*)?$/);
+      if (!m) return proxyHref;
+      return getServiceUrl(parseInt(m[1])) + (m[2] || "/").substring(1);
+    }
+
     function updateToolbarUrl(url) {
       document.getElementById("current-url").textContent = url;
       var openBtn = document.getElementById("open-new-tab");
@@ -169,19 +180,18 @@ let
       var frame = activePort ? document.getElementById("frame-" + activePort) : null;
       if (!frame) return;
       try {
-        var loc = frame.contentWindow.location.href;
-        if (loc && loc !== "about:blank") updateToolbarUrl(loc);
-      } catch(e) { /* cross-origin, keep current URL */ }
+        var loc = frame.contentWindow.location.pathname + frame.contentWindow.location.search + frame.contentWindow.location.hash;
+        updateToolbarUrl(proxyToRealUrl(loc));
+      } catch(e) { /* fallback: keep current URL */ }
     }
 
     function selectService(idx) {
       var s = services[idx];
-      var url = getServiceUrl(s.port);
       var els = document.querySelectorAll(".service");
       for (var i = 0; i < els.length; i++) els[i].classList.remove("active");
       els[idx].classList.add("active");
 
-      updateToolbarUrl(url);
+      updateToolbarUrl(getServiceUrl(s.port));
       document.getElementById("open-new-tab").style.display = "inline";
       document.getElementById("reload-frame").style.display = "inline";
 
@@ -199,14 +209,13 @@ let
       if (!frame) {
         frame = document.createElement("iframe");
         frame.id = frameId;
-        frame.src = url;
+        frame.src = proxyPath(s.port);
         frame.addEventListener("load", onFrameLoad);
         container.appendChild(frame);
       }
       frame.style.display = "block";
       activePort = s.port;
 
-      // Update toolbar with current iframe URL if accessible
       onFrameLoad();
     }
 
@@ -311,6 +320,7 @@ let
       mkdir -p "${hubDir}"
 
       CONFIG=""
+      HUB_ROUTES=""
       SERVICES="[]"
 
       while IFS=$'\t' read -r PORT PID PNAME; do
@@ -325,6 +335,17 @@ let
         fi
 
         URL="http://''${PORT}.''${DOMAIN}"
+
+        # Same-origin proxy route for hub iframe
+        HUB_ROUTES+="
+        handle_path /s/''${PORT}/* {
+          reverse_proxy localhost:''${PORT} {
+            header_down -X-Frame-Options
+            header_down -Content-Security-Policy
+            header_down -Content-Security-Policy-Report-Only
+          }
+        }
+      "
 
         CONFIG+="
       ''${PORT}.''${DOMAIN} {
@@ -369,6 +390,7 @@ let
       cat > "${hubConf}" <<HUBEOF
       hub.$DOMAIN {
         tls internal
+      $HUB_ROUTES
         handle /api/* {
           reverse_proxy localhost:9999
         }
@@ -378,6 +400,7 @@ let
         }
       }
       http://hub.$DOMAIN {
+      $HUB_ROUTES
         handle /api/* {
           reverse_proxy localhost:9999
         }

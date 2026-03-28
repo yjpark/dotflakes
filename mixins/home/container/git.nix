@@ -4,6 +4,11 @@
   # MITM proxy on the host, which injects real credentials transparently.
   programs.git.settings.url."https://github.com/".insteadOf = "git@github.com:";
 
+  # Force git to send proxy credentials (Basic auth) on the initial CONNECT request.
+  # Without this, git opens an unauthenticated tunnel and OneCLI can't identify
+  # the agent — so it passes traffic through without MITM/header injection.
+  programs.git.settings.http.proxyAuthMethod = "basic";
+
   # Disable gh's credential helper — OneCLI proxy handles auth injection.
   # Without this, gh adds `gh auth git-credential` which uses the placeholder
   # GH_TOKEN and fails, causing "could not read Username" errors.
