@@ -163,11 +163,13 @@ let
       return "/s/" + port + "/";
     }
 
-    function proxyToRealUrl(proxyHref) {
+    function proxyToRealUrl(pathname, search, hash) {
       // Convert /s/<port>/path → real service URL
-      var m = proxyHref.match(/\/s\/(\d+)(\/.*)?$/);
-      if (!m) return proxyHref;
-      return getServiceUrl(parseInt(m[1])) + (m[2] || "/").substring(1);
+      var m = pathname.match(/^\/s\/(\d+)(\/.*)?$/);
+      if (!m) return null;
+      var base = getServiceUrl(parseInt(m[1]));
+      var rest = m[2] || "/";
+      return base + rest + (search || "") + (hash || "");
     }
 
     function updateToolbarUrl(url) {
@@ -176,13 +178,15 @@ let
       openBtn.href = url;
     }
 
-    function onFrameLoad() {
+    var pollTimer = null;
+    function pollFrameUrl() {
       var frame = activePort ? document.getElementById("frame-" + activePort) : null;
       if (!frame) return;
       try {
-        var loc = frame.contentWindow.location.pathname + frame.contentWindow.location.search + frame.contentWindow.location.hash;
-        updateToolbarUrl(proxyToRealUrl(loc));
-      } catch(e) { /* fallback: keep current URL */ }
+        var loc = frame.contentWindow.location;
+        var real = proxyToRealUrl(loc.pathname, loc.search, loc.hash);
+        if (real) updateToolbarUrl(real);
+      } catch(e) { /* cross-origin or not ready */ }
     }
 
     function selectService(idx) {
@@ -210,13 +214,15 @@ let
         frame = document.createElement("iframe");
         frame.id = frameId;
         frame.src = proxyPath(s.port);
-        frame.addEventListener("load", onFrameLoad);
         container.appendChild(frame);
       }
       frame.style.display = "block";
       activePort = s.port;
 
-      onFrameLoad();
+      // Poll iframe URL to track navigation (covers SPA pushState too)
+      if (pollTimer) clearInterval(pollTimer);
+      pollTimer = setInterval(pollFrameUrl, 500);
+      pollFrameUrl();
     }
 
     function reloadFrame() {
