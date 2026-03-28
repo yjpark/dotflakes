@@ -106,6 +106,10 @@ incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yo
 incus image list | grep yolo
 """
 
+[tasks.update-mdbook-beans]
+description = "Update mdbook-beans to latest main"
+run = "nix flake update mdbook-beans"
+
 [tasks.docs-serve]
 description = "Serve docs locally (hot-reload)"
 run = "nix run .#docs-serve -- --port 8812 --hostname 0.0.0.0"
