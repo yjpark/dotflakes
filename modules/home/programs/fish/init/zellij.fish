@@ -133,7 +133,7 @@ function zellij_auto_layout
     end
 
     set -l layout_file (zellij_resolve_layout "$project_root")
-    if test $status -ne 0
+    if test -z "$layout_file"
         return
     end
 
