@@ -4,10 +4,11 @@
   # MITM proxy on the host, which injects real credentials transparently.
   programs.git.settings.url."https://github.com/".insteadOf = "git@github.com:";
 
-  # Disable gh's credential helper for github.com so git sends requests
-  # without an Authorization header — the OneCLI proxy injects the real token.
-  # (gh sets credential."https://github.com".helper by default; override to empty.)
-  programs.git.settings.credential."https://github.com".helper = lib.mkForce "";
+  # Override gh's credential helper with a dummy that returns placeholder creds.
+  # Git needs credentials to proceed with the request; the OneCLI MITM proxy
+  # then replaces the Authorization header with the real token.
+  programs.git.settings.credential."https://github.com".helper = lib.mkForce
+    "!printf 'username=x\\npassword=onecli-managed\\n'";
 
   # Prevent git from prompting for credentials interactively.
   # OneCLI handles auth injection; if it's down, fail fast instead of hanging.
