@@ -14,7 +14,9 @@ layout {
     }
     tab {
         pane split_direction="vertical" {
-            pane command="claude" size="50%"
+            pane command="claude" size="50%" {
+                args "--dangerously-skip-permissions"
+            }
             pane size="50%"
         }
     }

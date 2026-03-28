@@ -116,29 +116,30 @@ function zellij_resolve_layout
     return 1
 end
 
-# Auto-open a new Zellij tab with a project layout on first cd.
-function zellij_auto_layout
-    if not set -q ZELLIJ
-        return
-    end
-
+# Apply project layout to the current Zellij tab.
+function zellij_apply_layout
     set -l project_root (git rev-parse --show-toplevel 2>/dev/null)
     if test -z "$project_root"
-        return
-    end
-
-    # Guard: skip if already opened a layout for this project root
-    if contains -- "$project_root" $__zellij_opened_layouts
-        return
+        set project_root $PWD
     end
 
     set -l layout_file (zellij_resolve_layout "$project_root")
     if test -z "$layout_file"
-        return
+        echo "No layout found for $project_root"
+        return 1
     end
 
-    set -ga __zellij_opened_layouts "$project_root"
-    zellij action new-tab --layout "$layout_file" --cwd "$project_root"
+    zellij action override-layout "$layout_file" --apply-only-to-active-tab
+    zellij action clear
+end
+
+# zz: inside Zellij → apply project layout; outside → attach/create session
+function zz
+    if set -q ZELLIJ
+        zellij_apply_layout
+    else
+        zellij attach --create (basename $PWD)
+    end
 end
 
 # On directory change: rename pane first (so dump-layout sees it), then update tab name
@@ -147,7 +148,6 @@ function zellij_update_on_pwd --on-variable PWD
         zellij_update_panename
         zellij_update_pane_color
         zellij_update_tabname
-        zellij_auto_layout
     end
 end
 

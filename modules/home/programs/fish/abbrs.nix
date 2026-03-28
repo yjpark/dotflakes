@@ -47,6 +47,6 @@
     za = "zellij action";
     zt = "zellij attach --create";
     zl = "zellij list-sessions";
-    zz = "zellij attach --create $(basename $PWD)";
+    # zz is defined as a function in init/zellij.fish
   };
 }
