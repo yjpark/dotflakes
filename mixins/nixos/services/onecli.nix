@@ -25,7 +25,7 @@
       valueFormat = "Bearer {value}";
     };
     GITHUB_TOKEN = {
-      hostPattern = "*.github.com";
+      hostPattern = "github.com";
       headerName = "Authorization";
       valueFormat = "token {value}";
     };
