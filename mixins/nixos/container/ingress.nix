@@ -159,6 +159,21 @@ let
 
     var activePort = null;
 
+    function updateToolbarUrl(url) {
+      document.getElementById("current-url").textContent = url;
+      var openBtn = document.getElementById("open-new-tab");
+      openBtn.href = url;
+    }
+
+    function onFrameLoad() {
+      var frame = activePort ? document.getElementById("frame-" + activePort) : null;
+      if (!frame) return;
+      try {
+        var loc = frame.contentWindow.location.href;
+        if (loc && loc !== "about:blank") updateToolbarUrl(loc);
+      } catch(e) { /* cross-origin, keep current URL */ }
+    }
+
     function selectService(idx) {
       var s = services[idx];
       var url = getServiceUrl(s.port);
@@ -166,10 +181,8 @@ let
       for (var i = 0; i < els.length; i++) els[i].classList.remove("active");
       els[idx].classList.add("active");
 
-      document.getElementById("current-url").textContent = url;
-      var openBtn = document.getElementById("open-new-tab");
-      openBtn.href = url;
-      openBtn.style.display = "inline";
+      updateToolbarUrl(url);
+      document.getElementById("open-new-tab").style.display = "inline";
       document.getElementById("reload-frame").style.display = "inline";
 
       var container = document.getElementById("frame-container");
@@ -187,10 +200,14 @@ let
         frame = document.createElement("iframe");
         frame.id = frameId;
         frame.src = url;
+        frame.addEventListener("load", onFrameLoad);
         container.appendChild(frame);
       }
       frame.style.display = "block";
       activePort = s.port;
+
+      // Update toolbar with current iframe URL if accessible
+      onFrameLoad();
     }
 
     function reloadFrame() {
