@@ -1,5 +1,5 @@
 [book]
-title = "Flakes Configuration"
+title = "YJ Park's NixOS and Home Manager Configuration"
 authors = ["yjpark"]
 src = "src"
 
