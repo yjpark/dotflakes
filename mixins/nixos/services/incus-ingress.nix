@@ -1,4 +1,5 @@
-{pkgs, lib, config, ...}: let
+{ pkgs, lib, config, ... }:
+let
   # Containers with ingress enabled.
   # Each entry needs a static IP assigned via:
   #   incus config device override <name> eth0 ipv4.address=<ip>
@@ -22,17 +23,32 @@
 
   # Generate per-container matcher + handle blocks for the Caddyfile.
   # vars_regexp captures the port from the subdomain prefix (e.g., "yolo-8080").
-  containerBlocks = lib.concatMapStrings (c: ''
-    @${c.name} vars_regexp ${c.name} {http.request.host} ^${c.name}-(?P<port>\d+)\.${config.networking.hostName}\.${domain}$
-    handle @${c.name} {
-      reverse_proxy ${c.ip}:80 {
-        header_up Host {re.${c.name}.port}.${c.name}.incus
+  containerBlocks = lib.concatMapStrings
+    (c: ''
+      @${c.name} vars_regexp ${c.name} {http.request.host} ^${c.name}-(?P<port>\d+)\.${config.networking.hostName}\.${domain}$
+      handle @${c.name} {
+        reverse_proxy ${c.ip}:80 {
+          header_up Host {re.${c.name}.port}.${c.name}.incus
+        }
       }
-    }
-  '') ingressContainers;
+    '')
+    ingressContainers;
+
+  # Hub blocks: <container>-hub.<host>.<domain> → container's hub page
+  hubBlocks = lib.concatMapStrings
+    (c: ''
+      @${c.name}-hub expression `{http.request.host} == "${c.name}-hub.${config.networking.hostName}.${domain}"`
+      handle @${c.name}-hub {
+        reverse_proxy ${c.ip}:80 {
+          header_up Host hub.${c.name}.incus
+        }
+      }
+    '')
+    ingressContainers;
 
   # Static named-service blocks (exact hostname match, must come before containerBlocks).
   staticBlocks = ''
+    ${hubBlocks}
     @onecli expression `{http.request.host} == "onecli.${config.networking.hostName}.${domain}"`
     handle @onecli {
       reverse_proxy 10.100.0.1:10254
@@ -71,7 +87,7 @@
 
   pullCaCertScript = pkgs.writeShellApplication {
     name = "incus-pull-ca";
-    runtimeInputs = with pkgs; [incus coreutils];
+    runtimeInputs = with pkgs; [ incus coreutils ];
     text = ''
       CADDY_CA_PATH=".local/share/caddy/pki/authorities/local/root.crt"
       SYSTEM_CA="/etc/ssl/certs/ca-certificates.crt"
@@ -99,7 +115,8 @@
       echo "CA bundle updated at $COMBINED. Restart your browser to pick up changes."
     '';
   };
-in {
+in
+{
   # Disable k3s's bundled Traefik ingress controller when k3s is enabled,
   # so its iptables DNAT rules don't intercept ports 80/443 before host Caddy.
   services.k3s.extraFlags = lib.mkIf config.services.k3s.enable [ "--disable=traefik" ];
@@ -153,12 +170,12 @@ in {
   services.firewalld.zones.public.services = [ "http" "https" ];
 
   # Create ingress state dir and copy system CAs to bundle on every boot
-  systemd.tmpfiles.rules = ["d /var/lib/ingress 0755 root root -"];
+  systemd.tmpfiles.rules = [ "d /var/lib/ingress 0755 root root -" ];
 
   systemd.services.init-ingress-ca = {
     description = "Initialize ingress CA bundle";
-    wantedBy = ["sysinit.target"];
-    before = ["network.target"];
+    wantedBy = [ "sysinit.target" ];
+    before = [ "network.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -172,5 +189,5 @@ in {
     NIX_SSL_CERT_FILE = "/var/lib/ingress/ca-bundle.crt";
   };
 
-  environment.systemPackages = [pullCaCertScript];
+  environment.systemPackages = [ pullCaCertScript ];
 }
