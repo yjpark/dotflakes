@@ -16,7 +16,7 @@
   # Secrets not listed here get the _default config.
   secretConfigs = {
     _default = {
-      hostPattern = "*";
+      hostPattern = "example.com";
       headerName = "x-api-key";
     };
     CONTEXT7_API_KEY = {
@@ -78,6 +78,7 @@
       while IFS='=' read -r key value; do
         [[ "$key" =~ ^# ]] && continue
         [[ -z "$key" ]] && continue
+        [[ "$key" =~ _COMMENT$ ]] && continue
 
         # Look up per-secret config, fall back to _default
         secret_config=$(jq -r --arg k "$key" \
