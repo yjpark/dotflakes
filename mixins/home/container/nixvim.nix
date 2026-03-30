@@ -10,8 +10,10 @@
           ['*'] = osc52.copy('*'),
         },
         paste = {
-          ['+'] = osc52.paste('+'),
-          ['*'] = osc52.paste('*'),
+          -- OSC 52 paste queries the terminal and hangs if unsupported.
+          -- Returning nil lets neovim use its built-in paste handling.
+          ['+'] = function() return nil end,
+          ['*'] = function() return nil end,
         },
       }
     '';
