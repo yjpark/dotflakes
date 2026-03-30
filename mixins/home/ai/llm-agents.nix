@@ -11,5 +11,6 @@
     gemini-cli
     agent-browser
     rtk
+    beads
   ];
 }
