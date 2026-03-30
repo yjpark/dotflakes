@@ -11,9 +11,9 @@
         },
         paste = {
           -- OSC 52 paste queries the terminal and hangs if unsupported.
-          -- Return empty content; use terminal paste (Ctrl+Shift+V) instead.
-          ['+'] = function() return {""} end,
-          ['*'] = function() return {""} end,
+          -- Returning nil lets neovim use its built-in paste handling.
+          ['+'] = function() return nil end,
+          ['*'] = function() return nil end,
         },
       }
     '';
