@@ -24,21 +24,34 @@
       headerName = "Authorization";
       valueFormat = "Bearer {value}";
     };
-    GH_TOKEN = {
+    # Per-org GitHub tokens: API (*.github.com) + git (github.com, Basic auth)
+    # + Copilot MCP endpoint. Each org needs its own PAT in the SOPS secrets file.
+    GH_TOKEN_EDGER_DEV = {
       hostPattern = "*.github.com";
+      pathPattern = "/repos/edger-dev/*";
       headerName = "Authorization";
       valueFormat = "token {value}";
     };
-    GITHUB_TOKEN = {
+    GH_TOKEN_YJPARK = {
+      hostPattern = "*.github.com";
+      pathPattern = "/repos/yjpark/*";
+      headerName = "Authorization";
+      valueFormat = "token {value}";
+    };
+    GITHUB_TOKEN_EDGER_DEV = {
       hostPattern = "github.com";
+      pathPattern = "/edger-dev/*";
       headerName = "Authorization";
       valueFormat = "Basic {value}";
-      # GitHub's git smart HTTP endpoint requires Basic auth, not token auth.
-      # The seeder base64-encodes "x-access-token:<PAT>" before sending to OneCLI.
       encoding = "basic-auth";
     };
-    # Same PAT as GITHUB_TOKEN, but for the GitHub Copilot MCP endpoint.
-    # Separate entry because the host and Authorization format differ.
+    GITHUB_TOKEN_YJPARK = {
+      hostPattern = "github.com";
+      pathPattern = "/yjpark/*";
+      headerName = "Authorization";
+      valueFormat = "Basic {value}";
+      encoding = "basic-auth";
+    };
     GITHUB_COPILOT_TOKEN = {
       hostPattern = "api.githubcopilot.com";
       headerName = "Authorization";
@@ -93,6 +106,7 @@
           'if .[$k] then .[$k] else ._default end' "$CONFIG_FILE")
 
         host_pattern=$(echo "$secret_config" | jq -r '.hostPattern')
+        path_pattern=$(echo "$secret_config" | jq -r '.pathPattern // "*"')
         header_name=$(echo "$secret_config" | jq -r '.headerName')
         value_format=$(echo "$secret_config" | jq -r '.valueFormat // "{value}"')
         encoding=$(echo "$secret_config" | jq -r '.encoding // "none"')
@@ -103,7 +117,7 @@
         fi
 
         header_display="$header_name: ''${value_format/\{value\}/***}"
-        echo "Seeding: $key (host=$host_pattern, injects '$header_display')"
+        echo "Seeding: $key (host=$host_pattern, path=$path_pattern, injects '$header_display')"
 
         # Delete existing secret with the same name before re-seeding
         existing_id=$(curl -sf "$BASE_URL/api/secrets" \
@@ -121,6 +135,7 @@
             --arg name "$key" \
             --arg value "$value" \
             --arg hp "$host_pattern" \
+            --arg pp "$path_pattern" \
             --arg hn "$header_name" \
             --arg vf "$value_format" \
             '{
@@ -128,6 +143,7 @@
               type: "generic",
               value: $value,
               hostPattern: $hp,
+              pathPattern: $pp,
               injectionConfig: { headerName: $hn, valueFormat: $vf }
             }')" && echo "OK: $key" || echo "ERROR: Failed to seed $key"
       done < "$SECRETS_FILE"
