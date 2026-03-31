@@ -16,19 +16,6 @@ let
       vendorHash = "sha256-hnJhLEJo/EQlTuTv+smiLok7AarFoDIB4ebB6ncUYtc=";
       doCheck = false;
     });
-    mg = pkgs.buildGoModule rec {
-      pname = "mardi-gras";
-      version = "0.15.0";
-      src = pkgs.fetchFromGitHub {
-        owner = "quietpublish";
-        repo = "mardi-gras";
-        tag = "v${version}";
-        hash = "sha256-YAXXXqa+4Qa3IkXZoipCOYSHjGpKXPKlBeJ+iV5Gdo8=";
-      };
-      vendorHash = "sha256-MaUxiDYWvn+q4yrtIhsTSSow4/WlAyKynMg5tUOt9VQ=";
-      subPackages = [ "cmd/mg" ];
-      doCheck = false;
-    };
     gastown = pkgs.buildGoModule rec {
       pname = "gastown";
       version = "0.13.0";
@@ -40,6 +27,30 @@ let
       };
       vendorHash = "sha256-A/BqG1/CXBLVJdICgTbcP2GO1M/MZfcCTWU3cYVbx9M=";
       subPackages = [ "cmd/gt" ];
+      ldflags = [
+        "-X github.com/steveyegge/gastown/internal/cmd.Version=v${version}"
+        "-X github.com/steveyegge/gastown/internal/cmd.BuiltProperly=1"
+      ];
+      doCheck = false;
+      postInstall = ''
+        mkdir -p $out/share/fish/vendor_completions.d
+        $out/bin/gt completion fish > $out/share/fish/vendor_completions.d/gt.fish
+      '';
+    };
+    perles = pkgs.buildGoModule rec {
+      pname = "perles";
+      version = "0.8.2";
+      src = pkgs.fetchFromGitHub {
+        owner = "zjrosen";
+        repo = "perles";
+        tag = "v${version}";
+        hash = "sha256-zyMXbgoVxQEU8gtRR/lklSzSpfT2wWACB5yxBfu9TfE=";
+      };
+      vendorHash = "sha256-xTvXuEsJNFxblMG7NQ27jG8e9DtNpFWp54QqlmjBMUU=";
+      ldflags = [
+        "-X main.version=v${version}"
+      ];
+      env.CGO_ENABLED = 0;
       doCheck = false;
     };
     llm-agents = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
@@ -60,9 +71,9 @@ in
     llm-agents.gemini-cli
     llm-agents.agent-browser
     llm-agents.rtk
-    beads
     dolt
-    mg
+    beads
     gastown
+    perles
   ];
 }
