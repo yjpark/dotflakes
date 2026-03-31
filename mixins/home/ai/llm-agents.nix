@@ -29,6 +29,19 @@ let
       subPackages = [ "cmd/mg" ];
       doCheck = false;
     };
+    gastown = pkgs.buildGoModule rec {
+      pname = "gastown";
+      version = "0.13.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "steveyegge";
+        repo = "gastown";
+        tag = "v${version}";
+        hash = "sha256-6vN39HbUXavx6B4Xibi9kXN4MDMF3ftbftfFwp9WWHc=";
+      };
+      vendorHash = "sha256-A/BqG1/CXBLVJdICgTbcP2GO1M/MZfcCTWU3cYVbx9M=";
+      subPackages = [ "cmd/gt" ];
+      doCheck = false;
+    };
     llm-agents = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
     # Re-wrap beads so bd finds our pinned dolt instead of the bundled 1.81.2
     beads = pkgs.runCommand "beads-custom-dolt" {
@@ -50,5 +63,6 @@ in
     beads
     dolt
     mg
+    gastown
   ];
 }
