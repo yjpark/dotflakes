@@ -43,6 +43,9 @@
     tn = "clear-buffer ; tv nix-search-tv";
     "t." = "clear-buffer ; tv text";
     tp = "clear-buffer ; tv files";
+    w = "workspace-cd";
+    wc = "workspace-create";
+    wl = "workspace-list";
     z = "zellij";
     za = "zellij action";
     zt = "zellij attach --create";
