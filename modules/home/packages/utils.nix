@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{flake, pkgs, ...}: {
   home.packages = with pkgs; [
     # Most useful
     ripgrep # rg
@@ -7,6 +7,7 @@
     shadowenv
     omnix
     mdbook
+    flake.inputs.mdbook-beans.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     # Basic utils
     sd # sed alternative

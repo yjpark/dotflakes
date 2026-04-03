@@ -16,8 +16,8 @@ layout {
                 args "--dangerously-skip-permissions"
             }
             pane stacked=true size="50%" {
-                pane command="beans-serve" {
-                    args "--cors-origin" "*"
+                pane command="bash" {
+                    args "-c" "eval \"$(direnv export bash)\" && exec beans-serve --cors-origin * --port $(find-free-tcp-port)"
                 }
                 pane expanded=true
             }
