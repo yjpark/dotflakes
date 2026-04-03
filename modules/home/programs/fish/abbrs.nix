@@ -50,6 +50,6 @@
     za = "zellij action";
     zt = "zellij attach --create";
     zl = "zellij list-sessions";
-    # zz is defined as a function in init/zellij.fish
+    # ct, cc, zz are defined as functions in init/zellij.fish
   };
 }

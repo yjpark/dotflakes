@@ -133,6 +133,18 @@ function zellij_apply_layout
     zellij action clear
 end
 
+# ct: switch to claude_terminal layout
+function ct
+    set -gx ZELLIJ_LAYOUT_$USER claude_terminal
+    zellij_apply_layout
+end
+
+# cc: switch to claude_claude layout
+function cc
+    set -gx ZELLIJ_LAYOUT_$USER claude_claude
+    zellij_apply_layout
+end
+
 # zz: inside Zellij → apply project layout; outside → attach/create session
 function zz
     if set -q ZELLIJ
