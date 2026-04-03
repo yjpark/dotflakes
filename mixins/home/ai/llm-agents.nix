@@ -4,6 +4,7 @@
   ...
 }:
 let
+    /*
     dolt-version = "1.83.5";
     dolt = pkgs.dolt.overrideAttrs (old: {
       version = dolt-version;
@@ -53,7 +54,9 @@ let
       env.CGO_ENABLED = 0;
       doCheck = false;
     };
+    */
     llm-agents = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+    /*
     # Re-wrap beads so bd finds our pinned dolt instead of the bundled 1.81.2
     beads = pkgs.runCommand "beads-custom-dolt" {
       nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -62,18 +65,21 @@ let
       makeWrapper ${llm-agents.beads}/bin/.bd-wrapped $out/bin/bd \
         --prefix PATH : ${pkgs.lib.makeBinPath [ dolt ]}
     '';
+    */
 in
 {
   programs.claude-code.package = llm-agents.claude-code;
 
   home.packages = [
     llm-agents.claude-code
-    llm-agents.gemini-cli
     llm-agents.agent-browser
     llm-agents.rtk
+    /*
+    llm-agents.gemini-cli
     dolt
     beads
     gastown
     perles
+    */
   ];
 }

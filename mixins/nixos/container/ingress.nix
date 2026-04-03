@@ -69,6 +69,7 @@ in
     description = "HTTP API for triggering ingress sync";
     wantedBy = [ "multi-user.target" ];
     after = [ "caddy.service" ];
+    path = [ caddyConfigScript ingressScript ];
     serviceConfig = {
       ExecStart = "${syncApiScript}/bin/ingress-sync-api";
       Restart = "always";
@@ -124,6 +125,7 @@ in
   };
 
   environment.systemPackages = [
+    caddyConfigScript
     ingressScript
     ingressSyncScript
   ];

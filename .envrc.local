@@ -1,0 +1,4 @@
+export TCP_PORT_FROM=9910
+export TCP_PORT_TO=9919
+export ZELLIJ_LAYOUT_yj=claude_beans-docs-terminal
+

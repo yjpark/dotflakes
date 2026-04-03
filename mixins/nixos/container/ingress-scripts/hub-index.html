@@ -201,7 +201,7 @@ function selectService(idx) {
   if (!frame) {
     frame = document.createElement("iframe");
     frame.id = frameId;
-    frame.src = proxyPath(s.port);
+    frame.src = getServiceUrl(s.port);
     container.appendChild(frame);
   }
   frame.style.display = "block";
