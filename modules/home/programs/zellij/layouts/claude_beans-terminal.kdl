@@ -17,7 +17,7 @@ layout {
             }
             pane stacked=true size="50%" {
                 pane command="bash" {
-                    args "-c" "eval \"$(direnv export bash)\" && exec beans-serve --cors-origin * --port $(find-free-tcp-port)"
+                    args "-c" "eval \"$(direnv export bash)\" && exec beans-serve --cors-origin \"*\" --port $(find-free-tcp-port)"
                 }
                 pane expanded=true
             }
