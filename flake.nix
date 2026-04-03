@@ -9,7 +9,7 @@
     nixos-unified.url = "github:srid/nixos-unified";
 
     # Tools
-    autowire.url = "github:yjpark/autowire.nix";
+    jig.url = "github:edger-dev/jig";
 
     # Software inputs
     ## https://github.com/Mic92/sops-nix
@@ -61,7 +61,7 @@
   # Wired using https://nixos-unified.org/autowiring.html
   outputs = inputs:
     inputs.nixos-unified.lib.mkFlake {
-      inherit inputs;
+      inputs = inputs // { autowire = inputs.jig.lib.autowire; };
       root = ./.;
     };
 }

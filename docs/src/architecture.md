@@ -5,7 +5,7 @@
 Most `default.nix` files contain a single line:
 
 ```nix
-{flake, ...}: flake.inputs.autowire.default ./.
+{flake, ...}: flake.inputs.autowire.wireImports ./.
 ```
 
 This auto-discovers and composes all `.nix` files in the same directory into a merged NixOS/Home Manager module. Adding a new `.nix` file to an autowired directory automatically includes it — no manual imports needed.

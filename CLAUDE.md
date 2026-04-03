@@ -36,7 +36,7 @@ Tasks are defined in `mise.toml`. Use `mise tasks` to list all available tasks.
 
 ### Autowiring Pattern
 
-Most `default.nix` files contain a single line: `{flake, ...}: flake.inputs.autowire.default ./.` — this auto-discovers and composes all `.nix` files in the same directory into a merged NixOS/Home Manager module. Adding a new `.nix` file to an autowired directory automatically includes it.
+Most `default.nix` files contain a single line: `{flake, ...}: flake.inputs.autowire.wireImports ./.` — this auto-discovers and composes all `.nix` files in the same directory into a merged NixOS/Home Manager module. Adding a new `.nix` file to an autowired directory automatically includes it. The `autowire` binding is a shim to `jig.lib.autowire` (from `github:edger-dev/jig`).
 
 ### Layered Composition
 
@@ -82,7 +82,7 @@ SOPS-nix with age encryption (`.sops.yaml`). Each host has its own age key. Encr
 
 ## Flake Inputs
 
-Primary: `nixpkgs` (nixos-unstable), `home-manager`, `flake-parts`, `nixos-unified`, `autowire` (custom fork at `github:yjpark/autowire.nix`)
+Primary: `nixpkgs` (nixos-unstable), `home-manager`, `flake-parts`, `nixos-unified`, `jig` (`github:edger-dev/jig`, provides autowire lib)
 
 Software: `sops-nix`, `nixvim`, `flox`, `nixidy` (k8s), `nixos-vscode-server`, `solaar` (Logitech), `llm-agents`
 
