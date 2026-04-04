@@ -1,21 +1,42 @@
 {flake, pkgs, ...}: let
   inherit (flake) inputs;
   hermes-agent = inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  python = pkgs.python3.withPackages (ps: [ ps.pyyaml ]);
+  # The hermes-agent package is a wrapper; extract the underlying Python env
+  hermes-agent-env = pkgs.runCommand "hermes-agent-env" {} ''
+    env=$(grep -oP '/nix/store/[^ "]+hermes-agent-env' ${hermes-agent}/bin/hermes | head -1)
+    ln -s "$env" $out
+  '';
   hermes-webui = pkgs.writeShellApplication {
     name = "hermes-webui";
-    runtimeInputs = [ python ];
     text = ''
       export HERMES_WEBUI_AGENT_DIR="''${HERMES_WEBUI_AGENT_DIR:-${inputs.hermes-agent}}"
-      export HERMES_WEBUI_PYTHON="''${HERMES_WEBUI_PYTHON:-${python}/bin/python3}"
+      export HERMES_WEBUI_PYTHON="''${HERMES_WEBUI_PYTHON:-${hermes-agent-env}/bin/python}"
       cd ${inputs.hermes-webui}
-      exec python server.py "$@"
+      exec ${hermes-agent-env}/bin/python server.py "$@"
     '';
   };
+  hermes-gateway-status = pkgs.writeShellScriptBin "hermes-gateway-status" "systemctl --user status hermes-gateway";
+  hermes-gateway-restart = pkgs.writeShellScriptBin "hermes-gateway-restart" ''
+    systemctl --user restart hermes-gateway
+    ${hermes-gateway-status}/bin/hermes-gateway-status
+  '';
+  hermes-gateway-journal = pkgs.writeShellScriptBin "hermes-gateway-journal" ''journalctl --user -u hermes-gateway -f "$@"'';
+  hermes-webui-status = pkgs.writeShellScriptBin "hermes-webui-status" "systemctl --user status hermes-webui";
+  hermes-webui-restart = pkgs.writeShellScriptBin "hermes-webui-restart" ''
+    systemctl --user restart hermes-webui
+    ${hermes-webui-status}/bin/hermes-webui-status
+  '';
+  hermes-webui-journal = pkgs.writeShellScriptBin "hermes-webui-journal" ''journalctl --user -u hermes-webui -f "$@"'';
 in {
   home.packages = [
     hermes-agent
     hermes-webui
+    hermes-gateway-restart
+    hermes-gateway-status
+    hermes-gateway-journal
+    hermes-webui-restart
+    hermes-webui-status
+    hermes-webui-journal
   ];
 
   systemd.user.services.hermes-webui = {
