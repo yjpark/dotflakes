@@ -52,6 +52,12 @@
       valueFormat = "Basic {value}";
       encoding = "basic-auth";
     };
+    GH_TOKEN_GRAPHQL = {
+      hostPattern = "api.github.com";
+      pathPattern = "/graphql";
+      headerName = "Authorization";
+      valueFormat = "token {value}";
+    };
     GITHUB_COPILOT_TOKEN = {
       hostPattern = "api.githubcopilot.com";
       headerName = "Authorization";

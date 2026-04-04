@@ -914,11 +914,11 @@
     },
     "nixpkgs_9": {
       "locked": {
-        "lastModified": 1775126147,
-        "narHash": "sha256-J0dZU4atgcfo4QvM9D92uQ0Oe1eLTxBVXjJzdEMQpD0=",
+        "lastModified": 1773628058,
+        "narHash": "sha256-hpXH0z3K9xv0fHaje136KY872VT2T5uwxtezlAskQgY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8d8c1fa5b412c223ffa47410867813290cdedfef",
+        "rev": "f8573b9c935cfaa162dd62cc9e75ae2db86f85df",
         "type": "github"
       },
       "original": {
@@ -1117,15 +1117,16 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1775119874,
-        "narHash": "sha256-tdCBwz7rScRINj3wF3GqB899pebQc5mw7OrhHoDkPbE=",
-        "owner": "spacedriveapp",
+        "lastModified": 1775278254,
+        "narHash": "sha256-rOsuKTpMqT3rRcQQypPqFwkowzdy7+MMKqDk4xN5hpg=",
+        "owner": "yjpark",
         "repo": "spacebot",
-        "rev": "5c85557538c217ba1632d572564d68c58b2c0c39",
+        "rev": "86855d02271c992cf80cdf9c0473e6966855150e",
         "type": "github"
       },
       "original": {
-        "owner": "spacedriveapp",
+        "owner": "yjpark",
+        "ref": "fix/frontend-node-modules-hash",
         "repo": "spacebot",
         "type": "github"
       }

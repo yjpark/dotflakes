@@ -40,7 +40,7 @@
     claude-desktop.url = "github:aaddrick/claude-desktop-debian";
 
     # https://github.com/spacedriveapp/spacebot
-    spacebot.url = "github:spacedriveapp/spacebot";
+    spacebot.url = "github:yjpark/spacebot/fix/frontend-node-modules-hash";
 
     # https://github.com/jacopone/antigravity-nix
     antigravity.url = "github:jacopone/antigravity-nix";
