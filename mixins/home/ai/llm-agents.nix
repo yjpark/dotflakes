@@ -56,6 +56,7 @@ let
     };
     */
     llm-agents = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+
     /*
     # Re-wrap beads so bd finds our pinned dolt instead of the bundled 1.81.2
     beads = pkgs.runCommand "beads-custom-dolt" {
@@ -74,8 +75,8 @@ in
     llm-agents.claude-code
     llm-agents.agent-browser
     llm-agents.rtk
-    llm-agents.hermes-agent
     /*
+    llm-agents.hermes-agent
     llm-agents.gemini-cli
     dolt
     beads

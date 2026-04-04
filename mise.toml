@@ -134,6 +134,34 @@ incus image import images/spacebot-metadata/*.tar.xz images/spacebot/*.tar.xz --
 incus image list | grep spacebot
 """
 
+[tasks.build-hermes-image]
+description = "Build hermes LXC image"
+run = """
+nixos-rebuild build-image --image-variant lxc --flake .#hermes
+mkdir -p images/hermes/
+rm -vf images/hermes/*
+cp -v result/tarball/*.tar.xz images/hermes/
+rm result
+"""
+
+[tasks.build-hermes-metadata]
+description = "Build hermes LXC metadata"
+run = """
+nixos-rebuild build-image --image-variant lxc-metadata --flake .#hermes
+mkdir -p images/hermes-metadata/
+rm -vf images/hermes-metadata/*
+cp -v result/tarball/*.tar.xz images/hermes-metadata/
+rm result
+"""
+
+[tasks.build-and-import-hermes]
+description = "Build and import hermes LXC into incus"
+depends = ["build-hermes-image", "build-hermes-metadata"]
+run = """
+incus image import images/hermes-metadata/*.tar.xz images/hermes/*.tar.xz --alias hermes
+incus image list | grep hermes
+"""
+
 [tasks.update-mdbook-beans]
 description = "Update mdbook-beans to latest main"
 run = "nix flake update mdbook-beans"
