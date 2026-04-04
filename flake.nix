@@ -46,6 +46,10 @@
     # https://hermes-agent.nousresearch.com/docs/getting-started/nix-setup
     hermes-agent.url = "github:NousResearch/hermes-agent";
 
+    # https://github.com/nesquena/hermes-webui
+    hermes-webui.url = "github:nesquena/hermes-webui";
+    hermes-webui.flake = false;
+
     # https://github.com/jacopone/antigravity-nix
     antigravity.url = "github:jacopone/antigravity-nix";
     antigravity.inputs.nixpkgs.follows = "nixpkgs";
