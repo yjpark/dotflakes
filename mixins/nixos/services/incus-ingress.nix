@@ -5,6 +5,7 @@ let
   #   incus config device override <name> eth0 ipv4.address=<ip>
   ingressContainers = [
     { name = "yolo"; ip = "10.100.0.100"; }
+    { name = "spacebot"; ip = "10.100.0.102"; }
   ];
 
   # Domain for LAN-facing ingress (host-level Caddy).
