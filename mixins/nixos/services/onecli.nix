@@ -215,14 +215,6 @@
         '
         echo "Pushed CA to $container"
 
-        # Push per-container secret env files (decrypted by sops-nix on the host).
-        if [[ "$container" == "hermes" ]] && [[ -r "${config.sops.secrets."hermes-env".path}" ]]; then
-          incus file push "${config.sops.secrets."hermes-env".path}" "$container/etc/hermes-env"
-          incus exec "$container" -- chown hermes:hermes /etc/hermes-env
-          incus exec "$container" -- chmod 600 /etc/hermes-env
-          incus exec "$container" -- systemctl restart hermes-agent || true
-          echo "Pushed hermes-env to $container (service restarted)"
-        fi
       done
     '';
   };
@@ -284,10 +276,6 @@ in {
   # SOPS secrets for seeding
   sops.secrets."onecli-secrets" = {
     sopsFile = ./secrets/onecli-secrets.txt;
-    format = "binary";
-  };
-  sops.secrets."hermes-env" = {
-    sopsFile = ./secrets/hermes-env.txt;
     format = "binary";
   };
 

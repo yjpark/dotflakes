@@ -9,7 +9,7 @@ incus config device override hermes eth0 ipv4.address=10.100.0.103
 
 incus config device add hermes hermes disk \
   source=/home/yjpark/bots/hermes \
-  path=/home/yj/hermes \
+  path=/home/yj/.hermes \
   shift=true
 
 incus config device add hermes agents disk \

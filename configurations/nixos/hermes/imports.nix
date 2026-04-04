@@ -6,6 +6,6 @@ in {
     self.nixosModules.default
     (self + /mixins/nixos/versions/26.05.nix)
     (self + /mixins/nixos/container)
-    (self + /mixins/nixos/containers/hermes.nix)
+    # hermes-agent installed via home-manager (yj@hermes), not as a NixOS service
   ];
 }
