@@ -63,7 +63,7 @@
     (builtins.toJSON secretConfigs);
 
   # Containers to push the authenticated proxy URL to after seeding.
-  agentContainers = [ "yolo" ];
+  agentContainers = [ "yolo" "spacebot" ];
 
   initScript = pkgs.writeShellApplication {
     name = "onecli-init-ca-and-secrets";

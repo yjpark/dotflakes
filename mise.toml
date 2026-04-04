@@ -79,7 +79,7 @@ sudo systemctl start onecli-init-ca-and-secrets
 """
 
 [tasks.build-yolo-image]
-description = "Build Yolo LXC image"
+description = "Build yolo LXC image"
 run = """
 nixos-rebuild build-image --image-variant lxc --flake .#yolo
 mkdir -p images/yolo/
@@ -89,7 +89,7 @@ rm result
 """
 
 [tasks.build-yolo-metadata]
-description = "Build Yolo LXC metadata"
+description = "Build yolo LXC metadata"
 run = """
 nixos-rebuild build-image --image-variant lxc-metadata --flake .#yolo
 mkdir -p images/yolo-metadata/
@@ -99,11 +99,39 @@ rm result
 """
 
 [tasks.build-and-import-yolo]
-description = "Build and import Yolo LXC into incus"
+description = "Build and import yolo LXC into incus"
 depends = ["build-yolo-image", "build-yolo-metadata"]
 run = """
 incus image import images/yolo-metadata/*.tar.xz images/yolo/*.tar.xz --alias yolo
 incus image list | grep yolo
+"""
+
+[tasks.build-spacebot-image]
+description = "Build spacebot LXC image"
+run = """
+nixos-rebuild build-image --image-variant lxc --flake .#spacebot
+mkdir -p images/spacebot/
+rm -vf images/spacebot/*
+cp -v result/tarball/*.tar.xz images/spacebot/
+rm result
+"""
+
+[tasks.build-spacebot-metadata]
+description = "Build spacebot LXC metadata"
+run = """
+nixos-rebuild build-image --image-variant lxc-metadata --flake .#spacebot
+mkdir -p images/spacebot-metadata/
+rm -vf images/spacebot-metadata/*
+cp -v result/tarball/*.tar.xz images/spacebot-metadata/
+rm result
+"""
+
+[tasks.build-and-import-spacebot]
+description = "Build and import spacebot LXC into incus"
+depends = ["build-spacebot-image", "build-spacebot-metadata"]
+run = """
+incus image import images/spacebot-metadata/*.tar.xz images/spacebot/*.tar.xz --alias spacebot
+incus image list | grep spacebot
 """
 
 [tasks.update-mdbook-beans]
