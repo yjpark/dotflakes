@@ -1,8 +1,12 @@
-{flake, ...}: let
+{flake, pkgs, ...}: let
   inherit (flake) inputs;
 in {
   imports = [
     inputs.spacebot.nixosModules.default
+  ];
+
+  environment.systemPackages = [
+    inputs.spacebot.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   services.spacebot = {
