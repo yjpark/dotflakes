@@ -6,6 +6,7 @@ let
   ingressContainers = [
     { name = "yolo"; ip = "10.100.0.100"; }
     { name = "spacebot"; ip = "10.100.0.102"; }
+    { name = "hermes"; ip = "10.100.0.103"; }
   ];
 
   # Domain for LAN-facing ingress (host-level Caddy).
