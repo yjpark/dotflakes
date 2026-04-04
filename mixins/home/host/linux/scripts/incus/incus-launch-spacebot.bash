@@ -9,7 +9,7 @@ incus config device override spacebot eth0 ipv4.address=10.100.1.100
 
 incus config device add spacebot spacebot disk \
   source=/home/yjpark/bots/spacebot \
-  path=/home/yj/bot \
+  path=/var/lib/spacebot \
   shift=true
 
 # Push OneCLI CA cert so the container trusts the credential proxy.
