@@ -41,7 +41,6 @@
 
     # https://github.com/spacedriveapp/spacebot
     spacebot.url = "github:spacedriveapp/spacebot";
-    spacebot.inputs.nixpkgs.follows = "nixpkgs";
 
     # https://github.com/jacopone/antigravity-nix
     antigravity.url = "github:jacopone/antigravity-nix";
