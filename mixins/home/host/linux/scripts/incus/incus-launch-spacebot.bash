@@ -12,6 +12,11 @@ incus config device add spacebot spacebot disk \
   path=/var/lib/spacebot \
   shift=true
 
+incus config device add spacebot agents disk \
+  source=/home/yjpark/bots/agents \
+  path=/home/yj/agents \
+  shift=true
+
 # Push OneCLI CA cert so the container trusts the credential proxy.
 # Requires OneCLI to be running on the host (nixos-rebuild switch first).
 # Re-run manually if OneCLI is restarted and its CA cert changes.
