@@ -1,11 +1,11 @@
 ---
 # flakes-woco
 title: Setup SearXNG search for agents
-status: draft
+status: todo
 type: feature
 priority: normal
 created_at: 2026-04-04T00:00:00Z
-updated_at: 2026-04-04T00:00:00Z
+updated_at: 2026-04-04T17:50:29Z
 order: m
 ---
 

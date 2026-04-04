@@ -1,11 +1,11 @@
 ---
 # flakes-rhqy
 title: Fish functions for jj workspace management
-status: in-progress
+status: completed
 type: feature
 priority: normal
 created_at: 2026-04-01T05:40:08Z
-updated_at: 2026-04-01T05:48:42Z
+updated_at: 2026-04-04T17:51:46Z
 ---
 
 Convention-based jj workspace management via fish shell functions. All workspaces at ~/workspaces/<project>/<feature> with a registry file at ~/.config/workspaces.conf for mapping project names to main repo paths.

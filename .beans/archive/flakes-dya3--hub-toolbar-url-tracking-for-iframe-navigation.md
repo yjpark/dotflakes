@@ -1,10 +1,11 @@
 ---
 # flakes-dya3
 title: Hub toolbar URL tracking for iframe navigation
-status: todo
+status: scrapped
 type: bug
+priority: normal
 created_at: 2026-03-28T13:47:31Z
-updated_at: 2026-03-28T13:47:31Z
+updated_at: 2026-04-04T17:51:05Z
 ---
 
 The ingress hub page toolbar should display the current URL of the active iframe as the user navigates within it. Current implementation uses same-origin proxy (/s/<port>/) + setInterval polling but it's not working reliably.
