@@ -23,7 +23,7 @@ in {
     Service = {
       ExecStart = "${spacebot}/bin/spacebot start --foreground";
       WorkingDirectory = "%h/.spacebot";
-      EnvironmentFile = "%h/.spacebot/.env";
+      # EnvironmentFile = "%h/.spacebot/.env";
       Environment = [
         "SPACEBOT_DIR=%h/.spacebot"
         "SPACEBOT_DEPLOYMENT=nixos"
