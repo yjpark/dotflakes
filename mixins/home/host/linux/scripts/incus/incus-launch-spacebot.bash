@@ -9,7 +9,7 @@ incus config device override spacebot eth0 ipv4.address=10.100.0.102
 
 incus config device add spacebot spacebot disk \
   source=/home/yjpark/bots/spacebot \
-  path=/var/lib/spacebot \
+  path=/home/yj/.spacebot \
   shift=true
 
 incus config device add spacebot agents disk \
