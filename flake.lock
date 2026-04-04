@@ -1117,11 +1117,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1775278254,
-        "narHash": "sha256-rOsuKTpMqT3rRcQQypPqFwkowzdy7+MMKqDk4xN5hpg=",
+        "lastModified": 1775281358,
+        "narHash": "sha256-Os2siOktyWk2t93oTJ/APUBzJcUWAjBsCNGSl/1YvsY=",
         "owner": "yjpark",
         "repo": "spacebot",
-        "rev": "86855d02271c992cf80cdf9c0473e6966855150e",
+        "rev": "3dd5ccd85359ae7416eeab73e23f6ed382f94a9d",
         "type": "github"
       },
       "original": {
