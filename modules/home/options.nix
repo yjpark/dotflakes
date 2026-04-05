@@ -27,5 +27,6 @@
   };
   config = {
     home.username = config.me.username;
+    home.homeDirectory = "/home/${config.me.username}";
   };
 }

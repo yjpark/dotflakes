@@ -736,21 +736,6 @@
         "type": "github"
       }
     },
-    "nixos-unified": {
-      "locked": {
-        "lastModified": 1764076447,
-        "narHash": "sha256-dpkdOPPCWaFtDoxVAtVaprtPX6jGl8o30EBc1gWBOnQ=",
-        "owner": "srid",
-        "repo": "nixos-unified",
-        "rev": "90171c6936a8332ede17e09e337a0e71f4e659b1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "srid",
-        "repo": "nixos-unified",
-        "type": "github"
-      }
-    },
     "nixos-vscode-server": {
       "flake": false,
       "locked": {
@@ -1153,7 +1138,6 @@
         "mdbook-beans": "mdbook-beans",
         "niri": "niri",
         "nixidy": "nixidy",
-        "nixos-unified": "nixos-unified",
         "nixos-vscode-server": "nixos-vscode-server",
         "nixpkgs": "nixpkgs_9",
         "nixvim": "nixvim",

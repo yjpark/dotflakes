@@ -6,7 +6,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    nixos-unified.url = "github:srid/nixos-unified";
+
 
     # Tools
     jig.url = "github:edger-dev/jig";
@@ -69,10 +69,21 @@
     xremap-flake.url = "github:xremap/nix-flake";
   };
 
-  # Wired using https://nixos-unified.org/autowiring.html
   outputs = inputs:
-    inputs.nixos-unified.lib.mkFlake {
-      inputs = inputs // { autowire = inputs.jig.lib.autowire; };
-      root = ./.;
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
+      _module.args = {
+        # Make autowire available as a top-level arg in flake-parts modules
+        flakeInputs = inputs // { autowire = inputs.jig.lib.autowire; };
+      };
+      imports = [
+        ./modules/flake/toplevel.nix
+        ./modules/flake/nixos-configs.nix
+        ./modules/flake/home-configs.nix
+        ./modules/flake/activate-home.nix
+        ./modules/flake/docs.nix
+        ./modules/flake/flox.nix
+        ./modules/flake/nixidy.nix
+      ];
     };
 }

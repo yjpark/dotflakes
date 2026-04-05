@@ -1,8 +1,10 @@
-{ self, ... }: {
-  perSystem = { self', pkgs, lib, ... }:
+# Home Manager activation script
+# Detects hostname, selects the right homeConfiguration, and activates it
+{ inputs, ... }: {
+  perSystem = { pkgs, lib, ... }:
   let
     readHostNames = dir:
-      let entries = builtins.readDir (self + dir);
+      let entries = builtins.readDir (inputs.self + dir);
       in map (name:
         if entries.${name} == "regular" then lib.removeSuffix ".nix" name else name
       ) (builtins.filter (name: name != "default.nix" && name != ".gitkeep")
@@ -11,9 +13,10 @@
     containers = readHostNames "/mixins/home/containers";
   in {
     apps.default = {
-      inherit (self'.packages.activate) meta;
+      type = "app";
       program = pkgs.writeShellApplication {
         name = "activate-home";
+        runtimeInputs = [ pkgs.home-manager ];
         text = ''
           set -x
           _host="$(hostname -s)"
@@ -30,10 +33,12 @@
           fi
           if [ -z "$_key" ]; then
             _user="$(id -un)"
-            echo "Host '$_host' not in known hosts, using fallback config '$_user'@"
-            _key="''${_user}@"
+            echo "Host '$_host' not in known hosts, using fallback config '$_user'"
+            _key="''${_user}"
           fi
-          ${lib.getExe self'.packages.activate} "$_key"
+          echo "Activating home-manager config: $_key"
+          _flake_root="$(git -C "$(dirname "$0")" rev-parse --show-toplevel 2>/dev/null || echo ".")"
+          home-manager switch --flake "''${_flake_root}#''${_key}"
         '';
       };
     };
