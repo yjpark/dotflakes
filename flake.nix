@@ -21,12 +21,6 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
-    ## https://flox.dev/docs/install-flox/install/#__tabbed_1_5
-    flox.url = "github:flox/flox/latest";
-
-    # https://nixidy.dev/user_guide/getting_started/
-    nixidy.url = "github:arnarg/nixidy";
-
     # vscode-server
     nixos-vscode-server.url = "github:nix-community/nixos-vscode-server";
     nixos-vscode-server.flake = false;
@@ -82,8 +76,6 @@
         ./modules/flake/home-configs.nix
         ./modules/flake/activate-home.nix
         ./modules/flake/docs.nix
-        ./modules/flake/flox.nix
-        ./modules/flake/nixidy.nix
       ];
     };
 }

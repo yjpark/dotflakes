@@ -9,8 +9,7 @@ All inputs are declared in `flake.nix`. This page documents the purpose of each.
 | `nixpkgs` | nixos-unstable — the primary package set |
 | `home-manager` | User environment management |
 | `flake-parts` | Flake composition framework |
-| `nixos-unified` | Opinionated wrapper around flake-parts for NixOS + HM |
-| `autowire` | Custom fork (`github:yjpark/autowire.nix`) — auto-discovers and composes `.nix` files in a directory |
+| `jig` | `github:edger-dev/jig` — provides autowire lib for auto-discovering and composing `.nix` files |
 
 ## Software
 
@@ -18,8 +17,6 @@ All inputs are declared in `flake.nix`. This page documents the purpose of each.
 |-------|---------|
 | `sops-nix` | Declarative secret management with SOPS + age |
 | `nixvim` | Neovim configured via Nix |
-| `flox` | Developer environments |
-| `nixidy` | Kubernetes GitOps (k8s manifest generation) |
 | `nixos-vscode-server` | VS Code remote server support on NixOS |
 | `solaar` | Logitech device manager |
 | `llm-agents` | LLM agent tools |

@@ -82,9 +82,9 @@ SOPS-nix with age encryption (`.sops.yaml`). Each host has its own age key. Encr
 
 ## Flake Inputs
 
-Primary: `nixpkgs` (nixos-unstable), `home-manager`, `flake-parts`, `nixos-unified`, `jig` (`github:edger-dev/jig`, provides autowire lib)
+Primary: `nixpkgs` (nixos-unstable), `home-manager`, `flake-parts`, `jig` (`github:edger-dev/jig`, provides autowire lib)
 
-Software: `sops-nix`, `nixvim`, `flox`, `nixidy` (k8s), `nixos-vscode-server`, `solaar` (Logitech), `llm-agents`
+Software: `sops-nix`, `nixvim`, `nixos-vscode-server`, `solaar` (Logitech), `llm-agents`
 
 Desktop/UI: `claude-desktop`, `niri` (Wayland compositor), `xremap-flake`, `antigravity`, `jjui`
 
