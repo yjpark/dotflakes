@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: let
+{ pkgs, config, flake, ... }: let
   # OneCLI is an open-source MITM proxy gateway for AI agent credential management.
   # Agents use placeholder API keys; OneCLI intercepts HTTPS and injects real credentials.
   #
@@ -199,9 +199,13 @@
 in {
   # SOPS secrets for seeding
   sops.secrets."onecli-secrets" = {
-    sopsFile = ./secrets/onecli-secrets.txt;
+    sopsFile = ../secrets/onecli-secrets.txt;
     format = "binary";
   };
+
+  # Maintenance scripts (onecli-push-ca, onecli-list-secrets, etc.) co-located here
+  environment.systemPackages =
+    flake.inputs.autowire.gatherScriptPackages_bash pkgs ./.;
 
   systemd.services.onecli-init-ca-and-secrets = {
     description = "Seed API secrets into OneCLI and push CA + proxy auth to containers";
