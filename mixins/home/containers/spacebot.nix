@@ -27,6 +27,7 @@ in {
       Environment = [
         "SPACEBOT_DIR=%h/.spacebot"
         "SPACEBOT_DEPLOYMENT=nixos"
+        "PATH=${pkgs.lib.makeBinPath [ pkgs.bash pkgs.coreutils pkgs.findutils pkgs.gnused pkgs.gnugrep pkgs.gawk ]}:/run/current-system/sw/bin:%h/.nix-profile/bin"
       ];
       Restart = "on-failure";
       RestartSec = 5;
