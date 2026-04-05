@@ -162,6 +162,16 @@ incus image import images/hermes-metadata/*.tar.xz images/hermes/*.tar.xz --alia
 incus image list | grep hermes
 """
 
+[tasks.flake-update-jig]
+description = "Update jig input to latest"
+run = "nix flake update jig"
+depends_post = ["vcs-status"]
+
+[tasks.flake-override-jig-local]
+description = "Override jig with local path (for development)"
+run = "nix flake lock --override-input jig path:/home/yj/agents/edger/jig"
+depends_post = ["vcs-status"]
+
 [tasks.update-mdbook-beans]
 description = "Update mdbook-beans to latest main"
 run = "nix flake update mdbook-beans"

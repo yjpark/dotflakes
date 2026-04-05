@@ -489,10 +489,12 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1775374494,
-        "narHash": "sha256-CxaXXxY+2RNK3wNHKDWiziZJCOCMCKF3h6D7WfI0qGM=",
-        "path": "/home/yj/agents/edger/jig",
-        "type": "path"
+        "lastModified": 1775374396,
+        "narHash": "sha256-nupJCDwaSrJBU1td5+xOwQP1BFE99v/hgxLt4CR4TnE=",
+        "owner": "edger-dev",
+        "repo": "jig",
+        "rev": "1f1b27c64e46b550b6ed59b9c5d913c0ad335471",
+        "type": "github"
       },
       "original": {
         "owner": "edger-dev",
