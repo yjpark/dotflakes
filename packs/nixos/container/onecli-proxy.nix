@@ -1,4 +1,18 @@
-{ ... }: {
+{ pkgs, ... }: let
+  # Rebuild /var/lib/ingress/ca-bundle.crt from system certs + OneCLI CA if present.
+  # Runs at boot (after init-ingress-ca) and whenever the CA file is pushed/updated.
+  # Idempotent: always rebuilds from scratch so no risk of double-appending.
+  rebuildBundle = pkgs.writeShellScript "rebuild-onecli-ca-bundle" ''
+    BUNDLE=/var/lib/ingress/ca-bundle.crt
+    ONECLI_CA=/var/lib/onecli/ca.crt
+    [ -f "$BUNDLE" ] || exit 0
+    ${pkgs.coreutils}/bin/cp --remove-destination /etc/ssl/certs/ca-certificates.crt "$BUNDLE"
+    if [ -f "$ONECLI_CA" ]; then
+      ${pkgs.coreutils}/bin/cat "$ONECLI_CA" >> "$BUNDLE"
+      echo "onecli-ca-bundle: appended OneCLI CA to bundle"
+    fi
+  '';
+in {
   # Route agent HTTPS traffic through OneCLI for credential injection.
   # OneCLI intercepts HTTPS, injects real API keys, and forwards — agents use placeholder keys.
   #
@@ -10,14 +24,35 @@
   # /etc/onecli-proxy-auth by the onecli-seed-secrets service on the host after each
   # nixos-rebuild switch. This file is sourced by the profile.d script below.
   #
-  # The OneCLI CA cert is pushed to /usr/local/share/ca-certificates/onecli-ca.crt
-  # by onecli-push-ca on the host. The push script appends it to all active CA bundles
-  # (SSL_CERT_FILE, /etc/ssl/certs/ca-certificates.crt, /var/lib/ingress/ca-bundle.crt)
-  # so curl and all TLS tools trust the MITM proxy without extra env vars.
+  # The OneCLI CA cert is written to /var/lib/onecli/ca.crt by the host seeder.
+  # The onecli-ca-bundle service and path unit keep the ingress CA bundle up to date
+  # declaratively — no manual symlink mutations needed.
+
+  # Stable directory for OneCLI CA cert written by the host seeder
+  systemd.tmpfiles.rules = [ "d /var/lib/onecli 0755 root root -" ];
+
+  # Rebuild the ingress CA bundle at boot (after init-ingress-ca initialises it)
+  # and again whenever the cert file is pushed/updated by the seeder.
+  systemd.services.onecli-ca-bundle = {
+    description = "Rebuild ingress CA bundle with OneCLI CA if present";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "init-ingress-ca.service" "systemd-tmpfiles-setup.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${rebuildBundle}";
+    };
+  };
+
+  # Trigger onecli-ca-bundle.service whenever /var/lib/onecli/ca.crt is created or changed
+  systemd.paths.onecli-ca-bundle = {
+    description = "Watch for OneCLI CA cert";
+    wantedBy = [ "multi-user.target" ];
+    pathConfig.PathChanged = "/var/lib/onecli/ca.crt";
+  };
 
   environment.variables = {
     # Node.js needs its own CA config (doesn't use system trust store)
-    NODE_EXTRA_CA_CERTS = "/usr/local/share/ca-certificates/onecli-ca.crt";
+    NODE_EXTRA_CA_CERTS = "/var/lib/onecli/ca.crt";
     NODE_USE_ENV_PROXY = "1";
   };
 

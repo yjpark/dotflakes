@@ -181,40 +181,17 @@
           continue
         fi
 
-        # Push OneCLI CA cert so containers trust the MITM proxy.
-        # Appends to CA bundles (handling Nix store symlinks + idempotency).
+        # Push OneCLI CA cert to the well-known path watched by the container's
+        # onecli-ca-bundle.path unit, which rebuilds the ingress CA bundle declaratively.
         echo "Pushing OneCLI CA to $container..."
         CA_PEM=$(curl -sf "$BASE_URL/api/gateway/ca")
         if [[ -z "$CA_PEM" ]]; then
           echo "WARNING: Could not fetch OneCLI CA from $BASE_URL/api/gateway/ca"
           continue
         fi
-        incus exec "$container" -- mkdir -p /usr/local/share/ca-certificates
-        echo "$CA_PEM" | incus file push - "$container/usr/local/share/ca-certificates/onecli-ca.crt"
-        # shellcheck disable=SC2016
-        incus exec "$container" -- bash -c '
-          ONECLI_CA=/usr/local/share/ca-certificates/onecli-ca.crt
-          BUNDLES=(/etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-bundle.crt /var/lib/ingress/ca-bundle.crt)
-          for bundle in "''${BUNDLES[@]}"; do
-            [ -e "$bundle" ] || continue
-            # If it is a symlink (e.g. to Nix store), replace with a mutable copy
-            if [ -L "$bundle" ]; then
-              target=$(readlink -f "$bundle")
-              rm "$bundle"
-              cp "$target" "$bundle"
-              chmod 644 "$bundle"
-              echo "  Replaced symlink with mutable copy: $bundle"
-            fi
-            if grep -q "# OneCLI CA" "$bundle" 2>/dev/null; then
-              echo "  OneCLI CA already in $bundle"
-            else
-              printf "\n# OneCLI CA\n" >> "$bundle"
-              cat "$ONECLI_CA" >> "$bundle"
-              echo "  Appended OneCLI CA to $bundle"
-            fi
-          done
-        '
-        echo "Pushed CA to $container"
+        incus exec "$container" -- mkdir -p /var/lib/onecli
+        echo "$CA_PEM" | incus file push - "$container/var/lib/onecli/ca.crt"
+        echo "Pushed CA to $container (onecli-ca-bundle.service will rebuild the bundle)"
 
       done
     '';
