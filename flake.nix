@@ -71,11 +71,11 @@
         flakeInputs = inputs // { autowire = inputs.jig.lib.autowire; };
       };
       imports = [
-        ./modules/flake/toplevel.nix
-        ./modules/flake/nixos-configs.nix
-        ./modules/flake/home-configs.nix
-        ./modules/flake/activate-home.nix
-        ./modules/flake/docs.nix
+        ./flake/toplevel.nix
+        ./flake/nixos-configs.nix
+        ./flake/home-configs.nix
+        ./flake/activate-home.nix
+        ./flake/docs.nix
       ];
     };
 }

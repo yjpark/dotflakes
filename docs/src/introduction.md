@@ -2,21 +2,22 @@
 
 This repository is a Nix Flakes-based dotfiles and system configuration, managing NixOS systems and Home Manager user environments across multiple machines.
 
-It uses the [`nixos-unified`](https://github.com/nix-community/nixos-unified) framework with [`autowire`](https://github.com/yjpark/autowire.nix) for automatic module discovery and composition.
+It uses [`flake-parts`](https://github.com/hercules-ci/flake-parts) with [`autowire`](https://github.com/edger-dev/jig) (from `jig`) for automatic module discovery and composition.
 
 ## Repository Structure
 
 ```
-flake.nix                          # Entry point, declares all inputs
-  → modules/flake/toplevel.nix     # Flake-level glue (formatter, packages)
-  → modules/{home,nixos}/          # Reusable modules (autowired)
-  → mixins/{home,nixos}/           # Platform/version-specific configs
-  → configurations/{home,nixos}/   # Per-host final configurations
+flake.nix                    # Entry point, declares all inputs
+  → flake/*.nix              # Flake-level glue (configs, formatter, activation)
+  → packs/{home,nixos}/      # Autowired packs (common, host, container, gui)
+  → mixins/{home,nixos}/     # Opt-in configs (manually imported by configurations)
+  → home/*.nix               # Per-user base Home Manager configurations
+  → nixos/{hosts,containers} # Per-host/container NixOS configurations
 ```
 
-- **`modules/`** — Core reusable NixOS/Home Manager modules
-- **`mixins/`** — Platform-specific (linux/darwin) and version-specific configuration layers
-- **`configurations/`** — Per-host configs that compose modules + mixins
-- **`overlays/`** — Nixpkgs overlays and custom packages
+- **`packs/`** — Autowired collections — import a pack, get everything in it
+- **`mixins/`** — Opt-in configuration pieces (services, hardware, versions)
+- **`home/`** — Base Home Manager configs (`yjpark.nix`, `yj.nix`)
+- **`nixos/`** — Per-host and per-container NixOS configs
 - **`secrets/`** — SOPS-encrypted secrets (age keys, per-host)
 - **`private/`** — Host-specific private configs (gitignored, present on deployed machines)

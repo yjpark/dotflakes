@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Nix Flakes-based dotfiles and system configuration repository managing NixOS systems and Home Manager user environments across multiple machines. Uses the `nixos-unified` framework with `autowire` for automatic module discovery and composition.
+Nix Flakes-based dotfiles and system configuration repository managing NixOS systems and Home Manager user environments across multiple machines. Uses `flake-parts` with `autowire` (from `jig`) for automatic module discovery and composition.
 
 ## Key Commands
 
@@ -28,7 +28,7 @@ mise run show
 nix fmt
 ```
 
-The formatter is `nixpkgs-fmt` (configured in `modules/flake/toplevel.nix`).
+The formatter is `nixpkgs-fmt` (configured in `flake/toplevel.nix`).
 
 Tasks are defined in `mise.toml`. Use `mise tasks` to list all available tasks.
 
@@ -36,41 +36,39 @@ Tasks are defined in `mise.toml`. Use `mise tasks` to list all available tasks.
 
 ### Autowiring Pattern
 
-Most `default.nix` files contain a single line: `{flake, ...}: flake.inputs.autowire.wireImports ./.` — this auto-discovers and composes all `.nix` files in the same directory into a merged NixOS/Home Manager module. Adding a new `.nix` file to an autowired directory automatically includes it. The `autowire` binding is a shim to `jig.lib.autowire` (from `github:edger-dev/jig`).
+Pack roots use `wireImportsRecursively` to auto-discover all `.nix` files recursively. Subdirectories with a custom `default.nix` are treated as opaque (their default.nix is imported instead of recursing). The `autowire` binding comes from `jig.lib.autowire` (from `github:edger-dev/jig`).
 
 ### Layered Composition
 
 ```
-flake.nix                          # Entry point, declares all inputs
-  → modules/flake/toplevel.nix     # Flake-level glue (formatter, packages)
-  → modules/{home,nixos}/          # Reusable modules (autowired)
-  → mixins/{home,nixos}/           # Platform/version-specific configs
-  → configurations/{home,nixos}/   # Per-host final configurations
+flake.nix                    # Entry point, declares all inputs
+  → flake/*.nix              # Flake-level glue (configs, formatter, activation)
+  → packs/{home,nixos}/      # Autowired packs (common, host, container, gui)
+  → mixins/{home,nixos}/     # Opt-in configs (manually imported by configurations)
+  → home/*.nix               # Per-user base Home Manager configurations
+  → nixos/{hosts,containers} # Per-host/container NixOS configurations
 ```
 
-- **modules/**: Core reusable modules
-- **mixins/**: Platform-specific (linux/darwin) and version-specific configuration layers
-- **configurations/**: Per-host configs that compose modules + mixins. Each host imports `self.homeModules.default` or `self.nixosConfigurations`
+- **packs/**: Autowired collections — import a pack, get everything in it
+- **mixins/**: Opt-in configuration pieces (services, hardware, versions)
+- **home/**: Base Home Manager configs (`yjpark.nix`, `yj.nix`)
+- **nixos/**: Per-host and per-container NixOS configs
 
 ### Home Manager Activation
 
 Two user profiles exist:
-- `yjpark`: used on physical hosts; base config (`configurations/home/yjpark.nix`) sets `stateVersion = "25.05"`
-- `yj`: used in containers; base config (`configurations/home/yj.nix`) sets `stateVersion = "26.05"`
+- `yjpark`: used on physical hosts; base config (`home/yjpark.nix`) sets `stateVersion = "25.05"`
+- `yj`: used in containers; base config (`home/yj.nix`) sets `stateVersion = "26.05"`
 
 Host/container mixins live in `mixins/home/hosts/` and `mixins/home/containers/` — adding a `.nix` file there registers a new host/container automatically.
 
-`modules/flake/activate-home.nix`: The `mise run _activate-home` command matches the current hostname against known hosts (→ `yjpark@<host>`) then containers (→ `yj@<host>`), falling back to `<username>@` for unknown hosts (trailing `@` is required by nixos-unified for bare username fallback configs).
+`flake/activate-home.nix`: The `mise run _activate-home` command matches the current hostname against known hosts (→ `yjpark@<host>`) then containers (→ `yj@<host>`), falling back to bare `<username>` for unknown hosts.
 
-`modules/flake/home-configs.nix`: Generates `username@host` entries for each host/container mixin plus a bare `username` fallback (without host suffix).
+`flake/home-configs.nix`: Generates `username@host` entries for each host/container mixin plus a bare `username` fallback (without host suffix).
 
 ### Custom Options
 
-`modules/home/options.nix` defines the `me` option set (`me.username`, `me.fullname`, `me.email`) used throughout Home Manager modules. These are set in each host's configuration file (e.g., `configurations/home/yjpark.nix`).
-
-### Overlays and Custom Packages
-
-`overlays/default.nix` autowires from `./` (picking up `packages.nix` in the overlays dir). Custom packages are automatically available as overlays.
+`packs/home/common/options.nix` defines the `me` option set (`me.username`, `me.fullname`, `me.email`) used throughout Home Manager modules. These are set in each user's base config (e.g., `home/yjpark.nix`).
 
 ### Secrets
 

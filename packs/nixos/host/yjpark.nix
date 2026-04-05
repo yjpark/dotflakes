@@ -2,7 +2,7 @@
 let
   inherit (flake) inputs;
   inherit (inputs) self;
-  baseConfigPath = self + /configurations/home/yjpark.nix;
+  baseConfigPath = self + /home/yjpark.nix;
   hostMixinDir = self + /mixins/home/hosts;
   hostname = config.networking.hostName;
   hasHostMixinFile = builtins.pathExists (hostMixinDir + "/${hostname}.nix");

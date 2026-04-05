@@ -38,13 +38,13 @@ let
 
   mkAllConfigs = pkgs:
     (mkHomeConfigs {
-      baseConfigPath = "/configurations/home/yjpark.nix";
+      baseConfigPath = "/home/yjpark.nix";
       mixinDir = "/mixins/home/hosts";
       username = "yjpark";
     } pkgs)
     //
     (mkHomeConfigs {
-      baseConfigPath = "/configurations/home/yj.nix";
+      baseConfigPath = "/home/yj.nix";
       mixinDir = "/mixins/home/containers";
       username = "yj";
     } pkgs);

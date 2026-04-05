@@ -1,4 +1,4 @@
-# Explicit NixOS configurations, modules, and overlays
+# Explicit NixOS configurations
 # Replaces nixos-unified autoWire
 { inputs, flakeInputs, ... }:
 let
@@ -9,7 +9,7 @@ let
   mkNixosConfig = dir: name:
     inputs.nixpkgs.lib.nixosSystem {
       inherit specialArgs;
-      modules = [ (inputs.self + /configurations/nixos/${dir}/${name}) ];
+      modules = [ (inputs.self + /nixos/${dir}/${name}) ];
     };
 
   hosts = [ "edger" "a13" "g1" "p2" "pc" ];
@@ -28,6 +28,5 @@ in
 {
   flake = {
     nixosConfigurations = hostConfigs // containerConfigs;
-    overlays.default = import (inputs.self + /overlays);
   };
 }
