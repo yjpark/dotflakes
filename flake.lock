@@ -116,11 +116,11 @@
     },
     "crane_2": {
       "locked": {
-        "lastModified": 1775187334,
-        "narHash": "sha256-SK9oZzrgeaaHgDXlc3fedpvoXhhw3cRb/7YXZhXN6+I=",
+        "lastModified": 1775236976,
+        "narHash": "sha256-gCgX+AXN7K1gAIEqcLcZHxmC+QoZcwn9m6Z9r2Az+N8=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "9f137cf7cb1293c69c5bf3beda37c00c698ed6c0",
+        "rev": "6c23998526351a53ce734f0ac84940da988ccef1",
         "type": "github"
       },
       "original": {
@@ -600,15 +600,14 @@
         "crane": "crane_2",
         "fenix": "fenix_2",
         "flake-utils": "flake-utils_2",
+        "mdbook-beans": "mdbook-beans",
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1775229387,
-        "narHash": "sha256-RJlojs0PfCkxs0JeIvpo/Ra+XUYpK8jDPwERinTnMqA=",
-        "owner": "edger-dev",
-        "repo": "jig",
-        "rev": "79427e4477847b4b06ab1444b047cf0794c3e7cf",
-        "type": "github"
+        "lastModified": 1775374494,
+        "narHash": "sha256-CxaXXxY+2RNK3wNHKDWiziZJCOCMCKF3h6D7WfI0qGM=",
+        "path": "/home/yj/agents/edger/jig",
+        "type": "path"
       },
       "original": {
         "owner": "edger-dev",
@@ -659,6 +658,40 @@
       }
     },
     "mdbook-beans": {
+      "inputs": {
+        "crane": [
+          "jig",
+          "crane"
+        ],
+        "fenix": [
+          "jig",
+          "fenix"
+        ],
+        "flake-utils": [
+          "jig",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "jig",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774924792,
+        "narHash": "sha256-pUdWCC2waY/DeDEs3DYDyNnSDnQF6puE0OAswVAmLmw=",
+        "owner": "edger-dev",
+        "repo": "mdbook-beans",
+        "rev": "86b19955dcd417f590ec6b050655b6452dc7fcb9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edger-dev",
+        "ref": "main",
+        "repo": "mdbook-beans",
+        "type": "github"
+      }
+    },
+    "mdbook-beans_2": {
       "inputs": {
         "crane": "crane_3",
         "fenix": "fenix_3",
@@ -1135,7 +1168,7 @@
         "jig": "jig",
         "jjui": "jjui",
         "llm-agents": "llm-agents",
-        "mdbook-beans": "mdbook-beans",
+        "mdbook-beans": "mdbook-beans_2",
         "niri": "niri",
         "nixidy": "nixidy",
         "nixos-vscode-server": "nixos-vscode-server",

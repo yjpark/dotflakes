@@ -3,13 +3,12 @@
   inherit (inputs) self;
 in {
   imports = [
-    self.homeModules.default
-    (self + /mixins/home/container)
+    (self + /packs/home/container)
   ];
 
   home.stateVersion = "26.05";
 
-  # Defined by /modules/home/options.nix
+  # Defined by /packs/home/common/options.nix
   me = {
     username = "yj";
     fullname = "YJ Park";

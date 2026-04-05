@@ -3,12 +3,11 @@
   inherit (inputs) self;
 in {
   imports = [
-    self.nixosModules.default
+    (self + /packs/nixos/host)
+    (self + /packs/nixos/gui)
     flake.inputs.sops-nix.nixosModules.sops
     (self + /mixins/nixos/versions/22.05.nix)
     (self + /mixins/nixos/ext4)
-    (self + /mixins/nixos/host)
-    (self + /mixins/nixos/gui)
     (self + /mixins/nixos/lan/my)
     (self + /mixins/nixos/services/nix-serve.nix)
     (self + /mixins/nixos/services/airplay.nix)

@@ -28,8 +28,6 @@ in
 {
   flake = {
     nixosConfigurations = hostConfigs // containerConfigs;
-    nixosModules.default = import (inputs.self + /modules/nixos);
-    homeModules.default = import (inputs.self + /modules/home);
     overlays.default = import (inputs.self + /overlays);
   };
 }

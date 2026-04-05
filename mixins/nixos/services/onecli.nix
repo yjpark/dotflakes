@@ -9,7 +9,7 @@
   # with no OAuth setup needed. The seeder fetches the API key automatically via
   # GET /api/auth/session then GET /api/user/api-key — no manual bootstrap required.
   #
-  # Container proxy setup is declared in mixins/nixos/container/onecli-proxy.nix.
+  # Container proxy setup is declared in packs/nixos/container/onecli-proxy.nix.
 
   # Per-secret injection configuration.
   # Keys must match the names in the SOPS secrets file (onecli-secrets.txt).

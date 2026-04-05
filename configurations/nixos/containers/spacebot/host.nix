@@ -2,4 +2,5 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   networking.hostName = "spacebot";
+  users.users.yj.linger = true;
 }
