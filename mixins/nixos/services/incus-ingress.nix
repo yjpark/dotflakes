@@ -50,11 +50,14 @@ let
     '')
     ingressContainers;
 
+  # Container names that have static routes (skip in dynamic containerBlocks).
+  staticContainerNames = [ "onecli" ];
+
   # Static named-service blocks (exact hostname match, must come before containerBlocks).
   staticBlocks = ''
     ${hubBlocks}
-    @onecli expression `{http.request.host} == "onecli.${config.networking.hostName}.${domain}"`
-    handle @onecli {
+    @onecli-svc expression `{http.request.host} == "onecli.${config.networking.hostName}.${domain}"`
+    handle @onecli-svc {
       reverse_proxy 10.100.0.2:10254
     }
   '';
