@@ -5,7 +5,7 @@ incus launch hermes hermes
 incus config set hermes security.nesting true
 
 # Static IP for ingress DNS (see mixins/nixos/host/incus-ingress.nix)
-incus config device override hermes eth0 ipv4.address=10.100.0.103
+incus config device override hermes eth0 ipv4.address=10.100.0.102
 
 incus config device add hermes hermes disk \
   source=/home/yjpark/bots/hermes \

@@ -5,7 +5,7 @@ incus launch spacebot spacebot
 incus config set spacebot security.nesting true
 
 # Static IP for ingress DNS (see mixins/nixos/host/incus-ingress.nix)
-incus config device override spacebot eth0 ipv4.address=10.100.0.102
+incus config device override spacebot eth0 ipv4.address=10.100.0.101
 
 incus config device add spacebot spacebot disk \
   source=/home/yjpark/bots/spacebot \

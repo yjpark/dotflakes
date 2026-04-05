@@ -20,7 +20,7 @@ YAML_EOF
 incus config set ubuntu security.nesting true
 
 # Static IP for ingress DNS (see mixins/nixos/host/incus-ingress.nix)
-incus config device override ubuntu eth0 ipv4.address=10.100.0.101
+incus config device override ubuntu eth0 ipv4.address=10.100.0.200
 
 incus config device add ubuntu agents disk \
   source=/home/yjpark/agents \
