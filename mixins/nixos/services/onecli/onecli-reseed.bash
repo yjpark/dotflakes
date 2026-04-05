@@ -66,8 +66,6 @@ SECRET_CONFIG=$(cat <<'EOF'
 EOF
 )
 
-AGENT_CONTAINERS=(yolo spacebot hermes)
-
 # Wait for OneCLI to be ready
 for i in $(seq 1 30); do
   if curl -sf "$BASE_URL/api/auth/session" > /dev/null 2>&1; then
@@ -141,34 +139,5 @@ done < "$SECRETS_FILE"
 
 info "Done seeding. Verify secrets at $BASE_URL"
 
-# Push authenticated proxy URL to agent containers
-info "Fetching default agent token for proxy auth..."
-AGENT_TOKEN=$(curl -sf "$BASE_URL/api/agents/default" | jq -r '.accessToken')
-if [[ -z "$AGENT_TOKEN" || "$AGENT_TOKEN" == "null" ]]; then
-  error "Could not retrieve agent token from /api/agents/default"
-  exit 1
-fi
-info "Got agent token: ${AGENT_TOKEN:0:4}..."
-PROXY_URL="http://x:${AGENT_TOKEN}@10.100.0.2:10255"
-
-for container in "${AGENT_CONTAINERS[@]}"; do
-  if incus list --format json | jq -e --arg n "$container" \
-      '.[] | select(.name == $n) | select(.status == "Running")' > /dev/null 2>&1; then
-    printf 'HTTPS_PROXY="%s"\nHTTP_PROXY="%s"\n' "$PROXY_URL" "$PROXY_URL" | \
-      incus file push - "$container/etc/onecli-proxy-auth"
-    incus exec "$container" -- chmod 644 /etc/onecli-proxy-auth
-    info "Pushed proxy auth to $container"
-
-    info "Pushing OneCLI CA to $container..."
-    CA_PEM=$(curl -sf "$BASE_URL/api/gateway/ca")
-    if [[ -z "$CA_PEM" ]]; then
-      warn "Could not fetch OneCLI CA from $BASE_URL/api/gateway/ca"
-      continue
-    fi
-    incus exec "$container" -- mkdir -p /var/lib/onecli
-    echo "$CA_PEM" | incus file push - "$container/var/lib/onecli/ca.crt"
-    info "Pushed CA to $container"
-  else
-    warn "Skipping $container (not running)"
-  fi
-done
+onecli-push-proxy-auth
+onecli-push-ca

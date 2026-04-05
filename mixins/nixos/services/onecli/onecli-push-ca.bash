@@ -10,7 +10,11 @@ set -eu
 
 source `which color-logging`
 
-CONTAINERS=("${@:-yolo}")
+if [[ $# -eq 0 ]]; then
+  CONTAINERS=(yolo spacebot hermes)
+else
+  CONTAINERS=("$@")
+fi
 CA_PEM=$(curl -sf http://10.100.0.2:10254/api/gateway/ca)
 
 for CONTAINER in "${CONTAINERS[@]}"; do
