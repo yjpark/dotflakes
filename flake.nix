@@ -33,6 +33,11 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     claude-desktop.url = "github:aaddrick/claude-desktop-debian";
 
+    # OpenCode plugin that delegates to Claude Code CLI as the AI provider
+    # https://github.com/unixfox/opencode-claude-code-plugin
+    opencode-claude-code-plugin.url = "github:unixfox/opencode-claude-code-plugin";
+    opencode-claude-code-plugin.flake = false;
+
     # https://github.com/spacedriveapp/spacebot
     spacebot.url = "github:yjpark/spacebot/fix/frontend-node-modules-hash";
 
