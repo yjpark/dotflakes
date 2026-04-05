@@ -12,6 +12,9 @@ wezterm.on('format-tab-title', function(tab)
 end)
 
 return {
+    set_environment_variables = {
+        COLORTERM = 'truecolor',
+    },
     audible_bell = 'Disabled',
     enable_wayland = true,
     -- window_decorations = 'INTEGRATED_BUTTONS|RESIZE',

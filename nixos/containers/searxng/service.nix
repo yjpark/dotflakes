@@ -7,7 +7,7 @@
   #
   # Internal LAN-only; not exposed to the internet — static secret key is acceptable.
 
-  services.searxng = {
+  services.searx = {
     enable = true;
     settings = {
       server = {

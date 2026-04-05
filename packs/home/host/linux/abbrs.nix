@@ -7,6 +7,8 @@
     ic = "incus completion fish | source";
     u = "TERM=xterm-256color incus exec ubuntu -- login -f yj";
     y = "TERM=xterm-256color incus exec yolo -- login -f yj";
+    onecli = "TERM=xterm-256color incus exec onecli -- login -f yj";
+    searxng = "TERM=xterm-256color incus exec searxng -- login -f yj";
     spacebot = "TERM=xterm-256color incus exec spacebot -- login -f yj";
     hermes = "TERM=xterm-256color incus exec hermes -- login -f yj";
   };
