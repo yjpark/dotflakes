@@ -865,6 +865,22 @@
         "type": "github"
       }
     },
+    "opencode-claude-code-plugin": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774555604,
+        "narHash": "sha256-y/GXs51+rKKsEXqNEK6cY0yrro+Ri4vvJaFDfYfc3Rg=",
+        "owner": "unixfox",
+        "repo": "opencode-claude-code-plugin",
+        "rev": "29f030bc4578cc2cb20fafe78966821bd9cff50b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "unixfox",
+        "repo": "opencode-claude-code-plugin",
+        "type": "github"
+      }
+    },
     "pyproject-build-systems": {
       "inputs": {
         "nixpkgs": [
@@ -969,6 +985,7 @@
         "nixos-vscode-server": "nixos-vscode-server",
         "nixpkgs": "nixpkgs_7",
         "nixvim": "nixvim",
+        "opencode-claude-code-plugin": "opencode-claude-code-plugin",
         "solaar": "solaar",
         "sops-nix": "sops-nix",
         "spacebot": "spacebot",
