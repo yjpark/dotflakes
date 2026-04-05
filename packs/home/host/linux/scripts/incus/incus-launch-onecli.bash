@@ -2,8 +2,8 @@
 
 # Launch the OneCLI incus container.
 # OneCLI runs at 10.100.0.2 with native NixOS postgresql + podman onecli image.
-# After launch, run: sudo systemctl start onecli-init-ca-and-secrets
-# (or it will run automatically on the next nixos-rebuild switch).
+# After launch, run: onecli-push-ca <container> and onecli-push-proxy-auth <container>
+# to push the CA cert and proxy credentials to each agent container.
 
 incus launch onecli onecli
 

@@ -8,8 +8,8 @@
   # Dashboard: http://10.100.0.2:10254  (seeder API + management UI)
   # Proxy:     http://10.100.0.2:10255  (set HTTPS_PROXY in agent containers)
   #
-  # After launch, the host-side onecli-init-ca-and-secrets service seeds secrets
-  # into OneCLI and pushes the authenticated proxy URL to agent containers.
+  # After launch, run onecli-push-ca and onecli-push-proxy-auth on the host
+  # to push the CA cert and proxy credentials to agent containers.
 
   services.postgresql = {
     enable = true;
