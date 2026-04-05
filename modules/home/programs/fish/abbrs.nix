@@ -31,7 +31,7 @@
     kn = "kubens";
     lg = "lazygit";
     p = "podman";
-    ps = "procs";
+    pp = "procs";
     s = "shadowenv";
     sg = "ast-grep";
     sp = "sync-pass";
