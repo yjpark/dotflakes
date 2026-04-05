@@ -13,7 +13,7 @@ let
     };
 
   hosts = [ "edger" "a13" "g1" "p2" "pc" ];
-  containers = [ "yolo" "spacebot" "hermes" ];
+  containers = [ "yolo" "spacebot" "hermes" "onecli" "searxng" ];
 
   hostConfigs = builtins.listToAttrs (map (name: {
     inherit name;

@@ -1,12 +1,12 @@
 { ... }: {
-  # Route agent HTTPS traffic through OneCLI on the host for credential injection.
+  # Route agent HTTPS traffic through OneCLI for credential injection.
   # OneCLI intercepts HTTPS, injects real API keys, and forwards — agents use placeholder keys.
   #
-  # OneCLI runs on the host at 10.100.0.1 (incusbr0 bridge):
-  #   Dashboard:  http://10.100.0.1:10254
-  #   Proxy:      http://10.100.0.1:10255
+  # OneCLI runs in the dedicated incus container at 10.100.0.2:
+  #   Dashboard:  http://10.100.0.2:10254
+  #   Proxy:      http://10.100.0.2:10255
   #
-  # The authenticated proxy URL (http://x:<api_key>@10.100.0.1:10255) is written to
+  # The authenticated proxy URL (http://x:<api_key>@10.100.0.2:10255) is written to
   # /etc/onecli-proxy-auth by the onecli-seed-secrets service on the host after each
   # nixos-rebuild switch. This file is sourced by the profile.d script below.
   #

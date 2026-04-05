@@ -2,8 +2,9 @@
   # OneCLI is an open-source MITM proxy gateway for AI agent credential management.
   # Agents use placeholder API keys; OneCLI intercepts HTTPS and injects real credentials.
   #
-  # Dashboard:   http://10.100.0.1:10254  (Incus bridge — accessible from containers)
-  # Proxy:       http://10.100.0.1:10255  (set HTTPS_PROXY in agent containers)
+  # OneCLI runs in the dedicated incus container at 10.100.0.2:
+  #   Dashboard:  http://10.100.0.2:10254
+  #   Proxy:      http://10.100.0.2:10255  (set HTTPS_PROXY in agent containers)
   #
   # AUTH_MODE=local means OneCLI auto-creates a hardcoded local admin (admin@localhost)
   # with no OAuth setup needed. The seeder fetches the API key automatically via
@@ -77,7 +78,7 @@
     text = ''
       SECRETS_FILE="${config.sops.secrets."onecli-secrets".path}"
       CONFIG_FILE="${secretConfigsJson}"
-      BASE_URL="http://10.100.0.1:10254"
+      BASE_URL="http://10.100.0.2:10254"
 
       # Wait for OneCLI to be ready (no /healthz endpoint — use /api/auth/session)
       for i in $(seq 1 30); do
@@ -166,7 +167,7 @@
         exit 1
       fi
       echo "Got agent token: ''${AGENT_TOKEN:0:4}..."
-      PROXY_URL="http://x:''${AGENT_TOKEN}@10.100.0.1:10255"
+      PROXY_URL="http://x:''${AGENT_TOKEN}@10.100.0.2:10255"
       AGENT_CONTAINERS=(${builtins.concatStringsSep " " agentContainers})
       for container in "''${AGENT_CONTAINERS[@]}"; do
         if incus list --format json | jq -e --arg n "$container" \
@@ -219,60 +220,6 @@
     '';
   };
 in {
-  # Podman network for inter-container communication
-  systemd.services.onecli-network = {
-    description = "Create OneCLI podman network";
-    before = [ "podman-onecli-postgres.service" "podman-onecli.service" ];
-    requiredBy = [ "podman-onecli-postgres.service" "podman-onecli.service" ];
-    # Don't restart on nixos-rebuild switch — network persists across updates.
-    restartIfChanged = false;
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.podman}/bin/podman network create onecli || true'";
-      ExecStop = "${pkgs.bash}/bin/bash -c '${pkgs.podman}/bin/podman network rm -f onecli || true'";
-    };
-  };
-
-  virtualisation.oci-containers.backend = "podman";
-
-  virtualisation.oci-containers.containers = {
-    onecli-postgres = {
-      image = "postgres:17-alpine";
-      environment = {
-        POSTGRES_USER = "onecli";
-        POSTGRES_PASSWORD = "onecli";
-        POSTGRES_DB = "onecli";
-      };
-      volumes = [ "onecli-pgdata:/var/lib/postgresql/data" ];
-      extraOptions = [ "--network=onecli" ];
-    };
-
-    onecli = {
-      image = "ghcr.io/onecli/onecli:latest";
-      dependsOn = [ "onecli-postgres" ];
-      environment = {
-        DATABASE_URL = "postgresql://onecli:onecli@onecli-postgres:5432/onecli";
-        GATEWAY_HOST = "10.100.0.1";
-        GATEWAY_PORT = "10255";
-        # Local mode: auto-creates admin@localhost, no OAuth/manual signup needed.
-        # The seeder fetches the API key via /api/auth/session + /api/user/api-key.
-        AUTH_MODE = "local";
-      };
-      volumes = [ "onecli-data:/app/data" ];
-      ports = [
-        "10.100.0.1:10254:10254"
-        "10.100.0.1:10255:10255"
-      ];
-      extraOptions = [ "--network=onecli" ];
-    };
-  };
-
-  # Don't restart containers on nixos-rebuild switch — they persist across updates.
-  # Use `mise run restart-onecli` to explicitly restart when upgrading the image.
-  systemd.services.podman-onecli.restartIfChanged = false;
-  systemd.services.podman-onecli-postgres.restartIfChanged = false;
-
   # SOPS secrets for seeding
   sops.secrets."onecli-secrets" = {
     sopsFile = ./secrets/onecli-secrets.txt;
@@ -282,20 +229,11 @@ in {
   systemd.services.onecli-init-ca-and-secrets = {
     description = "Seed API secrets into OneCLI and push CA + proxy auth to containers";
     wantedBy = [ "multi-user.target" ];
-    after = [ "podman-onecli.service" "incus.service" ];
+    after = [ "incus.service" "network-online.target" ];
+    wants = [ "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${initScript}/bin/onecli-init-ca-and-secrets";
     };
   };
-
-  # Explicitly open OneCLI ports on the incus bridge zone.
-  # The incus zone already has target=ACCEPT, but this makes the intent explicit.
-  services.firewalld.services.onecli = {
-    ports = [
-      { port = 10254; protocol = "tcp"; }  # Dashboard
-      { port = 10255; protocol = "tcp"; }  # Proxy gateway
-    ];
-  };
-  services.firewalld.zones.incus.services = [ "onecli" ];
 }

@@ -9,7 +9,7 @@ set -eu
 
 source `which color-logging`
 
-BASE_URL="http://10.100.0.1:10254"
+BASE_URL="http://10.100.0.2:10254"
 CONTAINERS=("${@:-yolo}")
 
 info "Checking OneCLI session at $BASE_URL ..."
@@ -28,8 +28,8 @@ if [[ -z "$AGENT_TOKEN" || "$AGENT_TOKEN" == "null" ]]; then
 fi
 info "Agent token retrieved (prefix: ${AGENT_TOKEN:0:4}..., ${#AGENT_TOKEN} chars)"
 
-PROXY_URL="http://x:${AGENT_TOKEN}@10.100.0.1:10255"
-MASKED_PROXY="http://x:***@10.100.0.1:10255"
+PROXY_URL="http://x:${AGENT_TOKEN}@10.100.0.2:10255"
+MASKED_PROXY="http://x:***@10.100.0.2:10255"
 
 for CONTAINER in "${CONTAINERS[@]}"; do
   if incus list --format json | jq -e --arg n "$CONTAINER" \
