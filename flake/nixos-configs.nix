@@ -1,0 +1,32 @@
+# Explicit NixOS configurations
+# Replaces nixos-unified autoWire
+{ inputs, flakeInputs, ... }:
+let
+  specialArgs = {
+    flake = { inputs = flakeInputs; };
+  };
+
+  mkNixosConfig = dir: name:
+    inputs.nixpkgs.lib.nixosSystem {
+      inherit specialArgs;
+      modules = [ (inputs.self + /nixos/${dir}/${name}) ];
+    };
+
+  hosts = [ "edger" "a13" "g1" "p2" "pc" ];
+  containers = [ "yolo" "spacebot" "hermes" "onecli" "searxng" ];
+
+  hostConfigs = builtins.listToAttrs (map (name: {
+    inherit name;
+    value = mkNixosConfig "hosts" name;
+  }) hosts);
+
+  containerConfigs = builtins.listToAttrs (map (name: {
+    inherit name;
+    value = mkNixosConfig "containers" name;
+  }) containers);
+in
+{
+  flake = {
+    nixosConfigurations = hostConfigs // containerConfigs;
+  };
+}

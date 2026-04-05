@@ -2,34 +2,31 @@
 
 ## Autowiring Pattern
 
-Most `default.nix` files contain a single line:
+Pack roots use `wireImportsRecursively` to auto-discover all `.nix` files recursively:
 
 ```nix
-{flake, ...}: flake.inputs.autowire.wireImports ./.
+{flake, ...}: flake.inputs.autowire.wireImportsRecursively ./.
 ```
 
-This auto-discovers and composes all `.nix` files in the same directory into a merged NixOS/Home Manager module. Adding a new `.nix` file to an autowired directory automatically includes it — no manual imports needed.
+Subdirectories with a custom `default.nix` are treated as opaque — their `default.nix` is imported instead of recursing further. Adding a new `.nix` file to a pack directory automatically includes it.
 
 ## Layered Composition
 
 Configuration is built up in layers:
 
-1. **`flake.nix`** — Declares all inputs; outputs are generated via `nixos-unified`
-2. **`modules/flake/`** — Flake-level glue (formatter, packages, apps). Each `.nix` file here is a `flake-parts` module auto-included by the framework
-3. **`modules/{home,nixos}/`** — Reusable Home Manager / NixOS modules, autowired
-4. **`mixins/{home,nixos}/`** — Platform-specific layers (linux, darwin) and host/container-specific config
-5. **`configurations/{home,nixos}/`** — Per-host final configurations that compose modules + mixins
+1. **`flake.nix`** — Declares all inputs; outputs generated via `flake-parts`
+2. **`flake/*.nix`** — Flake-level glue (configs, formatter, activation). Each `.nix` file is a `flake-parts` module imported by `flake.nix`
+3. **`packs/{home,nixos}/`** — Autowired packs (common, host, container, gui). Import a pack, get everything in it
+4. **`mixins/{home,nixos}/`** — Opt-in configuration pieces (services, hardware, versions), manually imported by host configs
+5. **`home/*.nix`** — Per-user base Home Manager configurations
+6. **`nixos/{hosts,containers}/`** — Per-host and per-container NixOS configurations
 
 ## Custom Options
 
-`modules/home/options.nix` defines the `me` option set used throughout Home Manager modules:
+`packs/home/common/options.nix` defines the `me` option set used throughout Home Manager modules:
 
 - `me.username`
 - `me.fullname`
 - `me.email`
 
-These are set in each host's configuration file (e.g., `configurations/home/yjpark.nix`).
-
-## Overlays and Custom Packages
-
-`overlays/default.nix` autowires from `./`, picking up `packages.nix` in the overlays directory. Custom packages are automatically available as nixpkgs overlays throughout the configuration.
+These are set in each user's base config (e.g., `home/yjpark.nix`).

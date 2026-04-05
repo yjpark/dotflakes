@@ -6,7 +6,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    nixos-unified.url = "github:srid/nixos-unified";
+
 
     # Tools
     jig.url = "github:edger-dev/jig";
@@ -21,12 +21,6 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
-    ## https://flox.dev/docs/install-flox/install/#__tabbed_1_5
-    flox.url = "github:flox/flox/latest";
-
-    # https://nixidy.dev/user_guide/getting_started/
-    nixidy.url = "github:arnarg/nixidy";
-
     # vscode-server
     nixos-vscode-server.url = "github:nix-community/nixos-vscode-server";
     nixos-vscode-server.flake = false;
@@ -38,6 +32,11 @@
     # AI Tools
     llm-agents.url = "github:numtide/llm-agents.nix";
     claude-desktop.url = "github:aaddrick/claude-desktop-debian";
+
+    # OpenCode plugin that delegates to Claude Code CLI as the AI provider
+    # https://github.com/unixfox/opencode-claude-code-plugin
+    opencode-claude-code-plugin.url = "github:unixfox/opencode-claude-code-plugin";
+    opencode-claude-code-plugin.flake = false;
 
     # https://github.com/spacedriveapp/spacebot
     spacebot.url = "github:yjpark/spacebot/fix/frontend-node-modules-hash";
@@ -69,10 +68,19 @@
     xremap-flake.url = "github:xremap/nix-flake";
   };
 
-  # Wired using https://nixos-unified.org/autowiring.html
   outputs = inputs:
-    inputs.nixos-unified.lib.mkFlake {
-      inputs = inputs // { autowire = inputs.jig.lib.autowire; };
-      root = ./.;
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
+      _module.args = {
+        # Make autowire available as a top-level arg in flake-parts modules
+        flakeInputs = inputs // { autowire = inputs.jig.lib.autowire; };
+      };
+      imports = [
+        ./flake/toplevel.nix
+        ./flake/nixos-configs.nix
+        ./flake/home-configs.nix
+        ./flake/activate-home.nix
+        ./flake/docs.nix
+      ];
     };
 }
