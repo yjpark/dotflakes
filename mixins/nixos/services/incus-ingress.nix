@@ -4,10 +4,11 @@ let
   # Each entry needs a static IP assigned via:
   #   incus config device override <name> eth0 ipv4.address=<ip>
   ingressContainers = [
+    { name = "onecli"; ip = "10.100.0.2"; }
+    { name = "searxng"; ip = "10.100.0.3"; }
     { name = "yolo"; ip = "10.100.0.100"; }
     { name = "spacebot"; ip = "10.100.0.101"; }
     { name = "hermes"; ip = "10.100.0.102"; }
-    { name = "searxng"; ip = "10.100.0.3"; }
   ];
 
   # Domain for LAN-facing ingress (host-level Caddy).
