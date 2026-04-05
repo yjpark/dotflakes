@@ -66,4 +66,7 @@ in {
     start-cosmic-ext-niri
     cosmic-ext-alternative-startup
   ];
+  security.pam.services.swaylock = {
+    enable = true;
+  };
 }
