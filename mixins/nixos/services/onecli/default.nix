@@ -72,8 +72,8 @@
   # Containers to push the authenticated proxy URL to after seeding.
   agentContainers = [ "yolo" "spacebot" "hermes" ];
 
-  initScript = pkgs.writeShellApplication {
-    name = "onecli-init-ca-and-secrets";
+  reseedScript = pkgs.writeShellApplication {
+    name = "onecli-reseed";
     runtimeInputs = with pkgs; [ curl gnugrep coreutils jq incus gnused ];
     text = ''
       SECRETS_FILE="${config.sops.secrets."onecli-secrets".path}"
@@ -203,18 +203,7 @@ in {
     format = "binary";
   };
 
-  # Maintenance scripts (onecli-push-ca, onecli-list-secrets, etc.) co-located here
+  # Maintenance scripts (onecli-push-ca, onecli-list-secrets, onecli-reseed, etc.) co-located here
   environment.systemPackages =
-    flake.inputs.autowire.gatherScriptPackages_bash pkgs ./.;
-
-  systemd.services.onecli-init-ca-and-secrets = {
-    description = "Seed API secrets into OneCLI and push CA + proxy auth to containers";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "incus.service" "network-online.target" ];
-    wants = [ "network-online.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${initScript}/bin/onecli-init-ca-and-secrets";
-    };
-  };
+    [ reseedScript ] ++ flake.inputs.autowire.gatherScriptPackages_bash pkgs ./.;
 }
