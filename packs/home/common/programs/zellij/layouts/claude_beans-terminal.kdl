@@ -12,8 +12,8 @@ layout {
     }
     tab {
         pane split_direction="vertical" {
-            pane command="claude" size="50%" {
-                args "--dangerously-skip-permissions"
+            pane command="bash" size="50%" {
+                args "-c" "eval \"$(direnv export bash)\" && claude --dangerously-skip-permissions"
             }
             pane stacked=true size="50%" {
                 pane command="bash" {

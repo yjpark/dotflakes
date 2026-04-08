@@ -8,6 +8,9 @@ function zellij_project_name
     end
 end
 
+# Cached project name — updated only on PWD change, not on every command
+set -g __zellij_cached_project ''
+
 # Get unique project names in visual order from the focused tab's layout.
 # Parses pane names (set by zellij_update_panename as "<project> ...") from
 # dump-layout, which lists panes in their visual position order.
@@ -48,7 +51,7 @@ function zellij_update_pane_color
         set -l idx (zellij_project_color_index "$project")
         set -l color_idx (math --scale=0 "$idx + 1")
         set -l color $ZELLIJ_PANE_COLORS[$color_idx]
-        nohup zellij action set-pane-color --bg "$color" >/dev/null 2>&1
+        nohup zellij action set-pane-color --bg "$color" >/dev/null 2>&1 &
     end
 end
 
@@ -67,7 +70,7 @@ function zellij_update_tabname
             # Multiple projects — join with " | "
             set tab_name (string join " | " $projects)
         end
-        nohup zellij action rename-tab "$tab_name" >/dev/null 2>&1
+        nohup zellij action rename-tab "$tab_name" >/dev/null 2>&1 &
     end
 end
 
@@ -75,9 +78,9 @@ function zellij_update_panename
     if set -q ZELLIJ
         set -l project (zellij_project_name)
         if test -n "$argv"
-            nohup zellij action rename-pane "<$project> $argv" >/dev/null 2>&1
+            nohup zellij action rename-pane "<$project> $argv" >/dev/null 2>&1 &
         else
-            nohup zellij action rename-pane "<$project>" >/dev/null 2>&1
+            nohup zellij action rename-pane "<$project>" >/dev/null 2>&1 &
         end
     end
 end
@@ -154,28 +157,30 @@ function zz
     end
 end
 
-# On directory change: rename pane first (so dump-layout sees it), then update tab name
+# On directory change: refresh cache, then update pane/tab
 function zellij_update_on_pwd --on-variable PWD
     if set -q ZELLIJ
+        set -g __zellij_cached_project (zellij_project_name)
         zellij_update_panename
         zellij_update_pane_color
         zellij_update_tabname
     end
 end
 
-# On command execution: only update pane name
+# On command execution: update pane name using cached project (no git/zellij round-trips beyond rename)
 function zellij_update_on_preexec --on-event fish_preexec
-    zellij_update_panename "$argv"
-end
-
-function zellij_cleanup --on-event fish_exit
-    if set -q ZELLIJ
-        zellij_update_tabname
+    if set -q ZELLIJ; and test -n "$__zellij_cached_project"
+        if test -n "$argv"
+            nohup zellij action rename-pane "<$__zellij_cached_project> $argv" >/dev/null 2>&1 &
+        else
+            nohup zellij action rename-pane "<$__zellij_cached_project>" >/dev/null 2>&1 &
+        end
     end
 end
 
 # --- Initialization ---
 if set -q ZELLIJ
+    set -g __zellij_cached_project (zellij_project_name)
     # Rename pane first so dump-layout reflects it when computing tab name
     zellij_update_panename
     zellij_update_pane_color

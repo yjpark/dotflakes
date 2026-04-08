@@ -70,7 +70,7 @@
 
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" ];
+      systems = [ "x86_64-linux" "aarch64-linux" ];
       _module.args = {
         # Make autowire available as a top-level arg in flake-parts modules
         flakeInputs = inputs // { autowire = inputs.jig.lib.autowire; };

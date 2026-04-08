@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
   options = {
@@ -27,6 +28,9 @@
   };
   config = {
     home.username = config.me.username;
-    home.homeDirectory = "/home/${config.me.username}";
+    home.homeDirectory =
+      if pkgs.stdenv.hostPlatform.isDarwin
+      then "/Users/${config.me.username}"
+      else "/home/${config.me.username}";
   };
 }

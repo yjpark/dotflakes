@@ -12,7 +12,7 @@ set repo_root (jj root 2>/dev/null)
 if test -n "$repo_root"
     set vcs jj
 else
-    set repo_root (git rev-parse --show-toplevel 2>/dev/null)
+    set repo_root (git rev-parse --path-format=absolute --git-common-dir 2>/dev/null | string replace -r '/\.git$' '')
     if test -n "$repo_root"
         set vcs git
     else
@@ -52,7 +52,9 @@ switch $vcs
             return 1
         end
     case git
-        git -C "$repo_root" worktree add "$ws_path" -b "$feature"
+        # Try creating a new branch; if it already exists, use the existing one
+        git -C "$repo_root" worktree add "$ws_path" -b "$feature" 2>/dev/null
+        or git -C "$repo_root" worktree add "$ws_path" "$feature"
         if test $status -ne 0
             echo "Failed to create git worktree."
             return 1
