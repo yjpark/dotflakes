@@ -7,8 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/yj/.claude/hooks/rtk-rewrite.sh",
-            "refreshInterval": 60
+            "command": "/home/yj/.claude/hooks/rtk-rewrite.sh"
           }
         ]
       }
@@ -16,7 +15,8 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "ccline"
+    "command": "ccline",
+    "refreshInterval": 60
   },
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true
