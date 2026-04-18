@@ -31,7 +31,7 @@
 
     # AI Tools
     llm-agents.url = "github:numtide/llm-agents.nix";
-    claude-desktop.url = "github:aaddrick/claude-desktop-debian";
+    claude-desktop.url = "github:aaddrick/claude-desktop-debian/218934d14dd19637520a000bd807cb8db3e074cd"; # pinned: newer versions have node-pty permission bug
 
     # OpenCode plugin that delegates to Claude Code CLI as the AI provider
     # https://github.com/unixfox/opencode-claude-code-plugin
