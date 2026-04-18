@@ -1,0 +1,29 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="file:~/.config/zellij/plugins/tab-bar.wasm" {
+                show_tab_indices true
+            }
+        }
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab {
+        pane split_direction="vertical" {
+            pane command="bash" size="50%" {
+                args "-c" "eval \"$(direnv export bash)\" && claude --dangerously-skip-permissions"
+            }
+            pane stacked=true size="50%" {
+                pane command="bash" {
+                    args "-c" "eval \"$(direnv export bash)\" && exec beans-serve --cors-origin \"*\" --port $(find-free-tcp-port)"
+                }
+                pane command="bash" {
+                    args "-c" "eval \"$(direnv export bash)\" && exec bacon claude-diagnostics"
+                }
+                pane expanded=true
+            }
+        }
+    }
+}
