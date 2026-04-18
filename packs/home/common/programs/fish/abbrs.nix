@@ -32,6 +32,7 @@
     lg = "lazygit";
     p = "podman";
     pp = "procs";
+    r = "cargo";
     s = "shadowenv";
     sg = "ast-grep";
     sp = "sync-pass";
