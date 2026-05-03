@@ -12,8 +12,8 @@
     settings = {
       global = {
         workgroup = "WORKGROUP";
-        "server string" = "alienware-13";
-        "netbios name" = "alienware-13";
+        "server string" = "a13";
+        "netbios name" = "a13";
         security = "user";
         #use sendfile = yes
         #max protocol = smb2
