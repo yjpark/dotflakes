@@ -3,6 +3,7 @@
   services.firewalld.zones.lan = {
     interfaces = [ "eth0" ];
     sources = [ { address = "10.0.0.0/16"; } ];
+    protocols = [ "icmp" ];
     ports = [
       { port = 80; protocol = "tcp"; }
       { port = 443; protocol = "tcp"; }
