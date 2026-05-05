@@ -8,4 +8,6 @@
   networking.extraHosts = ''
     127.0.0.1   proxy
   '';
+
+  services.firewalld.zones.lan.interfaces = [ "wlp7s0" "eno1" ];
 }
