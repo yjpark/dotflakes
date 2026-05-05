@@ -11,4 +11,5 @@
     ];
   };
   services.firewalld.zones.public.services = [ "zerotierone" ];
+  services.firewalld.zones.trusted.sources = [ { address = "172.22.0.0/16"; } ];
 }
