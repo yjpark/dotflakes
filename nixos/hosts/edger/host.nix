@@ -9,5 +9,5 @@
     127.0.0.1   proxy
   '';
 
-  services.firewalld.zones.lan.interfaces = [ "wlp36s0" ];
+  services.firewalld.zones.lan.interfaces = [ "wlp36s0" "enp37s0" ];
 }
