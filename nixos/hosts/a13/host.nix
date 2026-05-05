@@ -10,4 +10,5 @@
   '';
 
   # services.onedrive.enable = true;
+  services.firewalld.zones.lan.interfaces = [ "wlp1s0" "enp2s0" ];
 }
