@@ -3,6 +3,10 @@
     enable = true;
     role = "server";
   };
+  services.firewalld.zones.trusted.sources = [
+    { address = "10.42.0.0/16"; }
+    { address = "10.43.0.0/16"; }
+  ];
   services.firewalld.services.k3s = {
     ports = [
       { port = 6443; protocol = "tcp"; }
