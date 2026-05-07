@@ -1,5 +1,8 @@
-{flake, ...}: {
+{flake, pkgs, ...}: {
   imports = [
     (flake.inputs.self + /packs/home/common)
-  ] ++ (flake.inputs.autowire.gatherImportsRecursively ./.);
+    ./common
+  ] ++ (pkgs.lib.optionals pkgs.stdenv.isLinux
+    (flake.inputs.autowire.gatherImportsRecursively ./linux)
+  );
 }
