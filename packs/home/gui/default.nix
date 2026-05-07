@@ -1,7 +1,7 @@
-{flake, pkgs, ...}: {
+{flake, lib, ...}: {
   imports = [
     ./common
-  ] ++ (pkgs.lib.optionals pkgs.stdenv.isLinux
+  ] ++ (lib.optionals (builtins.match ".*-linux" builtins.currentSystem != null)
     (flake.inputs.autowire.gatherImportsRecursively ./linux)
   );
 }
