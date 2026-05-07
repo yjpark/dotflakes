@@ -2,13 +2,15 @@
 # Generates username@host entries from mixins/home/hosts/ and mixins/home/containers/
 { inputs, lib, flakeInputs, ... }:
 let
-  specialArgs = {
+  mkSpecialArgs = currentSystem: {
+    inherit currentSystem;
     flake = { inputs = flakeInputs; };
   };
 
   mkHomeConfigs = { baseConfigPath, mixinDir, username }:
     pkgs:
     let
+      currentSystem = pkgs.stdenv.hostPlatform.system;
       entries = builtins.readDir (inputs.self + mixinDir);
       hosts = map (name:
         if entries.${name} == "regular" then lib.removeSuffix ".nix" name else name
@@ -23,14 +25,14 @@ let
         lib.nameValuePair "${username}@${host}"
           (inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            extraSpecialArgs = specialArgs;
+            extraSpecialArgs = mkSpecialArgs currentSystem;
             modules = [ (mkHostModule host) ];
           })
       ) hosts);
       fallback = {
         ${username} = inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = specialArgs;
+          extraSpecialArgs = mkSpecialArgs currentSystem;
           modules = [ (inputs.self + baseConfigPath) ];
         };
       };
