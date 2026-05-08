@@ -1,4 +1,4 @@
-{ flake, lib, ... }:
+{ flake, lib, pkgs, ... }:
 let
   inherit (flake) inputs;
 in {
@@ -7,6 +7,9 @@ in {
   home-manager = {
     useGlobalPkgs = lib.mkForce false;
     useUserPackages = lib.mkForce false;
-    extraSpecialArgs = { flake = { inherit inputs; }; };
+    extraSpecialArgs = {
+      flake = { inherit inputs; };
+      currentSystem = pkgs.stdenv.hostPlatform.system;
+    };
   };
-} 
+}
