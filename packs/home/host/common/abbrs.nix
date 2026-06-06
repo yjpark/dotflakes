@@ -5,6 +5,7 @@
     co = "claude --allow-dangerously-skip-permissions --model opus";
     ch = "claude --allow-dangerously-skip-permissions --model haiku";
     cn = "claude --allow-dangerously-skip-permissions --model opusplan";
+    x = "codex";
   };
 }
 

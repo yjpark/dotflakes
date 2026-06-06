@@ -75,6 +75,9 @@ in
     llm-agents.claude-code
     llm-agents.agent-browser
     llm-agents.rtk
+    llm-agents.opencode
+    llm-agents.codex
+
     /*
     llm-agents.hermes-agent
     llm-agents.gemini-cli
