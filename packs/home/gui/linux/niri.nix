@@ -3,6 +3,14 @@
   pkgs,
   ...
 }: {
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 48;
+    gtk.enable = true;
+    x11.enable = true;
+  };
+
   home.packages = with pkgs; [
     flake.inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri
     nirius

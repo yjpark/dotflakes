@@ -16,6 +16,7 @@
     dysk # df alternative
     procs # ps alternative
     pv # add progress bar for console apps
+    witr # ps and port utils
 
     # Network utils
     axel
