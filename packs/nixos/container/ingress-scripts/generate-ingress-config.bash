@@ -100,6 +100,29 @@ cat > "$HUB_CONF" <<HUBEOF
 HUBEOF
 chmod 644 "$HUB_CONF"
 
+# MCP OAuth callback bridge (see mcp-oauth-bridge.nix / bean flakes-wq6s).
+# Claude Code's MCP OAuth callback listener binds 127.0.0.1:<port> only, but the
+# callback arrives from a host-side forwarder on the container's eth0 IP. A
+# socket bound to lo won't serve a connection arriving on eth0, so bridge
+# <container-ip>:<port> -> 127.0.0.1:<port>. Bind the container IP only (not
+# 0.0.0.0) so CC's own 127.0.0.1:<port> listener is left free — CC's env port
+# has no availability check, so a 0.0.0.0 listener here would steal it.
+MCP_PORT="${MCP_OAUTH_CALLBACK_PORT:-3118}"
+MCP_CONF="/var/lib/caddy/mcp-oauth.conf"
+# `|| true`: this script runs under `set -euo pipefail` (writeShellApplication),
+# so a failing pipeline in the assignment (e.g. no default route during early
+# boot) would otherwise abort the whole generator before the caddy reload.
+CONTAINER_IP=$(ip -4 route get 1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}') || true
+if [[ -n "$CONTAINER_IP" ]]; then
+  cat > "$MCP_CONF" <<MCPEOF
+  http://:${MCP_PORT} {
+    bind ${CONTAINER_IP}
+    reverse_proxy 127.0.0.1:${MCP_PORT}
+  }
+MCPEOF
+  chmod 644 "$MCP_CONF"
+fi
+
 systemctl reload caddy.service 2>/dev/null || systemctl restart caddy.service
 
 # Update combined CA bundle so wget/curl trust Caddy's internal CA
