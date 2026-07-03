@@ -1,26 +1,41 @@
 ---
 # flakes-mqe9
-title: 'MCP OAuth bridge: Mac-side forwarder + Phase 2 + e2e (external)'
-status: draft
-type: task
+title: 'MCP OAuth: browser-open + callback forwarding (desktop + WSL)'
+status: todo
+type: feature
+priority: normal
 tags:
     - mcp
     - containers
 created_at: 2026-06-30T00:19:08Z
-updated_at: 2026-06-30T00:19:08Z
+updated_at: 2026-07-03T00:21:01Z
 parent: flakes-qbvb
 ---
 
-External (macOS host) half of the cross-container MCP OAuth bridge. The in-repo container half is done in flakes-wq6s (env pin + Caddy bridge site `<container-ip>:3118 -> 127.0.0.1:3118`). This bean covers the parts that live on the **Mac host / lima VM**, outside this NixOS flakes repo, plus end-to-end verification.
+Completes the MCP OAuth bridge: the container-side callback relay is done (flakes-wq6s). This bean covers **opening the authorize URL where the human actually is** and **routing the callback back**, for the two real access patterns (there is no Mac/lima in this setup — superseding the original external-Mac framing).
 
-## Tasks
-- [ ] **Mac launchd socat forwarder:** relay `localhost:3118` (where the Mac browser opens the OAuth callback) → `<container-ip>:3118` over the existing host→VM→container route (rides the vzNAT VM IP from the lima/incus routing setup, flakes-1huh).
-- [ ] **Phase 2 — auto-open authorize URL (zero-touch):** Mac launchd listener that runs `open <url>`; container sets `BROWSER` to a script that ships the URL to it (+ an `xdg-open` shim). Restrict by **shared secret, NOT subnet** — the bridge NATs container traffic so the Mac sees the VM's source IP, not the container's.
-- [ ] **End-to-end verification:** run an MCP OAuth flow from Claude Code inside the container; confirm the callback completes without manual URL-copy/curl.
+## Access patterns
+- **Case 1 — host Linux desktop → `incus exec` → container.** Browser = host `xdg-open`. Callback `localhost:3118` = the host.
+- **Case 2 — Windows → WSL (Ubuntu, home-manager-managed by this repo) → `ssh host` → `incus exec` → container.** Browser = Windows default browser, opened from WSL via `wslview`/`cmd.exe /c start`. Callback `localhost:3118` = Windows → WSL localhost forwarding.
 
-## Notes / gotchas (verified against the CC binary)
-- CC callback port default is a random ephemeral port; `MCP_OAUTH_CALLBACK_PORT` wins unconditionally (no availability check) → pinning to 3118 is mandatory (done container-side in flakes-wq6s).
-- CC listener binds `127.0.0.1` only; redirect host/path hardcoded to `http://localhost:<port>/callback` (only the port is configurable).
-- The container Caddy bridge binds the container IP only (not 0.0.0.0) so CC's own `127.0.0.1:3118` stays free.
-- The bridge `mcp-oauth.conf` is (re)written whenever `ingress-sync` runs; ensure ingress-sync has run after boot before relying on the bridge.
-- **Ubuntu containers:** the in-repo CC-side env pin (`environment.variables`) is NixOS-only. On Ubuntu containers the Caddy bridge still works (script falls back to port 3118), but CC's `MCP_OAUTH_CALLBACK_PORT` must be pinned via the Ubuntu user env separately if those containers run the OAuth flow.
+## Unification
+The container always reaches the host at its **bridge gateway (`10.100.0.1`)**, self-discoverable inside the container via `ip -4 route show default` (must be derived *in the container*, not the attach wrapper — on the host `default` is the uplink). No hardcoded IPs; optional `me.hostBridgeIp` override for odd setups. Host-side listeners bind the incus bridge address (`incus network get incusbr0 ipv4.address`).
+
+| | Case 1 (host desktop) | Case 2 (Windows→WSL→SSH) |
+|---|---|---|
+| Detect (attach) | no `SSH_CONNECTION`, `WAYLAND_DISPLAY` set | `SSH_CONNECTION` set |
+| Open URL | container→`gateway:OPEN`→host `xdg-open` listener | container→`gateway:OPEN`→host `ssh -R`→WSL listener→`wslview` |
+| Callback | host `127.0.0.1:3118 → container:3118` (socat/systemd-proxy) | WSL `ssh -L 3118:<container>:3118` |
+
+## Phasing
+- **Phase A (universal, no detection):** container `$BROWSER` (+ `xdg-open` shim) writes the URL to the human's TTY as **OSC 8 hyperlink + OSC 52 clipboard + plain text + bell**. Lands on whichever terminal the human is at (host desktop or Windows Terminal via WSL/SSH), survives zellij detach/reattach, one click. → child bean (implemented first).
+- **Phase B (zero-click):** Case 1 host `systemd --user` `xdg-open` listener on the bridge IP; Case 2 WSL `wslview` listener + `ssh -R` back-tunnel + host sshd `GatewayPorts clientspecified`. Attach-time detection injects `BROWSER_ROUTE`; OSC stays the fallback for moved/stale sessions.
+
+## Callback forwards (needed even in Phase A)
+- Case 1: host socat/systemd-socket-proxyd `127.0.0.1:3118 → 10.100.0.100:3118`.
+- Case 2: WSL `programs.ssh.matchBlocks.<host>` `LocalForward 3118 10.100.0.100:3118` (Windows localhost:3118 → WSL → host → container Caddy bridge → CC).
+
+## Children
+- Phase A — container browser-open script (OSC).
+- Host-desktop side — callback socat + Phase B xdg-open listener.
+- WSL side — callback LocalForward + Phase B wslview auto-open + host sshd GatewayPorts.
