@@ -17,6 +17,7 @@
     procs # ps alternative
     pv # add progress bar for console apps
     witr # ps and port utils
+    htop
 
     # Network utils
     axel
@@ -25,6 +26,7 @@
     inetutils
     dig
     doggo     # dig alternative
+    rustnet
 
     # Secret
     age
