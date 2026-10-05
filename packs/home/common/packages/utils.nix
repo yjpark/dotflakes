@@ -26,7 +26,7 @@
     inetutils
     dig
     doggo     # dig alternative
-    rustnet
+    # rustnet
 
     # Secret
     age
