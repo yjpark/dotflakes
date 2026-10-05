@@ -54,6 +54,10 @@
       # Custom dnsmasq DNS port used by host ingress and containers
       { port = 5354; protocol = "tcp"; }
       { port = 5354; protocol = "udp"; }
+      # clash NodePort (k3s service `clash` in ns `services`, 31102 → 1102), so
+      # containers can use the host proxy for internet egress. Consumed by
+      # mixins/nixos/services/egress-proxy.nix.
+      { port = 31102; protocol = "tcp"; }
     ];
   };
 

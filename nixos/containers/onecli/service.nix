@@ -42,10 +42,15 @@
     extraOptions = [ "--network=host" ];
   };
 
-  # Start onecli after postgres is ready; don't restart on nixos-rebuild switch
+  # Start onecli after postgres is ready; don't restart on nixos-rebuild switch.
+  # Also wait for mihomo (mixins/nixos/services/egress-proxy.nix): the nftables
+  # REDIRECT is installed before network-pre.target, so until mihomo is
+  # listening every outbound connection — including the image pull — is
+  # redirected to a closed port and refused.
   systemd.services.podman-onecli = {
-    after = [ "postgresql.service" ];
+    after = [ "postgresql.service" "mihomo.service" ];
     requires = [ "postgresql.service" ];
+    wants = [ "mihomo.service" ];
     restartIfChanged = false;
   };
 

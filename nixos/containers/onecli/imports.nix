@@ -10,6 +10,9 @@ in {
     (self + /packs/nixos/container/firewall.nix)
     (self + /packs/nixos/container/nix-ld.nix)
     (self + /packs/nixos/container/yj.nix)
+    # OneCLI's gateway dials upstream directly, so its egress has to be
+    # captured below the application and pushed through the host clash proxy.
+    (self + /mixins/nixos/services/egress-proxy.nix)
     (self + /mixins/nixos/versions/26.05.nix)
   ];
 }
