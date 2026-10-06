@@ -5,7 +5,7 @@ status: in-progress
 type: feature
 priority: normal
 created_at: 2026-10-05T14:21:06Z
-updated_at: 2026-10-06T05:48:30Z
+updated_at: 2026-10-06T06:00:12Z
 parent: flakes-qbvb
 blocked_by:
     - flakes-dw38
@@ -353,6 +353,73 @@ Then check `systemctl cat nix-daemon | grep proxy` shows only 21102.
 `reset-proxy_nix-daemon` used to do this and is being deleted, so the step must
 happen before or during the switch.
 
+## Switched pc — verification results
+
+Switched on 2026-10-06 and verified in place.
+
+**Working:**
+
+| check | result |
+|---|---|
+| mihomo.service | active, all four ports listening (21100/21101/21102/21109) |
+| geodata | `geoip.dat` 262965 bytes installed from the store by `ExecStartPre` |
+| subscriptions | both `shadowsocks.yaml` and `okcloud.yaml` fetched and **persisted** in the state directory |
+| sops | pc host key imported, both secrets and the rendered `clash.yaml` applied |
+| proxy | `example.com` 200, `github.com` 200, `api.anthropic.com` 403 (auth, so reachable) |
+| GEOIP,CN | `www.baidu.com` 200 via DIRECT |
+| dashboard | `http://127.0.0.1:21109/ui/` returns 200 |
+| firewall | lan sources narrowed to `10.0.1.0/24`; `clash` in public; incus ports `5354/tcp 21102/tcp 5354/udp` |
+| nix-daemon | declarative env active after clearing the stale `/run` drop-in |
+| substituters stay direct | `cache.nixos.org` download succeeded with **no** corresponding entry in mihomo's log |
+| FOD proxy propagation | proven: a fixed-output derivation whose hash only matches the string `http://127.0.0.1:21102` built successfully, so the daemon's env does reach FOD builders |
+| k3s fallback | the k3s clash pod **survived** the k3s restart (same pod, no new restart count), so the old proxy remained available throughout |
+
+The stale `/run/systemd/system/nix-daemon.service.d/override.conf` was removed
+as planned; `nix-daemon` now shows only the 21102 environment.
+
+## Two issues found while verifying
+
+### 1. firewalld reload was broken — fixed
+
+The switch reported `Failed to reload firewalld.service`, and the new firewall
+config did not apply: the lan zone still showed `10.0.0.0/16` and `clash` was
+absent from the public zone.
+
+Cause: the unit ends up with **two** `ExecReload=` lines — firewalld's own
+packaged `/bin/kill -HUP $MAINPID`, which does not exist on NixOS, plus the
+correct coreutils path the nixpkgs module adds as a drop-in. systemd appends
+Exec* directives rather than replacing them, so the broken one runs first and
+fails the whole reload with 203/EXEC.
+
+This is an upstream nixpkgs bug: the module sets
+`serviceConfig.ExecReload` to a bare string instead of a list beginning with
+`""`. It means **no firewalld config change in this repo has ever applied on
+switch** without a manual `systemctl restart firewalld` — including the
+`reloadTriggers` wiring already present in
+`packs/nixos/common/settings/firewalld.nix`, which was added for exactly this
+symptom and never worked.
+
+Fixed locally in that file with `ExecReload = lib.mkForce [ "" "<coreutils>/bin/kill -HUP $MAINPID" ]`.
+Verified: `systemctl reload firewalld` now logs `Reloaded firewalld` and exits 0.
+
+### 2. Provider fetch races the proxy group at startup
+
+mihomo's first `shadowsocks` fetch failed with a TLS handshake timeout because
+`MATCH,Shadowsocks` routed the subscription request through a group whose
+provider was not loaded yet (logged as `Shadowsocks[COMPATIBLE]`). It recovered
+on retry, but startup is non-deterministic as a result.
+
+Both subscription hosts are reachable directly from CN — checked before
+switching, 404 and 403 on the bare paths, i.e. TLS completes. So explicit
+DIRECT rules for the two subscription domains ahead of `MATCH` would make
+startup deterministic. Worth doing, tracked as a follow-up task below.
+
+### Incidental
+
+`cache.numtide.com` — newly enabled for llm-agents — does go through the proxy,
+since it is not in `no_proxy`. Probably what is wanted for a non-CN cache, but
+noting it in case it should be direct.
+
 ## Tasks
 
 - [ ] Inspect edger's k3s: confirm its clash Deployment/Service/ConfigMap shape, whether it has yacd, and what else runs there
@@ -360,10 +427,12 @@ happen before or during the switch.
 - [x] Port `proxy-groups` and `rules` from the ConfigMap into the Nix-authored config
 - [x] Create `packs/nixos/host/clash/default.nix` (services.mihomo + sops.templates + firewalld, ports 21100/21101/21102/21109, metacubexd webui, no controller secret)
 - [x] Ship GeoIP data from the store instead of letting mihomo download it
-- [ ] Switch pc, then verify the proxy and the dashboard work while the k3s clash is still running
-- [ ] Clear the stale `/run/systemd/system/*.service.d` drop-ins (see Migration hazard)
+- [x] Switch pc, then verify the proxy and the dashboard work while the k3s clash is still running
+- [x] Clear the stale `/run/systemd/system/*.service.d` drop-ins (see Migration hazard)
 - [x] Create `mixins/nixos/cn/proxy-env.nix` for nix-daemon / k3s / containerd, with `after = mihomo.service` on the latter two
-- [ ] Verify `no_proxy` keeps substituter traffic direct (compare download speed before/after)
+- [x] Verify `no_proxy` keeps substituter traffic direct
+- [x] Fix the firewalld ExecReload bug that stopped firewall changes applying on switch
+- [ ] Add explicit DIRECT rules for the two subscription domains so provider fetch does not race the proxy group at startup
 - [x] Flip `egress-proxy.nix` proxyPort to 21102; the `incus.nix` hole is reverted and now owned by the clash pack
 - [x] Update the `set-proxy-*` fish aliases
 - [x] Delete `packs/home/host/common/scripts/nixos/proxy/`
