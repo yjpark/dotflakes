@@ -1,11 +1,11 @@
 ---
 # flakes-k0sx
 title: Replace k3s clash with declarative host mihomo service
-status: draft
+status: in-progress
 type: feature
 priority: normal
 created_at: 2026-10-05T14:21:06Z
-updated_at: 2026-10-06T03:20:24Z
+updated_at: 2026-10-06T05:48:30Z
 parent: flakes-qbvb
 blocked_by:
     - flakes-dw38
@@ -233,18 +233,140 @@ Per-host unknowns to check while implementing:
 - whether edger's k3s hosts anything else (pc's only other workload is minio,
   tracked in [[flakes-jspq]])
 
+## Corrections to the original spec
+
+Two things in this bean's spec were wrong, found by reading the live ConfigMap:
+
+- **There are two subscription providers**, `shadowsocks` and `okcloud`, not
+  one. Each has its own URL, so there are two secrets. Their `health-check`
+  URLs are both `http://www.gstatic.com/generate_204` — not secret, so they
+  stay in the Nix source.
+- **The rules do use `GEOIP,CN`.** The spec said to keep the config free of
+  GEOIP/GEOSITE rules, because matching them makes mihomo download geodata
+  which it cannot do before the proxy works. The constraint was real but the
+  conclusion was not: the rule has to stay, so the geodata ships from the store
+  instead.
+
+## Geodata, and the bootstrap problem it was hiding
+
+The k3s pod's working directory held `geoip.dat` (19M), `geoip.metadb` (9M) and
+`geosite.dat` (4M), all downloaded — into an **ephemeral** filesystem with no
+PVC, so a pod restart re-fetched ~32M through the very proxy it was starting up
+to provide.
+
+`GEOIP,CN` is the only geo rule, so `v2ray-geoip`'s
+`geoip-only-cn-private.dat` subset suffices at **260K**, against 23M for the
+full `geoip.dat` or 8.1M for a dbip mmdb. Installed from the store by an
+`ExecStartPre`, with `geo-auto-update: false`, so nothing is fetched at runtime
+and the data tracks nixpkgs.
+
+Verified against mihomo 1.19.23: `Load GeoIP rule: cn` →
+`Finished initial GeoIP rule cn => DIRECT, records: 16482`, no download
+attempted. Routing then checked both ways through mihomo's HTTP proxy —
+`www.baidu.com` (CN) returned 200 via DIRECT, `example.com` matched `MATCH` and
+went to the upstream proxy.
+
+## Summary of Changes
+
+### `packs/nixos/host/clash/default.nix` (new)
+
+Autowired into every host.
+
+- `services.mihomo` on 21100 (mixed) / 21101 (socks) / 21102 (http) / 21109
+  (controller), leaving clash-verge's 1100-1109 untouched.
+- `webui = pkgs.metacubexd` — dashboard served from the controller port, same
+  origin as the API, so no ingress and no mixed-content problem. metacubexd
+  ships `index.html` at its package root so the path works as-is. (`yacd` is
+  not in nixpkgs.)
+- Config rendered via `sops.templates."clash.yaml"` with the provider URLs from
+  `sops.placeholder`, and `restartUnits = [ "mihomo.service" ]`. Providers,
+  proxy-groups and rules are generated from one `providers` attrset and one
+  rules list.
+- Rules carried over verbatim, including the absence of `no-resolve` on the
+  IP-CIDR rules, so matching behaviour is unchanged.
+- Exposes read-only `clash.httpPort` / `clash.proxyUrl` so host-side consumers
+  do not repeat the port number.
+- firewalld: a `clash` service (all four ports) in the `public` zone, plus only
+  21102 in the `incus` zone, so containers get the proxy and nothing else.
+
+### `packs/nixos/host/clash/secrets/clash.yaml` (new, SOPS)
+
+The two provider URLs, extracted from the live ConfigMap, encrypted to all six
+host age keys. Decrypt round-trip checked.
+
+### `mixins/nixos/cn/proxy-env.nix` (new)
+
+`http_proxy`/`https_proxy`/`all_proxy`/`no_proxy` on `nix-daemon`, and on `k3s`
+and `containerd` behind `lib.mkIf` on their enable flags, the latter two ordered
+after `mihomo.service`. Lowercase names only: curl reads those, Nix propagates
+exactly those into fixed-output derivation builders via `impureEnvVars`, and Go
+falls back to lowercase. `NIX_CURL_FLAGS` dropped — modern Nix ignores it.
+
+`no_proxy` keeps both substituters direct. Note `containerd` is not a separate
+unit on pc (`virtualisation.containerd.enable = false`; k3s embeds its own), so
+that branch is inert there — the old `sync-proxy_containerd` script was
+targeting something that no longer exists.
+
+### Other
+
+- `mixins/nixos/services/egress-proxy.nix`: `proxyPort` 31102 → 21102, with a
+  note on why it stays hardcoded rather than reading `config.clash.httpPort`
+  (the container's configuration does not import the host pack).
+- `packs/nixos/host/incus.nix`: the 31102 hole is reverted — the clash pack owns
+  that rule now, so the port number lives in one place.
+- `aliases.nix`: `set-proxy-trojan` → `set-proxy-clash` on 21102, and
+  `set-proxy-edger` uses `edger.yjpark.zerotier` instead of a raw IP.
+- Deleted `packs/home/host/common/scripts/nixos/proxy/` (nine scripts).
+
+## Verification
+
+- All five host configs plus the `onecli` container dry-run build.
+- The rendered config passes `mihomo -t` with placeholders substituted,
+  including the GeoIP load.
+- The `ExecStartPre` was checked against the real sandbox via `systemd-run` with
+  `DynamicUser=yes`, `StateDirectory=`, `ProtectSystem=strict` and
+  `PrivateUsers=yes` — the file lands in the state directory.
+- `onecli`'s generated config points at `10.100.0.1:21102`.
+- firewalld: `clash` in `public`; `incus` zone ports are 21102 plus the
+  pre-existing 5354 pair.
+
+Not verified, because it needs a switch: that mihomo actually starts, fetches
+the subscriptions, and serves the dashboard.
+
+## Migration hazard: stale /run overrides
+
+`/run/systemd/system/nix-daemon.service.d/override.conf` exists on pc right
+now, written by the old `sync-proxy_nix-daemon`, pointing at `localhost:31102`.
+**`/run` drop-ins outrank `/etc` ones**, so it will shadow the new declarative
+environment until removed or the host reboots — and it names a port that stops
+existing once the k3s clash is deleted.
+
+Clear it during the switch, before deleting the k3s objects:
+
+```
+sudo rm -rf /run/systemd/system/{nix-daemon,k3s,containerd}.service.d
+sudo systemctl daemon-reload
+sudo systemctl restart nix-daemon
+```
+
+Then check `systemctl cat nix-daemon | grep proxy` shows only 21102.
+`reset-proxy_nix-daemon` used to do this and is being deleted, so the step must
+happen before or during the switch.
+
 ## Tasks
 
 - [ ] Inspect edger's k3s: confirm its clash Deployment/Service/ConfigMap shape, whether it has yacd, and what else runs there
-- [ ] Extract the subscription URL from the live `clash-config` ConfigMap into `packs/nixos/host/clash/secrets/clash.txt` (SOPS)
-- [ ] Port `proxy-groups` and `rules` from the ConfigMap into the Nix-authored config
-- [ ] Create `packs/nixos/host/clash/default.nix` (services.mihomo + sops.templates + firewalld, ports 21100/21101/21102/21109, metacubexd webui, no controller secret)
-- [ ] Verify the proxy and the dashboard work on pc while the k3s clash is still running
-- [ ] Create `mixins/nixos/cn/proxy-env.nix` for nix-daemon / k3s / containerd, with `after = mihomo.service` on the latter two
+- [x] Extract the subscription URLs (two providers) into `packs/nixos/host/clash/secrets/clash.yaml` (SOPS)
+- [x] Port `proxy-groups` and `rules` from the ConfigMap into the Nix-authored config
+- [x] Create `packs/nixos/host/clash/default.nix` (services.mihomo + sops.templates + firewalld, ports 21100/21101/21102/21109, metacubexd webui, no controller secret)
+- [x] Ship GeoIP data from the store instead of letting mihomo download it
+- [ ] Switch pc, then verify the proxy and the dashboard work while the k3s clash is still running
+- [ ] Clear the stale `/run/systemd/system/*.service.d` drop-ins (see Migration hazard)
+- [x] Create `mixins/nixos/cn/proxy-env.nix` for nix-daemon / k3s / containerd, with `after = mihomo.service` on the latter two
 - [ ] Verify `no_proxy` keeps substituter traffic direct (compare download speed before/after)
-- [ ] Flip `egress-proxy.nix` proxyPort and the `incus.nix` firewall port to 21102
-- [ ] Update the `set-proxy-*` fish aliases
-- [ ] Delete `packs/home/host/common/scripts/nixos/proxy/`
+- [x] Flip `egress-proxy.nix` proxyPort to 21102; the `incus.nix` hole is reverted and now owned by the clash pack
+- [x] Update the `set-proxy-*` fish aliases
+- [x] Delete `packs/home/host/common/scripts/nixos/proxy/`
 - [ ] Delete the k3s `clash` and `yacd` objects on **both** pc and edger
 - [ ] Roll out to the remaining hosts (a13, g1, p2) and confirm each one's proxy works
 - [ ] Re-verify the onecli → clash egress chain after the port flip (see [[flakes-i9ao]])

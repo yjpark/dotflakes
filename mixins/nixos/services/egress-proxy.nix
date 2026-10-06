@@ -19,13 +19,14 @@
 # 1.13.0, and the replacement `action: "sniff"` only feeds route-rule matching —
 # verified against sing-box 1.13.5, which still CONNECTs to the original IP.
 let
-  # Host HTTP proxy: the clash NodePort (31102 -> 1102) published by the k3s
-  # service `clash` in namespace `services`. Reached over the incus bridge
+  # Host HTTP proxy: the mihomo service declared in packs/nixos/host/clash,
+  # which also opens this port to the incus zone. Reached over the incus bridge
   # gateway — incusbr0 is 10.100.0.1/24, so the host is 10.100.0.1 from inside
-  # any container. The host side must open this port to the incus zone; see
-  # packs/nixos/host/incus.nix.
+  # any container. Hardcoded rather than read from config.clash.httpPort,
+  # because this module is evaluated in the container's configuration, which
+  # does not import the host pack.
   proxyHost = "10.100.0.1";
-  proxyPort = 31102;
+  proxyPort = 21102;
 
   # Loopback port for mihomo's transparent-redirect listener. mihomo leaves
   # allow-lan off by default and so binds 127.0.0.1 only, which is all a
