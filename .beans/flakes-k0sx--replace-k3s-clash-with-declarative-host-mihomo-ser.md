@@ -5,7 +5,7 @@ status: in-progress
 type: feature
 priority: normal
 created_at: 2026-10-05T14:21:06Z
-updated_at: 2026-10-06T06:00:12Z
+updated_at: 2026-10-06T12:49:24Z
 parent: flakes-qbvb
 blocked_by:
     - flakes-dw38
@@ -420,6 +420,63 @@ startup deterministic. Worth doing, tracked as a follow-up task below.
 since it is not in `no_proxy`. Probably what is wanted for a non-CN cache, but
 noting it in case it should be direct.
 
+## Decision: no DIRECT rules for the subscription domains (task dropped)
+
+The earlier suggestion to add `DOMAIN-SUFFIX,<subscription host>,DIRECT` ahead
+of `MATCH` was wrong, and the objection to it is correct: subscription refreshes
+sometimes need the proxy, and a DIRECT rule would permanently remove that.
+
+The current rules already do the right thing in both directions:
+
+- **Cold start, no cached provider list.** The group holds no proxies yet, so
+  mihomo falls back to its `Compatible` adapter — what the log showed as
+  `Shadowsocks[COMPATIBLE]` — which dials direct. That is the only thing it
+  could do; there is no proxy available to use.
+- **Every later refresh.** Providers are loaded, so the fetch matches
+  `MATCH,Shadowsocks` and goes through the proxy. This is exactly the case worth
+  protecting, and a DIRECT rule would break it.
+
+The "startup race" also turned out not to matter. Verified by restarting
+mihomo: the proxy served traffic **0.24s** after restart, with no provider
+fetch and no error, because `shadowsocks.yaml` and `okcloud.yaml` now persist
+in the state directory. The blocking first fetch only happens on a genuinely
+empty state directory — first start after deploy — and even then it retried and
+succeeded.
+
+That persistence is itself an improvement over the pod, which had no PVC and so
+took the cold path on every single restart.
+
+So the only remaining failure mode is "first ever start **and** the subscription
+host is blocked directly", where a DIRECT rule would make things worse rather
+than better. No change.
+
+## Dashboard access
+
+Served by mihomo itself from the controller port, same origin as the API, so it
+needs no ingress and has no mixed-content problem:
+
+- `http://pc:21109/ui/` from site 102
+- `http://pc.yjpark.zerotier:21109/ui/` from any site
+
+Verified 200 from loopback, the LAN address and the ZeroTier address. The
+`clash` firewalld service is in the `public` zone, which covers both eno1 and
+ZeroTier. No token is needed — the controller has no secret, as decided.
+
+### Node selection needs attention in the UI
+
+The controller reports `Shadowsocks` with 27 options and `OKCloud` with 35, but
+both selectors default to their provider's **first** entry, which in both cases
+is an information label rather than a server:
+
+- `Shadowsocks` → `有效期2026-11-13, 剩余 81.15 GB` — this one does route;
+  traffic through 21102 works.
+- `OKCloud` → `官网:okyun01.com 如果没有节点请更新软件` — almost certainly not a
+  routable server. Harmless today because `MATCH` points at `Shadowsocks`, but
+  selecting `OKCloud` would fail until a real node is picked.
+
+Selections persist in `cache.db` in the state directory, so choosing nodes in
+the dashboard survives restarts.
+
 ## Tasks
 
 - [ ] Inspect edger's k3s: confirm its clash Deployment/Service/ConfigMap shape, whether it has yacd, and what else runs there
@@ -432,7 +489,7 @@ noting it in case it should be direct.
 - [x] Create `mixins/nixos/cn/proxy-env.nix` for nix-daemon / k3s / containerd, with `after = mihomo.service` on the latter two
 - [x] Verify `no_proxy` keeps substituter traffic direct
 - [x] Fix the firewalld ExecReload bug that stopped firewall changes applying on switch
-- [ ] Add explicit DIRECT rules for the two subscription domains so provider fetch does not race the proxy group at startup
+- [x] Decide on DIRECT rules for the subscription domains — dropped, see Decision below
 - [x] Flip `egress-proxy.nix` proxyPort to 21102; the `incus.nix` hole is reverted and now owned by the clash pack
 - [x] Update the `set-proxy-*` fish aliases
 - [x] Delete `packs/home/host/common/scripts/nixos/proxy/`
