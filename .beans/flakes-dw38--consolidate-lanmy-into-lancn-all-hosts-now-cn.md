@@ -1,11 +1,11 @@
 ---
 # flakes-dw38
 title: 'Restructure lan mixins: per-site LANs plus separate cn concerns'
-status: todo
+status: in-progress
 type: task
 priority: normal
 created_at: 2026-10-05T14:33:09Z
-updated_at: 2026-10-06T03:19:44Z
+updated_at: 2026-10-06T05:27:44Z
 parent: flakes-qbvb
 ---
 
@@ -154,16 +154,90 @@ so deriving it from `mixins/nixos/lan/401` once that exists remains a task.
   declares it as a substituter, and cross-host incus goes to
   `*.yjpark.org:8443` over ZeroTier.
 
+## Summary of Changes
+
+Implemented with a shared module plus per-site data, rather than three
+copy-pasted `firewall.nix`/`hosts.nix` pairs as originally specced. The
+duplication the first sketch would have created is what motivated the change,
+and it is also what makes the a13 samba fix derivable.
+
+### `mixins/nixos/lan/site.nix` (new)
+
+Defines a `site` option set and everything derived from it:
+
+- `site.id` — e.g. `"401"`, also the mixin directory name
+- `site.octet` — third octet of the `10.0.N.0/24` subnet
+- `site.hosts` — host part → names, for this site only
+- `site.prefix` / `site.subnet` — read-only, derived (`"10.0.4."`, `"10.0.4.0/24"`)
+
+From those it generates `networking.extraHosts` (sorted numerically by host
+part, so the output is stable and diffable) and the `services.firewalld.zones.lan`
+definition. Adding a site is now data only.
+
+### `mixins/nixos/lan/{102,401,708}/default.nix` (new)
+
+Each imports `../site.nix` and supplies only its data. No logic.
+
+### `mixins/nixos/cn/` (new)
+
+`mirrors.nix` moved here from `lan/cn/` unchanged. This is where
+[[flakes-k0sx]] adds `proxy-env.nix`.
+
+### Other
+
+- All five hosts import `lan/<site>` + `cn`. `g1`, which previously imported no
+  `lan` mixin at all, now gets `lan/708` + `cn`.
+- `nixos/hosts/a13/samba.nix` uses `${config.site.prefix}` rather than a literal
+  prefix, so moving a13 between sites cannot reintroduce the bug.
+- `packs/nixos/host/zerotier/zerotier.nix`: dropped `x1` (172.22.1.7) and
+  `edger_wifi` (172.22.1.14), with a comment recording that x1 is unmanaged
+  rather than gone.
+- Deleted `mixins/nixos/lan/{cn,my}/` and the `set-proxy-edger_lan` alias.
+
+## Verification
+
+All five host configs evaluate and dry-run build. Per-host results:
+
+| host | site | lan sources | own-subnet /etc/hosts entries |
+|---|---|---|---|
+| pc | 102 | `10.0.1.0/24` | router, pc, mbp-2012, mbp |
+| a13 | 401 | `10.0.4.0/24` | router, edger, imac, p2, a13, p2_wifi, a13_wifi |
+| edger | 401 | `10.0.4.0/24` | same as a13 |
+| p2 | 401 | `10.0.4.0/24` | same as a13 |
+| g1 | 708 | `10.0.7.0/24` | router, g1 |
+
+- a13's samba renders `hosts allow = 10.0.4. 172.22. 127.0.0.1 localhost`.
+- All five hosts list the TUNA substituter ahead of `cache.nixos.org`.
+
+Diffed against pc's live state, the only host inspectable from here. pc's
+`/etc/hosts` loses `imac`, `p2`, `a13`, `x1`, `g1`, `p2_wifi` and `a13_wifi` at
+`10.0.1.x` — every one of those was **wrong**, pointing at addresses that no
+longer exist at site 102. It keeps `router`, `pc`, `mbp-2012`, `mbp`.
+
+## Note on firewalld zone matching
+
+On pc, `eno1` (its active LAN interface) is currently in the **public** zone,
+not `lan`; only `wlp7s0` is a `lan` interface. LAN traffic therefore reaches the
+`lan` zone by **source** match, which still holds after narrowing to `/24`, so
+the change is safe.
+
+Worth knowing separately: `nixos/hosts/pc/host.nix` declares
+`zones.lan.interfaces = [ "wlp7s0" "eno1" ]`, so after the next switch `eno1`
+joins the `lan` zone and its interface match opens ports 1-65535 to anything on
+that segment regardless of source. That is pre-existing declared behaviour, not
+introduced here, but it means the source narrowing tightens only one of the two
+paths.
+
 ## Tasks
 
-- [ ] Create `mixins/nixos/lan/{102,401,708}/` each with `default.nix`, `firewall.nix` (own `/24`) and `hosts.nix` (own subnet only)
-- [ ] Create `mixins/nixos/cn/` and move `mirrors.nix` into it
-- [ ] Update all five hosts' `imports.nix` to `lan/<site>` + `cn`
-- [ ] Drop `edger_wifi` and `x1` from `hosts.nix` files and from `packs/nixos/host/zerotier/zerotier.nix`
+- [x] Create `mixins/nixos/lan/{102,401,708}/` — implemented as a shared `lan/site.nix` plus per-site data, see Summary of Changes
+- [x] Create `mixins/nixos/cn/` and move `mirrors.nix` into it
+- [x] Update all five hosts' `imports.nix` to `lan/<site>` + `cn`
+- [x] Drop `edger_wifi` and `x1` from `hosts.nix` files and from `packs/nixos/host/zerotier/zerotier.nix`
 - [x] Fix `nixos/hosts/a13/samba.nix` — allow `10.0.4.` and `172.22.` (done ahead of the restructure; still a hardcoded prefix)
-- [ ] Derive a13 samba `hosts allow` from `mixins/nixos/lan/401` instead of the hardcoded prefix
-- [ ] Delete `mixins/nixos/lan/my/` and `mixins/nixos/lan/cn/`
-- [ ] Delete the legacy `set-proxy-edger_lan` alias
-- [ ] Confirm edger/p2 should get the TUNA substituter
-- [ ] Build all five host configs and diff `/etc/hosts` + firewalld zones against the current generations
+- [x] Derive a13 samba `hosts allow` from the site mixin (`config.site.prefix`) instead of the hardcoded prefix
+- [x] Delete `mixins/nixos/lan/my/` and `mixins/nixos/lan/cn/`
+- [x] Delete the legacy `set-proxy-edger_lan` alias
+- [x] Confirm edger/p2 should get the TUNA substituter — all hosts are CN now, so all five get it
+- [x] Build all five host configs and diff `/etc/hosts` + firewalld zones against the current generations
 - [ ] After switching, verify same-site LAN access still works on each host (the firewall narrowed from /16 to /24)

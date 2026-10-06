@@ -6,6 +6,8 @@ in {
     (self + /packs/nixos/host)
     (self + /packs/nixos/gui)
     flake.inputs.sops-nix.nixosModules.sops
+    (self + /mixins/nixos/lan/708)
+    (self + /mixins/nixos/cn)
     (self + /mixins/nixos/versions/22.05.nix)
     (self + /mixins/nixos/zfs)
     (self + /mixins/nixos/settings/no-sleep.nix)

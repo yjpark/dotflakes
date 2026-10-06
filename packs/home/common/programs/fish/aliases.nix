@@ -10,7 +10,6 @@
     set-proxy-trojan = "set-proxy 127.0.0.1 31102";
     set-proxy-mitm = "set-proxy 127.0.0.1 1111";
     set-proxy-edger = "set-proxy 172.22.1.2 31102";
-    set-proxy-edger_lan = "set-proxy 10.0.1.2 31102";
     show-openai = "env | grep OPENAI";
     serera = "uvx --from git+https://github.com/oraios/serena serena";
     show-listen-tcp-ports = "ss -tlnp";

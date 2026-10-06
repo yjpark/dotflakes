@@ -8,7 +8,8 @@ in {
     flake.inputs.sops-nix.nixosModules.sops
     (self + /mixins/nixos/versions/22.05.nix)
     (self + /mixins/nixos/ext4)
-    (self + /mixins/nixos/lan/my)
+    (self + /mixins/nixos/lan/401)
+    (self + /mixins/nixos/cn)
     (self + /mixins/nixos/services/nix-serve.nix)
     (self + /mixins/nixos/services/airplay.nix)
     (self + /mixins/nixos/services/incus-ingress.nix)
