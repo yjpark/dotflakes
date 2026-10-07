@@ -2,10 +2,10 @@
 # Proxy environment for the daemons that fetch from the internet on their own
 # behalf, rather than through a user's shell.
 #
-# Replaces six imperative scripts — sync-/reset-/show-proxy_{nix-daemon,k3s,
-# containerd} — which wrote /run/systemd/system/<svc>.service.d/override.conf
-# from whatever happened to be set in the invoking shell and then restarted the
-# service. Living under /run, they evaporated on every reboot.
+# Replaces imperative sync-/reset-/show-proxy_* scripts, which wrote
+# /run/systemd/system/<svc>.service.d/override.conf from whatever happened to be
+# set in the invoking shell and then restarted the service. Living under /run,
+# they evaporated on every reboot.
 #
 # This lives under cn/ rather than lan/<site> or alongside the clash service
 # because it belongs to "this host is behind the CN firewall", which is
@@ -22,12 +22,12 @@ let
   # the proxy — routing it through clash would be slower and would spend
   # subscription bandwidth on content that does not need it.
   #
-  # The private ranges also cover the k3s pod and service CIDRs (10.42/10.43)
-  # and the incus bridge (10.100.0.0/24), all inside 10.0.0.0/8.
+  # The private ranges also cover the incus bridge (10.100.0.0/24), inside
+  # 10.0.0.0/8.
   #
   # curl has honoured CIDR notation in NO_PROXY since 7.86 — verified here
   # against 8.18 with a dead proxy and a non-matching control — and Go's
-  # httpproxy, which k3s uses, has supported it for longer.
+  # httpproxy has supported it for longer.
   noProxy = lib.concatStringsSep "," [
     "localhost"
     "127.0.0.1"
@@ -59,19 +59,4 @@ in
   # reads this env at start but only uses it at fetch time, so it needs no
   # ordering against mihomo.
   systemd.services.nix-daemon.environment = env;
-
-  # k3s and containerd pull images. Ordering after mihomo is safe now that the
-  # proxy is a plain systemd unit with nothing to pull itself — that
-  # circularity is precisely what made this imperative in the first place.
-  systemd.services.k3s = lib.mkIf config.services.k3s.enable {
-    environment = env;
-    after = [ "mihomo.service" ];
-    wants = [ "mihomo.service" ];
-  };
-
-  systemd.services.containerd = lib.mkIf config.virtualisation.containerd.enable {
-    environment = env;
-    after = [ "mihomo.service" ];
-    wants = [ "mihomo.service" ];
-  };
 }

@@ -38,7 +38,7 @@ let
       replacement = "$2";
     }
     {
-      # Last cgroup path element: k3s.service, session-3.scope, ...
+      # Last cgroup path element: nix-daemon.service, session-3.scope, ...
       source_labels = [ "cgroup" ];
       regex = "(?:.*/)?([^/]+)";
       target_label = "unit";
@@ -59,7 +59,7 @@ in
 
     # Per-process usage, grouped by (command name, cgroup) so a single exporter
     # answers both "top processes" and "which service / container / pod". The
-    # cgroup covers systemd units, incus containers (lxc.payload.*) and k3s pods.
+    # cgroup covers systemd units and incus containers (lxc.payload.*).
     # vmagent splits the group name into comm/cgroup/unit labels (see
     # processJob). Kernel threads have no cmdline and are not matched; host-wide
     # CPU already comes from node_exporter.

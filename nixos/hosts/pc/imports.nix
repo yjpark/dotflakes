@@ -7,7 +7,6 @@ in {
     (self + /packs/nixos/gui)
     flake.inputs.sops-nix.nixosModules.sops
     (self + /mixins/nixos/versions/24.11.nix)
-    (self + /mixins/nixos/ext4)
     (self + /mixins/nixos/lan/102)
     (self + /mixins/nixos/cn)
     (self + /mixins/nixos/services/monitoring)

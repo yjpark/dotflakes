@@ -124,10 +124,6 @@ let
   };
 in
 {
-  # Disable k3s's bundled Traefik ingress controller when k3s is enabled,
-  # so its iptables DNAT rules don't intercept ports 80/443 before host Caddy.
-  services.k3s.extraFlags = lib.mkIf config.services.k3s.enable [ "--disable=traefik" ];
-
   # dnsmasq on port 5354 for *.incus wildcard DNS resolution.
   # Uses address rules with static IPs — dnsmasq's cname requires the target
   # to be locally known, which forwarded entries are not.

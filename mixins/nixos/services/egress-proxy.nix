@@ -4,8 +4,8 @@
 # Why this exists: OneCLI's gateway dials upstream services directly and has no
 # upstream-proxy support (https://github.com/onecli/onecli/issues/182), so
 # setting HTTPS_PROXY on the OneCLI container does nothing for its egress. On
-# hosts where the internet is only reachable through the clash proxy running in
-# k3s, the gateway therefore cannot reach upstream APIs at all. Fix it below the
+# hosts where the internet is only reachable through the host's clash proxy,
+# the gateway therefore cannot reach upstream APIs at all. Fix it below the
 # application: capture the container's TCP egress with an nftables REDIRECT and
 # hand it to a local mihomo instance that forwards to the host proxy.
 #

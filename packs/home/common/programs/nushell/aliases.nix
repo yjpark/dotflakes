@@ -11,8 +11,6 @@
     ml = "mise tasks";
     jj = "just --justfile ~/.config/justfile --working-directory .";
     jt = "just --justfile ~/projects/edger-dev/templates/justfile";
-    k = "kubectl";
-    kn = "kubens";
     lg = "lazygit";
     l = "ls";
     ll = "ls -l";

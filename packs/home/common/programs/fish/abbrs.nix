@@ -27,8 +27,6 @@
     ml = "mise tasks";
     ju = "jjui";
     jz = "lazyjj";
-    k = "kubectl";
-    kn = "kubens";
     lg = "lazygit";
     p = "podman";
     pp = "procs";
