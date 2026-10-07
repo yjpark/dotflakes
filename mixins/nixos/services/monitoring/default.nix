@@ -14,7 +14,7 @@ let
   cfg = config.monitoring;
 in
 {
-  imports = [ ./hub.nix ];
+  imports = [ ./hub.nix ./agent.nix ];
 
   options.monitoring = {
     hubs = lib.mkOption {
@@ -54,6 +54,11 @@ in
         type = lib.types.port;
         default = 9100;
         description = "node_exporter, bound to localhost.";
+      };
+      vmagent = lib.mkOption {
+        type = lib.types.port;
+        default = 8429;
+        description = "vmagent HTTP (self-metrics), bound to localhost.";
       };
       vlagent = lib.mkOption {
         type = lib.types.port;

@@ -1,10 +1,11 @@
 ---
 # flakes-c6gm
 title: 'Monitoring: node_exporter + vmagent dual-write on each host'
-status: todo
+status: in-progress
 type: task
+priority: normal
 created_at: 2026-10-07T13:39:28Z
-updated_at: 2026-10-07T13:39:28Z
+updated_at: 2026-10-07T14:28:56Z
 parent: flakes-f2ju
 blocked_by:
     - flakes-4c4d
@@ -22,6 +23,12 @@ Metrics agent on every monitored host, dual-writing to all hubs.
 ## Todo
 
 - [ ] node_exporter with systemd collector
-- [ ] vmagent with all hub URLs + persistent queue
+- [x] vmagent with all hub URLs + persistent queue
 - [ ] Verify both hubs see `up{host="pc"}` and `up{host="edger"}`
 - [ ] Verify buffering: stop VM on one hub, wait, restart, confirm no gap
+
+## Notes
+
+- 2026-10-07: pc switched (mixins/nixos/services/monitoring/agent.nix). pc hub has up{host="pc"} for node/vmagent/victoriametrics/victorialogs, 870 node_systemd_unit_state series. Already surfaced: greetd.service failed on pc.
+- instance relabelled to hostname (scrape address is 127.0.0.1 on every host). external_labels host/site from monitoring.labels.
+- Queue to edger retrying until edger's hub is deployed.
