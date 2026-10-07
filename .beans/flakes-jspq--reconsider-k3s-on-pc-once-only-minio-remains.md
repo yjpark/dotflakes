@@ -1,11 +1,11 @@
 ---
 # flakes-jspq
 title: Reconsider k3s on pc once only minio remains
-status: draft
+status: scrapped
 type: task
 priority: normal
 created_at: 2026-10-05T14:21:21Z
-updated_at: 2026-10-05T14:21:34Z
+updated_at: 2026-10-07T15:40:51Z
 parent: flakes-qbvb
 blocked_by:
     - flakes-k0sx
@@ -49,3 +49,7 @@ host Caddy + incus containers (`mixins/nixos/services/incus-ingress.nix`), while
 
 - [ ] Decide between the three options above
 - [ ] Narrow or remove the 30000-32767 public NodePort range in `mixins/nixos/ext4/k3s.ext4.nix` (safe to do as soon as no NodePort consumers remain)
+
+## Reasons for Scrapping
+
+Superseded by flakes-itu2: k3s removed from every host. minio held no data (only .minio.sys), so there was nothing to migrate.

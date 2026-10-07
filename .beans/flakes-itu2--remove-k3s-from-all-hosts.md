@@ -1,11 +1,11 @@
 ---
 # flakes-itu2
 title: Remove k3s from all hosts
-status: in-progress
+status: completed
 type: task
 priority: normal
 created_at: 2026-10-07T15:25:12Z
-updated_at: 2026-10-07T15:32:28Z
+updated_at: 2026-10-07T15:40:51Z
 ---
 
 k3s is no longer needed anywhere. Remove it from every host's config, tear down its runtime state, and drop Kubernetes tooling from the home config.
@@ -38,7 +38,15 @@ No repo references to the clash NodePorts (3110x) or minio remain. No data to pr
 - [x] Update monitoring comment that mentions k3s pods (also incus-ingress traefik-disable flag, egress-proxy comment)
 - [x] Evaluate all five hosts (k3s + containerd disabled on all; home configs yjpark/yj evaluate)
 - [x] Deploy + clean up pc (diff removals only; k3s-killall.sh, switch, wiped /var/lib/rancher 2.6G, /etc/rancher, /var/lib/kubelet, /run/k3s, /run/flannel, ~/.kube)
-- [ ] Deploy + clean up edger
-- [ ] Deploy + clean up a13
-- [ ] Deploy + clean up p2
-- [ ] Close out flakes-jspq and k3s leftovers in flakes-k0sx
+- [x] Deploy + clean up edger (built on pc, diff removals only; wiped /var/lib/rancher 5.5G)
+- [x] Deploy + clean up a13
+- [x] Deploy + clean up p2
+- [x] Close out flakes-jspq and k3s leftovers in flakes-k0sx
+
+## Summary of Changes
+
+- Config: removed `mixins/nixos/ext4` (k3s only) and `mixins/nixos/zfs/k3s.zfs.nix` (k3s + standalone containerd on the ZFS snapshotter), k3s/containerd branches of `cn/proxy-env.nix`, the incus-ingress traefik flag, and Kubernetes tooling from home (k8s.nix, k9s.nix, copy-k3s-yaml, k/kn abbrs, KUBECONFIG). k3s and containerd now disabled on all five hosts.
+- Deployed to pc, edger, a13, p2 (each built on pc, closure diff removals only, copied with nix copy). Teardown: k3s-killall.sh, then state dirs and ~/.kube removed.
+- a13/p2 ran a standalone containerd that k3s-killall.sh does not touch: pod shims kept running after the switch. Killed via the kubepods cgroup, unmounted leftovers, `zfs destroy -r rpool/state/containerd`. Teardown script recorded in flakes-x7wb.
+- Before removal on a13/p2, confirmed host mihomo active and nix-daemon proxied via 127.0.0.1:21102, so dropping the k3s clash broke nothing.
+- g1 was offline: follow-up flakes-x7wb.

@@ -5,7 +5,7 @@ status: in-progress
 type: feature
 priority: normal
 created_at: 2026-10-05T14:21:06Z
-updated_at: 2026-10-06T12:49:24Z
+updated_at: 2026-10-07T15:40:51Z
 parent: flakes-qbvb
 blocked_by:
     - flakes-dw38
@@ -479,7 +479,7 @@ the dashboard survives restarts.
 
 ## Tasks
 
-- [ ] Inspect edger's k3s: confirm its clash Deployment/Service/ConfigMap shape, whether it has yacd, and what else runs there
+- [x] Inspect edger's k3s — moot: k3s removed entirely (flakes-itu2); edger ran only cert-manager + clash + yacd
 - [x] Extract the subscription URLs (two providers) into `packs/nixos/host/clash/secrets/clash.yaml` (SOPS)
 - [x] Port `proxy-groups` and `rules` from the ConfigMap into the Nix-authored config
 - [x] Create `packs/nixos/host/clash/default.nix` (services.mihomo + sops.templates + firewalld, ports 21100/21101/21102/21109, metacubexd webui, no controller secret)
@@ -493,7 +493,7 @@ the dashboard survives restarts.
 - [x] Flip `egress-proxy.nix` proxyPort to 21102; the `incus.nix` hole is reverted and now owned by the clash pack
 - [x] Update the `set-proxy-*` fish aliases
 - [x] Delete `packs/home/host/common/scripts/nixos/proxy/`
-- [ ] Delete the k3s `clash` and `yacd` objects on **both** pc and edger
+- [x] Delete the k3s `clash` and `yacd` objects — done by removing k3s from all hosts (flakes-itu2)
 - [ ] Roll out to the remaining hosts (a13, g1, p2) and confirm each one's proxy works
 - [ ] Re-verify the onecli → clash egress chain after the port flip (see [[flakes-i9ao]])
 
@@ -503,3 +503,7 @@ the dashboard survives restarts.
 and still has unverified in-situ checks. Either verify it on edger first and
 then renumber, or do both in one deploy — but do not renumber while the original
 chain is still unproven.
+
+## Notes (2026-10-07)
+
+- a13 and p2: host mihomo active, nix-daemon proxied via 127.0.0.1:21102 (checked during flakes-itu2). g1 still unverified (offline).
