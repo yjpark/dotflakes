@@ -14,6 +14,7 @@ in {
     (self + /mixins/nixos/services/airplay.nix)
     (self + /mixins/nixos/services/incus-ingress.nix)
     (self + /mixins/nixos/services/onecli)
+    (self + /mixins/nixos/services/monitoring)
     (self + /mixins/nixos/settings/no-sleep.nix)
   ];
 }

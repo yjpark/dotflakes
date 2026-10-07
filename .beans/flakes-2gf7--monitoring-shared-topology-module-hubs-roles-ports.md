@@ -1,10 +1,11 @@
 ---
 # flakes-2gf7
 title: 'Monitoring: shared topology module (hubs, roles, ports)'
-status: todo
+status: completed
 type: task
+priority: normal
 created_at: 2026-10-07T13:39:28Z
-updated_at: 2026-10-07T13:39:28Z
+updated_at: 2026-10-07T13:45:57Z
 parent: flakes-f2ju
 ---
 
@@ -23,6 +24,13 @@ Shared NixOS module that defines the monitoring topology once, in the style of `
 
 ## Todo
 
-- [ ] Create mixin with options + derived URL lists
-- [ ] Import in `nixos/hosts/pc/imports.nix` and `nixos/hosts/edger/imports.nix`
-- [ ] `mise run build-host` builds on both
+- [x] Create mixin with options + derived URL lists
+- [x] Import in `nixos/hosts/pc/imports.nix` and `nixos/hosts/edger/imports.nix`
+- [x] `mise run build-host` builds on both (verified via toplevel drv eval for pc and edger)
+
+## Summary of Changes
+
+- Added `mixins/nixos/services/monitoring/default.nix` (options only, no services yet): `monitoring.hubs` (default pc/edger → `<host>.yjpark.zerotier`), `monitoring.role.{hub,agent}`, `monitoring.ports.*`, and read-only derived `labels` (`host`, plus `site` when the lan mixin is imported), `vmWriteUrls` (`/api/v1/write`) and `vlWriteUrls` (`/internal/insert`, verified in VictoriaLogs v1.49 vlinsert).
+- `role.hub` defaults to `hubs ? hostName`, so pc and edger are hubs automatically — flakes-4c4d does not need to set it per host.
+- Imported the mixin in pc and edger `imports.nix`.
+- Verified: both toplevels evaluate; derived values checked via `nix eval`. Drv diff vs HEAD is only the flake source path in home-manager files (no functional change).

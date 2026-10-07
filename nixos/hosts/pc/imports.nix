@@ -10,6 +10,7 @@ in {
     (self + /mixins/nixos/ext4)
     (self + /mixins/nixos/lan/102)
     (self + /mixins/nixos/cn)
+    (self + /mixins/nixos/services/monitoring)
     (self + /mixins/nixos/settings/no-sleep.nix)
   ];
 }

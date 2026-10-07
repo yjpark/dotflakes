@@ -3,8 +3,9 @@
 title: 'Monitoring: VictoriaMetrics + VictoriaLogs hub on pc and edger'
 status: todo
 type: task
+priority: normal
 created_at: 2026-10-07T13:39:28Z
-updated_at: 2026-10-07T13:39:28Z
+updated_at: 2026-10-07T13:45:57Z
 parent: flakes-f2ju
 blocked_by:
     - flakes-2gf7
@@ -23,5 +24,5 @@ Run the storage + UI on each hub (pc, edger) when `monitoring.role.hub = true`.
 ## Todo
 
 - [ ] Enable VM + VL behind `monitoring.role.hub`
-- [ ] Set role on pc and edger
+- [x] Set role on pc and edger (automatic: role.hub defaults to membership in monitoring.hubs)
 - [ ] Verify both UIs reachable from the other host over zerotier
