@@ -1,11 +1,11 @@
 ---
 # flakes-szt9
 title: 'Monitoring: per-service/per-process usage + vmui Hosts dashboard'
-status: in-progress
+status: completed
 type: feature
 priority: normal
 created_at: 2026-10-07T14:38:50Z
-updated_at: 2026-10-07T14:51:30Z
+updated_at: 2026-10-07T15:02:07Z
 parent: flakes-f2ju
 blocked_by:
     - flakes-c6gm
@@ -36,11 +36,18 @@ Per-service and per-process resource usage (top/atop-style, over time), plus a h
 
 - [x] ~~systemd exporter + scrape job~~ dropped: systemd_exporter 0.7 no longer exports per-unit CPU/memory (only state/restarts/sockets, already covered by node_exporter systemd collector). Per-service usage comes from process-exporter grouped by cgroup instead.
 - [x] process exporter + scrape job — groupname `{{.Comm}}|{{.Cgroups}}`, vmagent splits into `comm`, `cgroup`, `unit` labels; covers systemd units, incus containers (lxc.payload.*) and k3s pods. -threads=false, -gather-smaps=false; runs unprivileged so no per-process io.
-- [ ] Verify on pc and edger; note series counts
+- [x] Verify on pc and edger; note series counts — process job: edger ~2.6k, pc ~2.2k series
 - [x] vmui custom dashboards (dashboards.nix): "Hosts overview" + one "Host: <name>" per `monitoring.hosts` (vmui has no template variables)
-- [ ] Verify dashboard renders on both hubs
+- [x] Verify dashboard renders on both hubs (custom-dashboards endpoint serves all 3 on pc and edger; every panel query returns data)
 
 ## Notes
 
 - 2026-10-07 pc: ~2.4k process series; every dashboard panel query returns data on the pc hub.
 - New option `monitoring.hosts` (default: hub names) lists agent hosts for per-host dashboards.
+
+## Summary of Changes
+
+- process-exporter grouped by `{{.Comm}}|{{.Cgroups}}`, split by vmagent into comm/cgroup/unit labels → top processes and per-service/container/pod usage.
+- systemd_exporter dropped (no per-unit CPU/mem in 0.7).
+- `dashboards.nix`: vmui Hosts overview + per-host dashboards from `monitoring.hosts`.
+- Surfaced: greetd.service failed on both pc and edger.

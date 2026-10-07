@@ -1,11 +1,11 @@
 ---
 # flakes-4c4d
 title: 'Monitoring: VictoriaMetrics + VictoriaLogs hub on pc and edger'
-status: in-progress
+status: completed
 type: task
 priority: normal
 created_at: 2026-10-07T13:39:28Z
-updated_at: 2026-10-07T14:20:03Z
+updated_at: 2026-10-07T15:02:07Z
 parent: flakes-f2ju
 blocked_by:
     - flakes-2gf7
@@ -25,7 +25,7 @@ Run the storage + UI on each hub (pc, edger) when `monitoring.role.hub = true`.
 
 - [x] Enable VM + VL behind `monitoring.role.hub` (mixins/nixos/services/monitoring/hub.nix; VM 90d, VL 30d capped at 20GiB; pc build OK, adds only VM/VL)
 - [x] Set role on pc and edger (automatic: role.hub defaults to membership in monitoring.hubs)
-- [ ] Verify both UIs reachable from the other host over zerotier
+- [x] Verify both UIs reachable from the other host over zerotier
 
 ## Notes
 
@@ -35,3 +35,9 @@ Run the storage + UI on each hub (pc, edger) when `monitoring.role.hub = true`.
 
 - 2026-10-07: pc switched; VM/VL /health, /vmui, /select/vmui all 200 locally and from edger over zerotier. Interactive shells with http_proxy and no no_proxy get 502 from clash — use --noproxy or bypass .yjpark.zerotier; system services are unaffected (cn/proxy-env only proxies nix-daemon/k3s/containerd).
 - edger disk: / 1.8T, 186G free (89% used) — 20GiB VL cap is fine.
+
+## Summary of Changes
+
+- `mixins/nixos/services/monitoring/hub.nix`: VictoriaMetrics (:8428, 90d) and VictoriaLogs (:9428, 30d, 20GiB cap) on hosts in `monitoring.hubs`; retention configurable via `monitoring.retention.*`.
+- Deployed on pc and edger (2026-10-07). Both hubs serve /health, /vmui, /select/vmui over zerotier.
+- edger deploy: built on pc (displaylink zip and caddy plugin source copied from edger store, they cannot be fetched on pc) and copied with `nix copy`; closure diff was monitoring-only.
