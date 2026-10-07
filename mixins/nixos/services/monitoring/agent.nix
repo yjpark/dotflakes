@@ -21,6 +21,31 @@ let
       replacement = hostName;
     }];
   } // extra;
+
+  # groupname is "<comm>|[<cgroup>]" (Go's formatting of a one-element cgroup
+  # v2 list). Split it into labels and drop the original.
+  processJob.metric_relabel_configs = [
+    {
+      source_labels = [ "groupname" ];
+      regex = "(.*)\\|\\[(.*)\\]";
+      target_label = "comm";
+      replacement = "$1";
+    }
+    {
+      source_labels = [ "groupname" ];
+      regex = "(.*)\\|\\[(.*)\\]";
+      target_label = "cgroup";
+      replacement = "$2";
+    }
+    {
+      # Last cgroup path element: k3s.service, session-3.scope, ...
+      source_labels = [ "cgroup" ];
+      regex = "(?:.*/)?([^/]+)";
+      target_label = "unit";
+      replacement = "$1";
+    }
+    { regex = "groupname"; action = "labeldrop"; }
+  ];
 in
 {
   config = lib.mkIf cfg.role.agent {
@@ -30,6 +55,31 @@ in
       port = cfg.ports.nodeExporter;
       # systemd: per-unit state, so failed units are queryable.
       enabledCollectors = [ "systemd" "processes" ];
+    };
+
+    # Per-process usage, grouped by (command name, cgroup) so a single exporter
+    # answers both "top processes" and "which service / container / pod". The
+    # cgroup covers systemd units, incus containers (lxc.payload.*) and k3s pods.
+    # vmagent splits the group name into comm/cgroup/unit labels (see
+    # processJob). Kernel threads have no cmdline and are not matched; host-wide
+    # CPU already comes from node_exporter.
+    #
+    # Runs as an unprivileged user, so per-process io and smaps of other users
+    # are unreadable; CPU and RSS come from /proc/<pid>/stat and status, which
+    # are world-readable. Per-thread metrics are off to bound cardinality.
+    services.prometheus.exporters.process = {
+      enable = true;
+      listenAddress = "127.0.0.1";
+      port = cfg.ports.processExporter;
+      settings.process_names = [{
+        name = "{{.Comm}}|{{.Cgroups}}";
+        cmdline = [ ".+" ];
+      }];
+      extraFlags = [
+        "-threads=false"
+        "-gather-smaps=false"
+        "-remove-empty-groups"
+      ];
     };
 
     services.vmagent = {
@@ -48,6 +98,7 @@ in
         };
         scrape_configs = [
           (localJob "node" cfg.ports.nodeExporter { })
+          (localJob "process" cfg.ports.processExporter processJob)
           (localJob "vmagent" cfg.ports.vmagent { })
         ] ++ lib.optionals cfg.role.hub [
           (localJob "victoriametrics" cfg.ports.victoriametrics { })

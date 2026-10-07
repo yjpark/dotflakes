@@ -14,7 +14,7 @@ let
   cfg = config.monitoring;
 in
 {
-  imports = [ ./hub.nix ./agent.nix ];
+  imports = [ ./hub.nix ./agent.nix ./dashboards.nix ];
 
   options.monitoring = {
     hubs = lib.mkOption {
@@ -24,6 +24,15 @@ in
         edger = "edger.yjpark.zerotier";
       };
       description = "Hub host name mapped to the address agents write to.";
+    };
+
+    hosts = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = lib.attrNames cfg.hubs;
+      description = ''
+        Every host running the agent. Hubs cannot see who imports this mixin,
+        so anything that enumerates hosts (per-host dashboards) reads this.
+      '';
     };
 
     role = {
@@ -54,6 +63,11 @@ in
         type = lib.types.port;
         default = 9100;
         description = "node_exporter, bound to localhost.";
+      };
+      processExporter = lib.mkOption {
+        type = lib.types.port;
+        default = 9256;
+        description = "process-exporter, bound to localhost.";
       };
       vmagent = lib.mkOption {
         type = lib.types.port;
