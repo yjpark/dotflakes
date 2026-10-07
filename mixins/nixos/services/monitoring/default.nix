@@ -14,6 +14,8 @@ let
   cfg = config.monitoring;
 in
 {
+  imports = [ ./hub.nix ];
+
   options.monitoring = {
     hubs = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
