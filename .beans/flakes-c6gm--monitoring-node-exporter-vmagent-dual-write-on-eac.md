@@ -22,7 +22,7 @@ Metrics agent on every monitored host, dual-writing to all hubs.
 
 ## Todo
 
-- [ ] node_exporter with systemd collector
+- [x] node_exporter with systemd collector
 - [x] vmagent with all hub URLs + persistent queue
 - [x] Verify both hubs see `up{host="pc"}` and `up{host="edger"}`
 - [x] Verify buffering — verified naturally: pc vmagent queued for edger ~30 min before edger hub existed; after edger came up it holds pc node samples from 14:28Z continuously (34 x 1m, no gap), queues drained to 0.
