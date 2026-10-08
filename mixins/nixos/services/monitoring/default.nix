@@ -14,7 +14,7 @@ let
   cfg = config.monitoring;
 in
 {
-  imports = [ ./hub.nix ./agent.nix ./dashboards.nix ];
+  imports = [ ./hub.nix ./agent.nix ./logs.nix ./dashboards.nix ];
 
   options.monitoring = {
     hubs = lib.mkOption {
@@ -96,7 +96,7 @@ in
     vlWriteUrls = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       readOnly = true;
-      description = "VictoriaLogs /internal/insert URL of every hub, for vlagent.";
+      description = "VictoriaLogs native ingestion URL of every hub, for vlagent.";
     };
   };
 
@@ -112,7 +112,7 @@ in
       cfg.hubs;
 
     vlWriteUrls = lib.mapAttrsToList
-      (_: addr: "http://${addr}:${toString cfg.ports.victorialogs}/internal/insert")
+      (_: addr: "http://${addr}:${toString cfg.ports.victorialogs}/insert/native")
       cfg.hubs;
   };
 }

@@ -1,10 +1,11 @@
 ---
 # flakes-m1as
 title: 'Monitoring: journald → vlagent dual-write log shipping'
-status: todo
+status: in-progress
 type: task
+priority: normal
 created_at: 2026-10-07T13:39:28Z
-updated_at: 2026-10-07T13:39:28Z
+updated_at: 2026-10-08T06:52:55Z
 parent: flakes-f2ju
 blocked_by:
     - flakes-4c4d
@@ -23,6 +24,6 @@ Ship journald from every monitored host to all hubs.
 ## Todo
 
 - [ ] vlagent package override + systemd unit
-- [ ] journald upload → local vlagent
+- [x] journald upload → local vlagent
 - [ ] Verify in both hub UIs: `_SYSTEMD_UNIT:sshd.service` from both hosts
 - [ ] Verify buffering across a hub outage
