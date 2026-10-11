@@ -18,9 +18,9 @@
 let
   proxy = config.clash.proxyUrl;
 
-  # Both substituters are reachable directly from CN, so keep store traffic off
-  # the proxy — routing it through clash would be slower and would spend
-  # subscription bandwidth on content that does not need it.
+  # cache.nixos.org is deliberately NOT exempt: direct from CN it measured
+  # ~22 KB/s against ~338 KB/s through clash. (The tuna mirror that used to
+  # front it was dropped after it started answering 403 for every request.)
   #
   # The private ranges also cover the incus bridge (10.100.0.0/24), inside
   # 10.0.0.0/8.
@@ -32,8 +32,6 @@ let
     "localhost"
     "127.0.0.1"
     "::1"
-    "mirrors.tuna.tsinghua.edu.cn"
-    "cache.nixos.org"
     "10.0.0.0/8"
     "172.22.0.0/16"
     ".yjpark.org"
