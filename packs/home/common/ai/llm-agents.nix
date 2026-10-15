@@ -74,7 +74,6 @@ in
   home.packages = [
     llm-agents.claude-code
     llm-agents.agent-browser
-    llm-agents.rtk
     llm-agents.opencode
     llm-agents.codex
 

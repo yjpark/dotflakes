@@ -1,4 +1,10 @@
-{ lib, ... }: {
+{ lib, modulesPath, ... }: {
+
+  # Normally only added by `build-image --image-variant lxc`. Importing it here
+  # makes the plain toplevel (what nixos-rebuild / _switch-host builds) LXC-aware:
+  # its installBootLoader repoints /sbin/init, so an in-place switch survives a
+  # container restart instead of booting back into the original image system.
+  imports = [ (modulesPath + "/virtualisation/lxc-container.nix") ];
 
   # Required for LXC/incus containers
   boot.isContainer = true;

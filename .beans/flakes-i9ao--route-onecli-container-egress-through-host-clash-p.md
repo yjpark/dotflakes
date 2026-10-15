@@ -1,11 +1,11 @@
 ---
 # flakes-i9ao
 title: Route onecli container egress through host clash proxy
-status: in-progress
+status: completed
 type: feature
 priority: normal
 created_at: 2026-10-05T13:07:49Z
-updated_at: 2026-10-05T13:45:49Z
+updated_at: 2026-10-15T13:47:04Z
 parent: flakes-qbvb
 ---
 
@@ -162,9 +162,9 @@ name resolve to a synthetic IPv4 that mihomo maps back to the domain.
 - [x] Confirm the destination is rewritten to the sniffed domain, not the IP (mihomo 1.19.23 verified; sing-box 1.13.5 ruled out)
 - [x] Confirm no loop: mihomo's own egress to `10.100.0.1:31102` falls under the `10.0.0.0/8` exclusion
 - [x] Build `nixosConfigurations.onecli` incl. nftables `checkRuleset`, and `mihomo -t` the generated config
-- [ ] Deploy to `edger` and verify in situ: `incus exec onecli -- curl -sS https://api.anthropic.com` reaches upstream and clash logs the request **by domain**
-- [ ] Verify the gateway path end-to-end from `yolo` (agent → onecli → mihomo → clash → upstream)
-- [ ] Check the boot-time ordering holds in practice (mihomo up before the image pull)
+- [x] Deploy to `edger` and verify in situ: `incus exec onecli -- curl -sS https://api.anthropic.com` reaches upstream and clash logs the request **by domain**
+- [x] Verify the gateway path end-to-end from `yolo` (agent → onecli → mihomo → clash → upstream)
+- [x] Check the boot-time ordering holds in practice (mihomo up before the image pull)
 
 ## Deferred
 
@@ -172,3 +172,15 @@ name resolve to a synthetic IPv4 that mihomo maps back to the domain.
 `mixins/nixos/services/incus-ingress.nix` added to `nixos/hosts/pc/imports.nix`,
 which drags in the Caddy ingress, the Cloudflare secret and the `10.100.0.x`
 static-IP scheme. Worth its own bean.
+
+## Deploy notes (2026-10-15)
+
+The onecli container was still running a pre-mihomo system, so after the k3s removal (471879b) its egress was dead and every agent container behind OneCLI lost HTTPS. Because onecli had no internet, deployed by building `nixosConfigurations.onecli` on edger, piping the missing closure in with `nix-store --export | incus exec onecli -- nix-store --import`, then `nix-env -p /nix/var/nix/profiles/system --set` + `switch-to-configuration switch` in the container. yolo was switched the same way.
+
+Verified: `curl` from onecli and from yolo reaches github.com / api.anthropic.com; host mihomo logs show `10.100.0.2` and `10.100.0.100` connections by domain. mihomo logs `Start Redir server error: operation not permitted` - that is only the UDP redir listener (no permission in the container); the TCP listener on 127.0.0.1:12345 is up and is all the nftables rule uses.
+
+`podman-onecli` was NOT restarted by the switch (only its unit ordering changed), so the boot-time ordering check is still open - needs a container restart.
+
+## Summary of Changes
+
+Deployed and verified. Boot ordering after `incus restart onecli`: mihomo started at +676.59s, podman-onecli (and the image pull) at +676.78s; onecli and yolo egress both work after the reboot. The first restart attempt booted back into the old image system - fixed in flakes-dnjc.
