@@ -8,7 +8,7 @@
 #
 # AUTH_MODE=local means OneCLI auto-creates a hardcoded local admin (admin@localhost)
 # with no OAuth setup needed. The seeder fetches the API key automatically via
-# GET /api/auth/session then GET /api/user/api-key — no manual bootstrap required.
+# GET /api/user/api-key — no manual bootstrap required.
 #
 # Container proxy setup is declared in packs/nixos/container/onecli-proxy.nix.
 # Secret injection config and reseed logic live in onecli-reseed.bash.

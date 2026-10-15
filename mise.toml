@@ -65,9 +65,9 @@ sudo "$SYSTEM_PATH/bin/switch-to-configuration" switch
 """
 
 [tasks.restart-onecli]
-description = "Restart OneCLI containers (use after image update)"
+description = "Restart OneCLI inside its incus container and reseed"
 run = """
-sudo systemctl restart podman-onecli-postgres podman-onecli
+incus exec onecli -- systemctl restart podman-onecli
 sudo onecli-reseed
 """
 

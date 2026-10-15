@@ -16,12 +16,12 @@ else
   CONTAINERS=("$@")
 fi
 
-info "Checking OneCLI session at $BASE_URL ..."
-if ! curl -sf "$BASE_URL/api/auth/session" > /dev/null; then
-  error "OneCLI session check failed at $BASE_URL/api/auth/session"
+info "Checking OneCLI API at $BASE_URL ..."
+if ! curl -sf "$BASE_URL/api/user/api-key" > /dev/null; then
+  error "OneCLI API check failed at $BASE_URL/api/user/api-key"
   exit 1
 fi
-info "OneCLI session OK"
+info "OneCLI API OK"
 
 info "Retrieving default agent token from $BASE_URL/api/agents/default ..."
 AGENT_TOKEN=$(curl -sf "$BASE_URL/api/agents/default" | jq -r '.accessToken')

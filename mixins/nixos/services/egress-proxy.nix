@@ -109,6 +109,16 @@ in
   # nothing even attempts an IPv6 connection.
   networking.enableIPv6 = false;
 
+  # The upstream module hands the config over via LoadCredential, but inside an
+  # incus container systemd starts the unit without CREDENTIALS_DIRECTORY, so
+  # mihomo is pointed at `/config.yaml` and dies on the read-only root. The
+  # config holds no secrets (see configFile above), so read it straight from
+  # the store instead.
+  systemd.services.mihomo.serviceConfig = {
+    ExecStart = lib.mkForce "${lib.getExe pkgs.mihomo} -d /var/lib/private/mihomo -f ${configFile}";
+    LoadCredential = lib.mkForce [ ];
+  };
+
   # Capture outbound TCP and hand it to mihomo.
   #
   # Its own table, so it cannot collide with `table inet firewalld` or

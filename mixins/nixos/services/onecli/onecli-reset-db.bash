@@ -28,7 +28,7 @@ incus exec "$ONECLI_CONTAINER" -- systemctl start podman-onecli.service
 
 info "Waiting for OneCLI to be ready..."
 for i in $(seq 1 30); do
-    if curl -sf "$BASE_URL/api/auth/session" > /dev/null 2>&1; then
+    if curl -sf "$BASE_URL/api/user/api-key" > /dev/null 2>&1; then
         info "OneCLI is up at $BASE_URL"
         exit 0
     fi

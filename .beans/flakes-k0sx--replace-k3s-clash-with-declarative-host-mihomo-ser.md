@@ -5,7 +5,7 @@ status: in-progress
 type: feature
 priority: normal
 created_at: 2026-10-05T14:21:06Z
-updated_at: 2026-10-07T15:40:51Z
+updated_at: 2026-10-15T13:54:54Z
 parent: flakes-qbvb
 blocked_by:
     - flakes-dw38
@@ -495,7 +495,7 @@ the dashboard survives restarts.
 - [x] Delete `packs/home/host/common/scripts/nixos/proxy/`
 - [x] Delete the k3s `clash` and `yacd` objects — done by removing k3s from all hosts (flakes-itu2)
 - [ ] Roll out to the remaining hosts (a13, g1, p2) and confirm each one's proxy works
-- [ ] Re-verify the onecli → clash egress chain after the port flip (see [[flakes-i9ao]])
+- [x] Re-verify the onecli → clash egress chain after the port flip (see [[flakes-i9ao]])
 
 ## Coupling with flakes-i9ao
 

@@ -5,7 +5,7 @@ status: completed
 type: feature
 priority: normal
 created_at: 2026-10-05T13:07:49Z
-updated_at: 2026-10-15T13:47:04Z
+updated_at: 2026-10-15T13:54:54Z
 parent: flakes-qbvb
 ---
 
@@ -162,7 +162,7 @@ name resolve to a synthetic IPv4 that mihomo maps back to the domain.
 - [x] Confirm the destination is rewritten to the sniffed domain, not the IP (mihomo 1.19.23 verified; sing-box 1.13.5 ruled out)
 - [x] Confirm no loop: mihomo's own egress to `10.100.0.1:31102` falls under the `10.0.0.0/8` exclusion
 - [x] Build `nixosConfigurations.onecli` incl. nftables `checkRuleset`, and `mihomo -t` the generated config
-- [x] Deploy to `edger` and verify in situ: `incus exec onecli -- curl -sS https://api.anthropic.com` reaches upstream and clash logs the request **by domain**
+- [x] (done on `pc`, 2026-10-15) Deploy to `edger` and verify in situ: `incus exec onecli -- curl -sS https://api.anthropic.com` reaches upstream and clash logs the request **by domain**
 - [x] Verify the gateway path end-to-end from `yolo` (agent → onecli → mihomo → clash → upstream)
 - [x] Check the boot-time ordering holds in practice (mihomo up before the image pull)
 
@@ -184,3 +184,22 @@ Verified: `curl` from onecli and from yolo reaches github.com / api.anthropic.co
 ## Summary of Changes
 
 Deployed and verified. Boot ordering after `incus restart onecli`: mihomo started at +676.59s, podman-onecli (and the image pull) at +676.78s; onecli and yolo egress both work after the reboot. The first restart attempt booted back into the old image system - fixed in flakes-dnjc.
+
+## Deployment on pc (2026-10-15)
+
+- First real deploy exposed a bug: the nixpkgs mihomo module passes its config
+  via `LoadCredential`, but inside the incus container the unit starts without
+  `CREDENTIALS_DIRECTORY`, so mihomo looked for `/config.yaml` and crash-looped.
+  Fixed in `egress-proxy.nix` by forcing `ExecStart` to read the store path and
+  clearing `LoadCredential`. (edger's in-place switch above did not hit this;
+  it shows up when the container boots fresh from the image.)
+- Verified on a freshly launched onecli: mihomo + podman-onecli come up in order,
+  the image pull works, and `api.anthropic.com` is reached via clash (the 403
+  region block is gone). From yolo: TLS through onecli OK, GitHub token injection OK.
+- onecli `:latest` changed the injection model: agents are "selective" and only
+  get secrets they hold a grant for (`PUT /api/agents/:id/grants/secrets/:sid`).
+  `onecli-reseed` now grants every secret to the default agent. The Auth.js
+  `/api/auth/session` route now 500s (MissingSecret) in local mode, so the
+  scripts' readiness probes use `/api/user/api-key` instead.
+- edger: if its onecli pulls a newer image, run `onecli-reseed` there too so the
+  default agent gets its grants.

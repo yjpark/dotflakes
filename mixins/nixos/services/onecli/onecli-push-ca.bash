@@ -18,8 +18,13 @@ fi
 CA_PEM=$(curl -sf http://10.100.0.2:10254/api/gateway/ca)
 
 for CONTAINER in "${CONTAINERS[@]}"; do
-  info "Pushing OneCLI CA to $CONTAINER..."
-  incus exec "$CONTAINER" -- mkdir -p /var/lib/onecli
-  echo "$CA_PEM" | incus file push - "$CONTAINER/var/lib/onecli/ca.crt"
-  info "Done: $CONTAINER (onecli-ca-bundle.service will rebuild the bundle)"
+  if incus list --format json | jq -e --arg n "$CONTAINER" \
+      '.[] | select(.name == $n) | select(.status == "Running")' > /dev/null 2>&1; then
+    info "Pushing OneCLI CA to $CONTAINER..."
+    incus exec "$CONTAINER" -- mkdir -p /var/lib/onecli
+    echo "$CA_PEM" | incus file push - "$CONTAINER/var/lib/onecli/ca.crt"
+    info "Done: $CONTAINER (onecli-ca-bundle.service will rebuild the bundle)"
+  else
+    warn "Skipping $CONTAINER (not running)"
+  fi
 done

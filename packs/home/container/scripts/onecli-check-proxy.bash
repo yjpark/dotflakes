@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Check OneCLI proxy configuration and verify injection is working.
-# Tests against httpbin.org (matched by the default wildcard secret).
+# Tests injection against the GitHub API (matched by the GH_TOKEN_EDGER_DEV secret).
 
 set -eu
 
@@ -45,18 +45,19 @@ info "NODE_EXTRA_CA_CERTS: ${NODE_EXTRA_CA_CERTS:-<not set>}"
 info "SSL_CERT_FILE: ${SSL_CERT_FILE:-<not set>}"
 
 # Verify OneCLI CA is present in the active CA bundle
-ONECLI_CA="/usr/local/share/ca-certificates/onecli-ca.crt"
+# (pushed by onecli-push-ca, merged into the bundle by onecli-ca-bundle.service)
+ONECLI_CA="/var/lib/onecli/ca.crt"
 if [[ -r "$ONECLI_CA" ]]; then
   info "  OneCLI CA cert exists: $ONECLI_CA"
-  # Check if it's been appended to the active bundle
   ACTIVE_BUNDLE="${SSL_CERT_FILE:-/etc/ssl/certs/ca-certificates.crt}"
-  if [[ -r "$ACTIVE_BUNDLE" ]] && grep -q "# OneCLI CA" "$ACTIVE_BUNDLE" 2>/dev/null; then
+  CA_LINE=$(sed -n 2p "$ONECLI_CA")
+  if [[ -r "$ACTIVE_BUNDLE" ]] && grep -qF -- "$CA_LINE" "$ACTIVE_BUNDLE" 2>/dev/null; then
     info "  OneCLI CA found in $ACTIVE_BUNDLE"
   else
     warn "  OneCLI CA NOT found in $ACTIVE_BUNDLE — run onecli-push-ca on the host"
   fi
 else
-  warn "  OneCLI CA cert missing — run onecli-push-ca on the host"
+  warn "  OneCLI CA cert missing or unreadable — run onecli-push-ca on the host"
 fi
 
 # Quick TLS verification: if HTTPS through the proxy fails but direct works,
@@ -75,23 +76,16 @@ fi
 info "  TLS through proxy OK"
 
 # OneCLI replaces existing headers — it does not add missing ones.
-# Send a placeholder Authorization header so OneCLI can inject the real value.
-info "Testing injection via httpbin.org/anything ..."
+# Send a placeholder Authorization header so OneCLI can inject the real value:
+# GitHub answers 200 only if the placeholder was replaced with a valid token.
+URL="https://api.github.com/repos/edger-dev/jig"
+info "Testing injection via $URL ..."
 info "  (sending placeholder Authorization header for OneCLI to replace)"
-if ! RESPONSE=$(curl -sf -H "Authorization: Bearer PLACEHOLDER" https://httpbin.org/anything); then
-  error "curl to httpbin.org failed — check proxy connectivity and CA cert"
-  info "Trying without proxy for comparison ..."
-  curl -sf --noproxy '*' https://httpbin.org/anything | jq . || error "Direct connection also failed"
-  exit 1
-fi
-echo "$RESPONSE" | jq '.headers'
-
-AUTH_HEADER=$(echo "$RESPONSE" | jq -r '.headers.Authorization // .headers.authorization // empty')
-if [[ -n "$AUTH_HEADER" && "$AUTH_HEADER" != "Bearer PLACEHOLDER" ]]; then
-  info "Injection confirmed — Authorization header was replaced by OneCLI"
-elif [[ "$AUTH_HEADER" == "Bearer PLACEHOLDER" ]]; then
-  warn "Authorization header still has placeholder value — OneCLI did not inject"
-  warn "Check hostPattern matches httpbin.org and secrets are seeded"
-else
-  warn "No Authorization header in response — check proxy and OneCLI config"
-fi
+STATUS=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: token PLACEHOLDER" "$URL")
+case "$STATUS" in
+  200) info "Injection confirmed — GitHub accepted the injected token" ;;
+  401) warn "GitHub rejected the placeholder — OneCLI did not inject"
+       warn "Check secrets are seeded and granted to the default agent (onecli-reseed on the host)" ;;
+  *)   error "Unexpected HTTP $STATUS from $URL — check proxy connectivity"
+       exit 1 ;;
+esac

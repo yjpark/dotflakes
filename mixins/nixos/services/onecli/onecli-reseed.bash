@@ -68,7 +68,7 @@ EOF
 
 # Wait for OneCLI to be ready
 for i in $(seq 1 30); do
-  if curl -sf "$BASE_URL/api/auth/session" > /dev/null 2>&1; then
+  if curl -sf "$BASE_URL/api/user/api-key" > /dev/null 2>&1; then
     info "OneCLI is ready"
     break
   fi
@@ -138,6 +138,24 @@ while IFS='=' read -r key value; do
 done < "$SECRETS_FILE"
 
 info "Done seeding. Verify secrets at $BASE_URL"
+
+# OneCLI only injects secrets an agent holds a grant for (the per-agent
+# "selective" mode; the old "all" mode is retired). Grant every secret to the
+# default agent, whose token is what onecli-push-proxy-auth hands to containers.
+info "Granting all secrets to the default agent..."
+AGENT_ID=$(curl -sf "$BASE_URL/api/agents" \
+  -H "Authorization: Bearer $API_KEY" | jq -r '.[] | select(.isDefault) | .id')
+if [[ -z "$AGENT_ID" ]]; then
+  error "Could not find the default agent"
+  exit 1
+fi
+for secret_id in $(curl -sf "$BASE_URL/api/secrets" \
+    -H "Authorization: Bearer $API_KEY" | jq -r '.[].id'); do
+  curl -sf -X PUT "$BASE_URL/api/agents/$AGENT_ID/grants/secrets/$secret_id" \
+    -H "Authorization: Bearer $API_KEY" > /dev/null \
+    || warn "ERROR: Failed to grant secret $secret_id"
+done
+info "Granted secrets to default agent $AGENT_ID"
 
 onecli-push-proxy-auth
 onecli-push-ca
