@@ -19,6 +19,15 @@
         type = lib.types.str;
         description = "Your email for use in Git config";
       };
+      monitoringHub = lib.mkOption {
+        type = lib.types.str;
+        default = "pc.yjpark.zerotier";
+        description = ''
+          Monitoring hub whose MCP servers agents use. Every hub holds the full
+          dataset (mixins/nixos/services/monitoring), so this only picks the
+          nearest one.
+        '';
+      };
       niri.extraConfig = lib.mkOption {
         type = lib.types.str;
         default = "";

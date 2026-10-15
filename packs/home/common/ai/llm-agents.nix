@@ -71,8 +71,9 @@ in
 {
   programs.claude-code.package = llm-agents.claude-code;
 
+  # claude-code itself is installed by programs.claude-code (as a wrapper once
+  # mcpServers is set), so it is not listed again here.
   home.packages = [
-    llm-agents.claude-code
     llm-agents.agent-browser
     llm-agents.opencode
     llm-agents.codex

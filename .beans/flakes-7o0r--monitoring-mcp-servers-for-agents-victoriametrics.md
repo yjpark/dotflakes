@@ -1,10 +1,11 @@
 ---
 # flakes-7o0r
 title: 'Monitoring: MCP servers for agents (VictoriaMetrics + VictoriaLogs)'
-status: todo
+status: in-progress
 type: task
+priority: normal
 created_at: 2026-10-07T13:39:28Z
-updated_at: 2026-10-07T13:39:28Z
+updated_at: 2026-10-11T15:10:55Z
 parent: flakes-f2ju
 blocked_by:
     - flakes-c6gm

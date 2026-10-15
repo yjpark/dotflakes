@@ -14,7 +14,7 @@ let
   cfg = config.monitoring;
 in
 {
-  imports = [ ./hub.nix ./agent.nix ./logs.nix ./dashboards.nix ];
+  imports = [ ./hub.nix ./agent.nix ./logs.nix ./dashboards.nix ./mcp.nix ];
 
   options.monitoring = {
     hubs = lib.mkOption {
