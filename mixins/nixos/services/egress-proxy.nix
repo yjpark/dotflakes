@@ -9,6 +9,10 @@
 # application: capture the container's TCP egress with an nftables REDIRECT and
 # hand it to a local mihomo instance that forwards to the host proxy.
 #
+# Agent containers use it too (packs/nixos/container/egress-proxy.nix): their
+# HTTPS normally goes through OneCLI, but NO_PROXY hosts (Anthropic) and
+# proxy-unaware programs connect directly and need the same route out.
+#
 # mihomo rather than sing-box because its sniffer rewrites each connection's
 # destination to the sniffed TLS SNI / HTTP Host (`override-destination`), which
 # means:

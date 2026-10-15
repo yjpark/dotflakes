@@ -1,4 +1,16 @@
-{ pkgs, ... }: let
+{ pkgs, lib, ... }: let
+  noProxy = lib.concatStringsSep "," [
+    "localhost"
+    "127.0.0.1"
+    "::1"
+    "anthropic.com"
+    ".anthropic.com"
+    "claude.ai"
+    ".claude.ai"
+    "claude.com"
+    ".claude.com"
+  ];
+
   # Rebuild /var/lib/ingress/ca-bundle.crt from system certs + OneCLI CA if present.
   # Runs at boot (after init-ingress-ca) and whenever the CA file is pushed/updated.
   # Idempotent: always rebuilds from scratch so no risk of double-appending.
@@ -54,6 +66,13 @@ in {
     # Node.js needs its own CA config (doesn't use system trust store)
     NODE_EXTRA_CA_CERTS = "/var/lib/onecli/ca.crt";
     NODE_USE_ENV_PROXY = "1";
+
+    # Anthropic bypasses OneCLI: the gateway refuses hosts it holds no
+    # credential for, and agents bring their own Anthropic login. These
+    # connections go out directly and are captured by the egress proxy
+    # (egress-proxy.nix in this pack), which sends them through host clash.
+    NO_PROXY = noProxy;
+    no_proxy = noProxy;
   };
 
   # Sources /etc/onecli-proxy-auth (written by host seeder) to set authenticated proxy URL.
