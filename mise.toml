@@ -75,7 +75,7 @@ sudo onecli-reseed
 description = "Build and import a container LXC image into incus"
 usage = '''
 arg "<container>" {
-  choices "yolo" "spacebot" "hermes" "onecli" "searxng"
+  choices "yolo" "onecli" "searxng"
 }
 '''
 run = """

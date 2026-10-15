@@ -14,7 +14,7 @@ let
       entries = builtins.readDir (inputs.self + mixinDir);
       hosts = map (name:
         if entries.${name} == "regular" then lib.removeSuffix ".nix" name else name
-      ) (builtins.filter (name: name != "default.nix")
+      ) (builtins.filter (name: name != "default.nix" && name != ".gitkeep")
         (builtins.attrNames entries));
       mkHostModule = host: let
         hostPath = if entries ? "${host}.nix" then "/${host}.nix" else "/${host}";

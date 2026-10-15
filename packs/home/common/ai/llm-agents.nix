@@ -78,7 +78,6 @@ in
     llm-agents.codex
 
     /*
-    llm-agents.hermes-agent
     llm-agents.gemini-cli
     dolt
     beads

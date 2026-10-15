@@ -11,7 +11,7 @@ source `which color-logging`
 
 BASE_URL="http://10.100.0.2:10254"
 if [[ $# -eq 0 ]]; then
-  CONTAINERS=(yolo spacebot hermes)
+  CONTAINERS=(yolo)
 else
   CONTAINERS=("$@")
 fi

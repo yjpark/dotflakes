@@ -11,7 +11,7 @@ set -eu
 source `which color-logging`
 
 if [[ $# -eq 0 ]]; then
-  CONTAINERS=(yolo spacebot hermes)
+  CONTAINERS=(yolo)
 else
   CONTAINERS=("$@")
 fi
