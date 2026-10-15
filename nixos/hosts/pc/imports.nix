@@ -9,6 +9,7 @@ in {
     (self + /mixins/nixos/versions/24.11.nix)
     (self + /mixins/nixos/lan/102)
     (self + /mixins/nixos/cn)
+    (self + /mixins/nixos/services/onecli)
     (self + /mixins/nixos/services/monitoring)
     (self + /mixins/nixos/settings/no-sleep.nix)
   ];
