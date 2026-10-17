@@ -43,6 +43,24 @@ let
   # to provide.
   geoip = "${pkgs.v2ray-geoip}/share/v2ray/geoip-only-cn-private.dat";
 
+  # metacubexd with its default backend set to the page's own origin. The
+  # dashboard is served from the controller port, same origin as the API, so
+  # this is http://<host>:21109 when opened directly and
+  # https://clash.<host>.yjpark.org through the ingress hub. With no endpoint
+  # saved (fresh browser, or the hub's partitioned iframe storage) the setup
+  # page connects to it on its own instead of asking for the address.
+  # config.js is a plain script the page loads, so it can compute the value.
+  webui = pkgs.runCommand "metacubexd-same-origin" { } ''
+    cp -r ${pkgs.metacubexd} $out
+    chmod u+w $out
+    rm $out/config.js
+    cat > $out/config.js <<'JS'
+    window.__METACUBEXD_CONFIG__ = {
+      defaultBackendURL: window.location.origin,
+    }
+    JS
+  '';
+
   # The mihomo module runs the daemon with `-d /var/lib/private/mihomo` (a
   # DynamicUser StateDirectory). Relative paths in the config, and the geodata
   # files, resolve against it — and persist there, unlike in the pod.
@@ -116,7 +134,7 @@ in
     services.mihomo = {
       enable = true;
       configFile = config.sops.templates."clash.yaml".path;
-      webui = pkgs.metacubexd;
+      inherit webui;
     };
 
     # Listed on the host hub page (mixins/nixos/services/incus-ingress). The
