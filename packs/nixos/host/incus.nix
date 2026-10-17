@@ -45,10 +45,16 @@
 
   # Allow container→host DHCP and DNS; enable intra-zone forwarding for
   # container↔container traffic through the bridge.
+  #
+  # No zone masquerade: incus already NATs egress itself (`ipv4.nat` above
+  # installs `ip saddr 10.100.0.0/24 ip daddr != 10.100.0.0/24 masquerade`).
+  # firewalld's zone rule is `oifname != "lo" masquerade` with no destination
+  # check, and br_netfilter passes bridged frames through the IP hooks, so it
+  # also rewrote container→container traffic to come from the host — yolo's
+  # connections to the OneCLI gateway then never completed.
   services.firewalld.zones.incus = {
     interfaces = [ "incusbr0" ];
     forward = true;
-    masquerade = true;
     services = [ "dhcp" "dns" ];
     ports = [
       # Custom dnsmasq DNS port used by host ingress and containers
