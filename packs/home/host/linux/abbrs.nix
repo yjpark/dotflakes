@@ -5,7 +5,6 @@
     il = "incus list";
     is = "incus shell";
     ic = "incus completion fish | source";
-    u = "TERM=xterm-256color incus exec ubuntu -- login -f yj";
     y = "TERM=xterm-256color incus exec yolo -- login -f yj";
     onecli = "TERM=xterm-256color incus exec onecli -- login -f yj";
     searxng = "TERM=xterm-256color incus exec searxng -- login -f yj";

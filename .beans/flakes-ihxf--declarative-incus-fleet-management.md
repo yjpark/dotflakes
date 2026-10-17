@@ -19,7 +19,7 @@ Not implemented this shift: building a declarative incus orchestration layer wou
 - **Imperative launch/restart scripts:** `packs/home/host/linux/scripts/incus/incus-launch-*.bash`, `incus-restart-*.bash`, `incus-setup-storage-ext4.bash` — per-container shell, run by hand.
 - **Host incus enablement:** `packs/home/host/linux/incus.nix`, `packs/nixos/host/incus.nix`, `mixins/home/settings/incus/`.
 - **Static fleet list already exists** in `mixins/nixos/services/incus-ingress.nix` as `ingressContainers = [ { name; ip; } ... ]` (onecli .2, searxng .3, yolo .100, spacebot .101, hermes .102). A declarative fleet module should become the **single source of truth** feeding both container creation *and* this ingress list (DRY).
-- Containers are a mix: NixOS containers (`nixos/containers/*`) and Ubuntu (`packs/home/container/scripts/ubuntu-setup-*.bash`).
+- Containers are all NixOS containers (`nixos/containers/*`); the Ubuntu container setup was dropped.
 
 ### Key design decisions (need a call before implementation)
 1. **Option schema:** e.g. `services.incus.fleet.<name> = { image; ipv4; devices; profiles; acls; storageVolumes; autostart; ... }`.
