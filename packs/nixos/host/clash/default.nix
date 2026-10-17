@@ -144,7 +144,11 @@ in
       title = "Clash";
       group = "Network";
       upstream = "127.0.0.1:${toString ports.controller}";
-      path = "/ui/";
+      # Name the backend in the link: the setup page connects to it and selects
+      # it whatever endpoints the browser already saved (which would otherwise
+      # stop the config.js default from applying) and whatever config.js the
+      # PWA service worker still has cached. The protocol follows the page.
+      path = "/ui/#/setup?hostname=clash.${config.networking.hostName}.${config.ingress.domain}&port=443";
     };
 
     # The module warns that configFile may hold proxy credentials and so should
