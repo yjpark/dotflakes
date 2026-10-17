@@ -11,12 +11,11 @@ let
   # unconditionally in the CC binary (no availability check), so pinning it to a
   # known port is mandatory for a bridge.
   #
-  # The bridge itself is emitted by the ingress config generator
-  # (packs/nixos/container/ingress-scripts/generate-ingress-config.bash), which
-  # writes a Caddy site binding the container's eth0 IP on this port and reverse
-  # proxying to 127.0.0.1:<port> where CC listens. A socket bound to `lo` won't
-  # serve a connection arriving on eth0, hence the bridge. We bind the container
-  # IP only (not 0.0.0.0) so CC's own 127.0.0.1:<port> listener stays free.
+  # The bridge itself is the mcp-oauth-bridge service below: it listens on the
+  # container's eth0 IP on this port and forwards to 127.0.0.1:<port> where CC
+  # listens. A socket bound to `lo` won't serve a connection arriving on eth0,
+  # hence the bridge. We bind the container IP only (not 0.0.0.0) so CC's own
+  # 127.0.0.1:<port> listener stays free.
   #
   # The remaining hops (delivering the callback + opening the browser on the
   # host desktop / Windows-WSL) are tracked in flakes-mqe9 and its children.
@@ -34,6 +33,22 @@ let
   # xdg-open shim -> browser-open. Tools (incl. Claude Code) often call xdg-open
   # directly rather than honouring $BROWSER; hiPrio wins any collision with a
   # real xdg-utils in the container closure.
+  # The container IP comes from incus DHCP (pinned by a device override, not
+  # declared here), so it is looked up when the bridge starts. `|| true` keeps
+  # the lookup failure from aborting before the retry message.
+  bridgeScript = pkgs.writeShellApplication {
+    name = "mcp-oauth-bridge";
+    runtimeInputs = with pkgs; [ iproute2 gawk socat ];
+    text = ''
+      IP=$(ip -4 route get 1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}') || true
+      if [[ -z "$IP" ]]; then
+        echo "mcp-oauth-bridge: no IPv4 address yet, retrying"
+        exit 1
+      fi
+      exec socat TCP-LISTEN:${callbackPort},bind="$IP",fork,reuseaddr TCP:127.0.0.1:${callbackPort}
+    '';
+  };
+
   xdgOpenShim = lib.hiPrio (pkgs.writeShellScriptBin "xdg-open" ''
     exec ${browserOpen}/bin/browser-open "$@"
   '');
@@ -42,10 +57,19 @@ in
   # 1. Pin Claude Code's MCP OAuth callback port (login-shell env).
   environment.variables.MCP_OAUTH_CALLBACK_PORT = callbackPort;
 
-  # 2. Expose the same port to the ingress config generator, which runs as the
-  #    ingress-sync systemd service and emits the Caddy bridge site.
-  systemd.services.ingress-sync.serviceConfig.Environment =
-    [ "MCP_OAUTH_CALLBACK_PORT=${callbackPort}" ];
+  # 2. Bridge <container-ip>:<port> -> 127.0.0.1:<port> for the callback.
+  systemd.services.mcp-oauth-bridge = {
+    description = "Forward MCP OAuth callbacks from eth0 to Claude Code on localhost";
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      ExecStart = "${bridgeScript}/bin/mcp-oauth-bridge";
+      Restart = "always";
+      RestartSec = 5;
+      DynamicUser = true;
+    };
+  };
 
   # 3. Route browser-open through the terminal (Phase A).
   environment.variables.BROWSER = "${browserOpen}/bin/browser-open";

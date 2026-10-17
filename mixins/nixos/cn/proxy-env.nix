@@ -57,4 +57,10 @@ in
   # reads this env at start but only uses it at fetch time, so it needs no
   # ordering against mihomo.
   systemd.services.nix-daemon.environment = env;
+
+  # The ingress Caddy (mixins/nixos/services/incus-ingress) obtains its wildcard
+  # certificate from Let's Encrypt, which times out direct from CN. Its
+  # reverse-proxy upstreams (loopback, the incus bridge) are all in no_proxy,
+  # which Caddy's transport honours like any Go HTTP client.
+  systemd.services.caddy.environment = lib.mkIf config.services.caddy.enable env;
 }

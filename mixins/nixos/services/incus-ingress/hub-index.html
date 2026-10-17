@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ingress Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1f310;</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { display: flex; height: 100vh; font-family: system-ui, -apple-system, sans-serif; background: #0f0f0f; color: #e0e0e0; }
+#sidebar { width: 260px; min-width: 120px; max-width: 50vw; background: #1a1a1a; flex-shrink: 0; display: flex; flex-direction: column; }
+#resize-handle { width: 4px; cursor: col-resize; background: #333; flex-shrink: 0; transition: background 0.15s; }
+#resize-handle:hover, #resize-handle.dragging { background: #7aa2f7; }
+#sidebar header { padding: 12px 16px; border-bottom: 1px solid #333; display: flex; align-items: center; justify-content: space-between; }
+#sidebar header h1 { font-size: 14px; color: #888; text-transform: uppercase; letter-spacing: 2px; font-weight: 500; }
+#compact-btn { background: none; border: none; color: #555; cursor: pointer; font-size: 18px; padding: 0; line-height: 1; }
+#compact-btn:hover { color: #aaa; }
+#service-list { flex: 1; overflow-y: auto; }
+.group { padding: 14px 16px 4px; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #222; }
+.service { padding: 10px 16px; cursor: pointer; border-bottom: 1px solid #222; transition: background 0.1s; }
+.service:hover { background: #252525; }
+.service.active { background: #2a2a2a; border-left: 2px solid #7aa2f7; padding-left: 14px; }
+.service .title { font-size: 13px; color: #c0c0c0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.service .info { font-size: 11px; color: #666; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.service .info .process { color: #bb9af7; }
+.service .info .port { color: #7aa2f7; }
+.service .info .kind { color: #9ece6a; }
+.service.error { cursor: default; }
+.service.error .info { color: #f7768e; }
+body.compact #sidebar { width: 64px !important; min-width: 64px; }
+body.compact #sidebar header h1, body.compact #sidebar footer span, body.compact #resize-handle { display: none; }
+body.compact #sidebar header { justify-content: center; padding: 12px 8px; }
+body.compact #sidebar footer { justify-content: center; padding: 8px; }
+body.compact .group { padding: 10px 0 2px; text-align: center; font-size: 9px; letter-spacing: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.compact .service { padding: 10px 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+body.compact .service.active { padding-left: 0; border-left: 2px solid #7aa2f7; }
+body.compact .service .title { display: none; }
+body.compact .service .info { margin-top: 0; }
+body.compact .service .info .process, body.compact .service .info .detail { display: none; }
+body.compact .service .info .port { font-size: 13px; font-weight: 500; }
+body.compact .service .svc-icon { display: flex; width: 28px; height: 28px; border-radius: 6px; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; overflow: hidden; }
+body.compact .service .svc-icon img { width: 22px; height: 22px; object-fit: contain; }
+.service .svc-icon { display: none; }
+#sidebar footer { padding: 10px 16px; border-top: 1px solid #333; font-size: 12px; color: #888; display: flex; align-items: center; gap: 8px; }
+#main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+#toolbar { height: 32px; background: #1a1a1a; border-bottom: 1px solid #333; display: flex; align-items: center; padding: 0 12px; gap: 8px; font-size: 12px; }
+#toolbar #current-url { color: #666; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#toolbar a { color: #7aa2f7; text-decoration: none; font-size: 11px; }
+#toolbar a:hover { text-decoration: underline; }
+#frame-container { flex: 1; position: relative; background: #000; }
+#frame-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+#empty { display: flex; align-items: center; justify-content: center; height: 100%; color: #333; font-size: 16px; }
+.no-services { padding: 24px 16px; text-align: center; color: #444; font-size: 13px; line-height: 1.6; }
+#service-count { flex: 1; }
+#refresh-btn { background: #252525; border: 1px solid #444; color: #aaa; padding: 5px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+#refresh-btn:hover { background: #333; color: #e0e0e0; }
+#refresh-btn.loading { opacity: 0.5; pointer-events: none; }
+#toast { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: #2a2a2a; border: 1px solid #444; color: #c0c0c0; padding: 8px 14px; border-radius: 4px; font-size: 12px; display: none; z-index: 100; }
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <header><h1 id="heading">Ingress Hub</h1><button id="compact-btn" onclick="toggleCompact()" title="Toggle compact mode">&#x2630;</button></header>
+  <div id="service-list"></div>
+  <footer><span id="service-count"></span><button id="refresh-btn" onclick="loadContainers()">refresh</button></footer>
+</div>
+<div id="resize-handle"></div>
+<div id="main">
+  <div id="toolbar">
+    <span id="current-url"></span>
+    <a id="reload-frame" href="#" style="display:none" onclick="reloadFrame(); return false;">reload</a>
+    <a id="open-new-tab" href="#" target="_blank" style="display:none">new tab</a>
+  </div>
+  <div id="frame-container">
+    <div id="empty">Select a service</div>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+// links.json (built by Nix): {host, domain, containers, sites, services}
+// /api/containers (live):    [{name, ports: [{port, process, cwd}]} | {name, error}]
+var links = null;
+var live = null;
+var items = [];
+var activeKey = null;
+
+function esc(s) {
+  var d = document.createElement("div");
+  d.textContent = s == null ? "" : String(s);
+  return d.innerHTML;
+}
+
+function zone() { return links.host + "." + links.domain; }
+
+function loadLinks() {
+  return fetch("/links.json?" + Date.now())
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      links = data;
+      document.getElementById("heading").textContent = data.host;
+      document.title = "Hub · " + data.host;
+      render();
+    });
+}
+
+function loadContainers() {
+  var btn = document.getElementById("refresh-btn");
+  btn.classList.add("loading");
+  return fetch("/api/containers")
+    .then(function(res) { return res.json(); })
+    .then(function(data) { live = data; })
+    .catch(function(e) {
+      live = (links ? links.containers : []).map(function(n) { return { name: n, error: "hub API: " + e.message }; });
+    })
+    .finally(function() {
+      btn.classList.remove("loading");
+      render();
+    });
+}
+
+// Flatten everything into one ordered list of groups and items.
+function buildItems() {
+  var out = [];
+  var services = links.services.slice().sort(function(a, b) {
+    return a.group.localeCompare(b.group) || a.title.localeCompare(b.title);
+  });
+  services.forEach(function(s) {
+    out.push({
+      key: "svc:" + s.name, group: s.group, title: s.title, url: s.url,
+      kind: s.embed ? "embed" : "copy", label: s.title[0].toUpperCase(),
+      detail: s.note || (s.embed ? s.name + "." + zone() : s.url),
+    });
+  });
+  links.containers.forEach(function(name) {
+    var c = (live || []).filter(function(x) { return x.name === name; })[0];
+    if (!c) {
+      out.push({ key: "c:" + name, group: name, title: live ? "unknown" : "loading…", kind: "error", label: "…" });
+    } else if (c.error) {
+      out.push({ key: "c:" + name, group: name, title: name, kind: "error", label: "!", detail: c.error });
+    } else if (c.ports.length === 0) {
+      out.push({ key: "c:" + name, group: name, title: "no listening ports", kind: "error", label: "–" });
+    } else {
+      c.ports.forEach(function(p) {
+        out.push({
+          key: "c:" + name + ":" + p.port, group: name, title: p.cwd || p.process || "?",
+          url: "https://" + name + "-" + p.port + "." + zone() + "/",
+          kind: "embed", port: p.port, process: p.process, label: (p.process || "?")[0].toUpperCase(),
+          icon: "/api/icon/" + name + "/" + p.port,
+        });
+      });
+    }
+  });
+  links.sites.forEach(function(s) {
+    out.push({ key: "site:" + s.name, group: "Other sites", title: s.name, url: s.url, kind: "tab", label: s.name[0].toUpperCase(), detail: "hub." + s.name + "." + links.domain });
+  });
+  return out;
+}
+
+function hue(key) {
+  var h = 0;
+  for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) % 360;
+  return h;
+}
+
+function iconFallback(img) {
+  var parent = img.parentNode;
+  parent.removeChild(img);
+  parent.textContent = parent.getAttribute("data-label");
+}
+
+function render() {
+  if (!links) return;
+  items = buildItems();
+  var html = "";
+  var group = null;
+  var count = 0;
+  items.forEach(function(it, i) {
+    if (it.group !== group) {
+      group = it.group;
+      html += '<div class="group" title="' + esc(group) + '">' + esc(group) + '</div>';
+    }
+    if (it.kind !== "error") count++;
+    var info;
+    if (it.port) {
+      info = '<span class="process">' + esc(it.process || "?") + '</span> <span class="port">:' + it.port + '</span>';
+    } else {
+      var kind = it.kind === "copy" ? "copy" : it.kind === "tab" ? "new tab" : "";
+      info = (kind ? '<span class="kind">' + kind + '</span> ' : '') + '<span class="detail">' + esc(it.detail || "") + '</span>';
+    }
+    var icon = '<div class="svc-icon" data-label="' + esc(it.label) + '" style="background:hsl(' + hue(it.key) + ',40%,30%)">' +
+      (it.icon ? '<img src="' + esc(it.icon) + '" onerror="iconFallback(this)">' : esc(it.label)) + '</div>';
+    html += '<div class="service' + (it.kind === "error" ? " error" : "") + (it.key === activeKey ? " active" : "") +
+      '" title="' + esc(it.title + (it.detail ? " — " + it.detail : "")) + '" onclick="select(' + i + ')">' +
+      icon + '<div class="title">' + esc(it.title) + '</div><div class="info">' + info + '</div></div>';
+  });
+  document.getElementById("service-list").innerHTML = html || '<div class="no-services">Nothing configured.</div>';
+  document.getElementById("service-count").textContent = count + " link" + (count !== 1 ? "s" : "");
+}
+
+function toast(text) {
+  var t = document.getElementById("toast");
+  t.textContent = text;
+  t.style.display = "block";
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(function() { t.style.display = "none"; }, 2000);
+}
+
+function select(idx) {
+  var it = items[idx];
+  if (it.kind === "error") return;
+  if (it.kind === "tab") { window.open(it.url, "_blank"); return; }
+  if (it.kind === "copy") {
+    navigator.clipboard.writeText(it.url).then(
+      function() { toast("Copied " + it.url); },
+      function() { toast(it.url); });
+    return;
+  }
+
+  activeKey = it.key;
+  render();
+  document.getElementById("current-url").textContent = it.url;
+  var openBtn = document.getElementById("open-new-tab");
+  openBtn.href = it.url;
+  openBtn.style.display = "inline";
+  document.getElementById("reload-frame").style.display = "inline";
+
+  var container = document.getElementById("frame-container");
+  var empty = document.getElementById("empty");
+  if (empty) empty.style.display = "none";
+
+  // Keep one iframe per item, so switching back preserves its state.
+  var frames = container.querySelectorAll("iframe");
+  for (var i = 0; i < frames.length; i++) frames[i].style.display = "none";
+  var frameId = "frame-" + it.key;
+  var frame = document.getElementById(frameId);
+  if (!frame) {
+    frame = document.createElement("iframe");
+    frame.id = frameId;
+    frame.src = it.url;
+    container.appendChild(frame);
+  }
+  frame.style.display = "block";
+}
+
+function reloadFrame() {
+  if (!activeKey) return;
+  var f = document.getElementById("frame-" + activeKey);
+  if (f) f.src = f.src;
+}
+
+// Compact mode (default: on)
+function toggleCompact() {
+  document.body.classList.toggle("compact");
+  var isCompact = document.body.classList.contains("compact");
+  document.getElementById("compact-btn").innerHTML = isCompact ? "&#x2630;" : "&#xab;";
+  document.getElementById("compact-btn").title = isCompact ? "Expand sidebar" : "Collapse sidebar";
+  try { localStorage.setItem("hub-compact", isCompact ? "1" : "0"); } catch (e) {}
+}
+var compactPref = null;
+try { compactPref = localStorage.getItem("hub-compact"); } catch (e) {}
+if (compactPref !== "0") {
+  document.body.classList.add("compact");
+} else {
+  document.getElementById("compact-btn").innerHTML = "&#xab;";
+  document.getElementById("compact-btn").title = "Collapse sidebar";
+}
+
+// Resizable sidebar
+(function() {
+  var handle = document.getElementById("resize-handle");
+  var sidebar = document.getElementById("sidebar");
+  var dragging = false;
+  handle.addEventListener("mousedown", function(e) {
+    e.preventDefault();
+    dragging = true;
+    handle.classList.add("dragging");
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  });
+  document.addEventListener("mousemove", function(e) {
+    if (!dragging) return;
+    var w = Math.min(Math.max(e.clientX, 120), window.innerWidth * 0.5);
+    sidebar.style.width = w + "px";
+  });
+  document.addEventListener("mouseup", function() {
+    if (!dragging) return;
+    dragging = false;
+    handle.classList.remove("dragging");
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+    try { localStorage.setItem("hub-sidebar-width", sidebar.style.width); } catch (e) {}
+  });
+  var saved = null;
+  try { saved = localStorage.getItem("hub-sidebar-width"); } catch (e) {}
+  if (saved) sidebar.style.width = saved;
+})();
+
+loadLinks()
+  .then(loadContainers)
+  .catch(function() {
+    document.getElementById("service-list").innerHTML = '<div class="no-services">Failed to load links.json.</div>';
+  });
+</script>
+</body>
+</html>

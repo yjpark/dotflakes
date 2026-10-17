@@ -119,6 +119,16 @@ in
       webui = pkgs.metacubexd;
     };
 
+    # Listed on the host hub page (mixins/nixos/services/incus-ingress). The
+    # dashboard and its API share the controller port, so behind the HTTPS
+    # subdomain they stay same-origin.
+    ingress.services.clash = {
+      title = "Clash";
+      group = "Network";
+      upstream = "127.0.0.1:${toString ports.controller}";
+      path = "/ui/";
+    };
+
     # The module warns that configFile may hold proxy credentials and so should
     # not sit in the world-readable store. That is exactly the case here — the
     # subscription URLs are the credentials — hence sops.templates, which

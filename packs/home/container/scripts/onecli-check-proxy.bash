@@ -45,7 +45,7 @@ info "NODE_EXTRA_CA_CERTS: ${NODE_EXTRA_CA_CERTS:-<not set>}"
 info "SSL_CERT_FILE: ${SSL_CERT_FILE:-<not set>}"
 
 # Verify OneCLI CA is present in the active CA bundle
-# (pushed by onecli-push-ca, merged into the bundle by onecli-ca-bundle.service)
+# (pushed by onecli-push-ca, merged into the bundle by ingress-ca-bundle.service)
 ONECLI_CA="/var/lib/onecli/ca.crt"
 if [[ -r "$ONECLI_CA" ]]; then
   info "  OneCLI CA cert exists: $ONECLI_CA"

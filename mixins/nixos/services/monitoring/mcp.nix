@@ -11,6 +11,7 @@
 # Same exposure as the hub UIs (see hub.nix): ZeroTier and the local site only.
 let
   cfg = config.monitoring;
+  hubAddr = cfg.hubs.${config.networking.hostName};
 
   # Upstream pins go 1.26.2; relax to major.minor like nixpkgs' victorialogs so
   # the nixpkgs Go toolchain builds it.
@@ -89,6 +90,21 @@ in
       port = cfg.ports.mcpVictorialogs;
       environment = {
         VL_INSTANCE_ENTRYPOINT = "http://127.0.0.1:${toString cfg.ports.victorialogs}";
+      };
+    };
+
+    # Listed on the host hub page as copyable URLs: agents need the URL, there
+    # is nothing to browse.
+    ingress.services = {
+      mcp-vm = {
+        title = "VictoriaMetrics MCP";
+        group = "Monitoring";
+        url = "http://${hubAddr}:${toString cfg.ports.mcpVictoriametrics}/mcp";
+      };
+      mcp-logs = {
+        title = "VictoriaLogs MCP";
+        group = "Monitoring";
+        url = "http://${hubAddr}:${toString cfg.ports.mcpVictorialogs}/mcp";
       };
     };
   };

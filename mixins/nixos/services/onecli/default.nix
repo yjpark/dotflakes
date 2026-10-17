@@ -19,6 +19,13 @@
     format = "binary";
   };
 
+  # Listed on the host hub page (mixins/nixos/services/incus-ingress).
+  ingress.services.onecli = {
+    title = "OneCLI";
+    group = "Agents";
+    upstream = "10.100.0.2:10254";
+  };
+
   # Maintenance scripts (onecli-push-ca, onecli-list-secrets, onecli-reseed, etc.) co-located here
   environment.systemPackages =
     flake.inputs.autowire.gatherScriptPackages_bash pkgs ./.;

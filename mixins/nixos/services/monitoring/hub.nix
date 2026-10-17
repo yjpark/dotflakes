@@ -50,5 +50,21 @@ in
         "-retention.maxDiskSpaceUsageBytes=${toString cfg.retention.logsMaxDiskBytes}"
       ];
     };
+
+    # Listed on the host hub page (mixins/nixos/services/incus-ingress).
+    ingress.services = {
+      vm = {
+        title = "VictoriaMetrics";
+        group = "Monitoring";
+        upstream = "127.0.0.1:${toString cfg.ports.victoriametrics}";
+        path = "/vmui/";
+      };
+      logs = {
+        title = "VictoriaLogs";
+        group = "Monitoring";
+        upstream = "127.0.0.1:${toString cfg.ports.victorialogs}";
+        path = "/select/vmui/";
+      };
+    };
   };
 }
