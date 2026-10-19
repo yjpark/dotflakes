@@ -5,7 +5,7 @@ status: in-progress
 type: feature
 priority: normal
 created_at: 2026-10-17T09:51:16Z
-updated_at: 2026-10-17T13:29:42Z
+updated_at: 2026-10-17T14:50:53Z
 ---
 
 One place per host to find every service URL: `hub.<host>.yjpark.org` lists the host's own web UIs (VictoriaMetrics, VictoriaLogs, clash, onecli), copyable MCP endpoints, the live listening ports of every incus container, and the other site's hub. Replaces the per-container hub pages (`hub.<c>.incus` / `<c>-hub.<host>.yjpark.org`). Supersedes the "host-level hub" left out of flakes-bti9.
@@ -57,5 +57,5 @@ New subdomains share the existing `<c>-<port>` exposure (Caddy 80/443, firewalld
 - Hub API needs a writable `$HOME` for the incus client (`StateDirectory=ingress-hub`).
 - pc now runs systemd-resolved (pulled in by the ingress mixin), like edger.
 - Verified on pc: hub, links.json, /api/containers, vm, logs, clash, onecli, onecli-10254 all 200 over HTTPS; unknown subdomains 404.
-- Still to check by eye in a browser: clash dashboard (metacubexd) connecting to its backend via https://clash.<host>.yjpark.org, and iframe rendering of each UI.
+- Clash dashboard confirmed working in the browser via the hub link (`#/setup?hostname=clash.<host>.<domain>&port=443`); metacubexd's config.js defaults the backend to the page origin.
 - yolo redeployed with the final container config (`ingress` hides 3118/12345).
