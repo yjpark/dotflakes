@@ -10,6 +10,7 @@ in {
     (self + /mixins/nixos/lan/102)
     (self + /mixins/nixos/cn)
     (self + /mixins/nixos/services/incus-ingress)
+    (self + /mixins/nixos/services/kudo-hub.nix)
     (self + /mixins/nixos/services/onecli)
     (self + /mixins/nixos/services/monitoring)
     (self + /mixins/nixos/settings/no-sleep.nix)

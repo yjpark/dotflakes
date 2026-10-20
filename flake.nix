@@ -10,6 +10,8 @@
 
     # Tools
     jig.url = "github:edger-dev/jig";
+    hub.url = "github:edger-dev/hub";
+    kudo.url = "github:edger-dev/kudo";
 
     # Software inputs
     ## https://github.com/Mic92/sops-nix
