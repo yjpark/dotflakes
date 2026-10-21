@@ -4,4 +4,33 @@
   # yolo is sandboxed (outbound traffic goes through OneCLI): its kudo
   # workers run their agent CLI bypassing permissions. Only here.
   services.kudo-node.environment.KUDO_WORKER_BYPASS = "1";
+
+  # The kudo console, reached at https://yolo-8080.pc.yjpark.org through the
+  # ingress. It runs the release build in the kudo checkout (run by hand until
+  # its views settle): rebuild with
+  #   dx build -p kudo-console --web --fullstack --release
+  # then `systemctl --user restart kudo-console`. No login: it listens on
+  # 127.0.0.1 only, and starts workers only on yolo.
+  systemd.user.services.kudo-console = let
+    web = "%h/agents/edger/kudo/target/dx/kudo-console/release/web";
+  in {
+    Unit = {
+      Description = "kudo console (the release build in the kudo checkout)";
+      After = [ "kudo-node.service" ];
+    };
+    Service = {
+      WorkingDirectory = web;
+      ExecStart = "${web}/server";
+      Environment = [
+        "PORT=8080"
+        "KUDO_HUB_ADDR=10.100.0.1:15400"
+        "KUDO_CONSOLE_WORKER_NODES=yolo"
+        "KUDO_CONSOLE_HOSTS=8080.yolo.incus"
+        "KUDO_CONSOLE_ORIGINS=https://yolo-8080.pc.yjpark.org"
+      ];
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
 }
