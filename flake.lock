@@ -466,11 +466,11 @@
         "jig": "jig"
       },
       "locked": {
-        "lastModified": 1792506249,
-        "narHash": "sha256-Tup8USLmtIsoh30Nse1AbJfcUX+KMgHqlgyMyy7b93A=",
+        "lastModified": 1792566800,
+        "narHash": "sha256-lqAUT4djGDrwtlrrivxo+1UtslDrHsiyCVuc5tIScdc=",
         "owner": "edger-dev",
         "repo": "hub",
-        "rev": "c3f6a240ac78c79c1c920299c0e2d59cff2c34fc",
+        "rev": "828a6b05c9069c62d47bd53587f0ba897e43a8d2",
         "type": "github"
       },
       "original": {
