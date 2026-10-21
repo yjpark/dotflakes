@@ -17,6 +17,9 @@
     Unit = {
       Description = "kudo console (the release build in the kudo checkout)";
       After = [ "kudo-node.service" ];
+      # Only where the console is built (yolo's config is shared by every
+      # host's yolo; the console runs on pc's).
+      ConditionPathExists = "${web}/server";
     };
     Service = {
       WorkingDirectory = web;
