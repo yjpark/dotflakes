@@ -1,9 +1,22 @@
-{ flake, ... }: {
+{ flake, ... }:
+let
+  mirror = "s3://kudo-contexts/contexts";
+  r2Env = "-%h/.config/kudo/r2.env";
+in
+{
   imports = [ (flake.inputs.self + /mixins/home/settings/kudo-node.nix) ];
 
   # yolo is sandboxed (outbound traffic goes through OneCLI): its kudo
   # workers run their agent CLI bypassing permissions. Only here.
   services.kudo-node.environment.KUDO_WORKER_BYPASS = "1";
+
+  # The context store's mirror, shared by every host's yolo: the bucket and
+  # region here, the key in ~/.config/kudo/r2.env (pushed by the host,
+  # mixins/nixos/services/kudo-r2.nix; absent until then, and the store stays
+  # local).
+  services.kudo-node.environment.KUDO_CONTEXT_MIRROR = mirror;
+  services.kudo-node.environment.AWS_REGION = "auto";
+  systemd.user.services.kudo-node.Service.EnvironmentFile = [ r2Env ];
 
   # The kudo console, reached at https://yolo-8080.pc.yjpark.org through the
   # ingress. It runs the release build in the kudo checkout (run by hand until
@@ -30,7 +43,10 @@
         "KUDO_CONSOLE_WORKER_NODES=yolo,edger::yolo"
         "KUDO_CONSOLE_HOSTS=8080.yolo.incus"
         "KUDO_CONSOLE_ORIGINS=https://yolo-8080.pc.yjpark.org"
+        "KUDO_CONTEXT_MIRROR=${mirror}"
+        "AWS_REGION=auto"
       ];
+      EnvironmentFile = [ r2Env ];
       Restart = "on-failure";
       RestartSec = 5;
     };
