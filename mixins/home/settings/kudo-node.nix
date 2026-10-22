@@ -6,5 +6,8 @@
   services.kudo-node = {
     enable = true;
     hubAddr = "10.100.0.1:15400";
+    # Every node runs governed: these argvs run without asking; anything else
+    # waits for a verdict in the console (30 minutes, then denied).
+    environment.KUDO_NODE_RULES = "${./kudo-node-rules.styx}";
   };
 }

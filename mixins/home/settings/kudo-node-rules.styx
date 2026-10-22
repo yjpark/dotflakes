@@ -1,0 +1,12 @@
+// The seed every kudo-node starts governed with: exact argvs a worker may run
+// on any node without asking. Everything else waits for the author's verdict
+// in the kudo console, where "allow always" grows the node's own rules
+// (standing-rules.styx in its state directory) — this file stays small and
+// read-only.
+allow (
+  (uptime)
+  (df -h)
+  (free -h)
+  (nixos-version)
+)
+deny ()
