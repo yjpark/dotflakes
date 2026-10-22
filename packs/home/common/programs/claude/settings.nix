@@ -22,6 +22,15 @@
         type = "http";
         url = "http://${config.me.monitoringHub}:9430/mcp";
       };
+
+      # Cloudflare's hosted MCP server (Workers, R2, KV, D1, DNS, ...). OAuth on
+      # first use; from a container the callback comes back through
+      # packs/nixos/container/mcp-oauth-bridge.nix and the host-side ssh forward
+      # (packs/home/host/common/mcp-oauth-forward.nix).
+      cloudflare = {
+        type = "http";
+        url = "https://mcp.cloudflare.com/mcp";
+      };
     };
   };
 }
