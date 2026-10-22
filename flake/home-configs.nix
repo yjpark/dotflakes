@@ -45,6 +45,15 @@ let
       username = "yjpark";
     } pkgs)
     //
+    {
+      # WSL (Windows laptop), picked by activate-home when $WSL_DISTRO_NAME is set
+      "yjpark@wsl" = inputs.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = mkSpecialArgs pkgs.stdenv.hostPlatform.system;
+        modules = [ (inputs.self + /home/yjpark-cli.nix) ];
+      };
+    }
+    //
     (mkHomeConfigs {
       baseConfigPath = "/home/yj.nix";
       mixinDir = "/mixins/home/containers";

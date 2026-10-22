@@ -1,5 +1,13 @@
 {
   description = "YJ Park's Home Manager Configuration";
+
+  # Binary cache for llm-agents, for non-NixOS machines (e.g. Ubuntu on WSL)
+  # where packs/nixos/common/settings/nix/llm-agents.nix doesn't apply.
+  # Honoured only for trusted users; Nix asks once before using it.
+  nixConfig = {
+    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-trusted-public-keys = [ "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=" ];
+  };
   inputs = {
     # Principle inputs (updated by `nix run .#update`)
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";

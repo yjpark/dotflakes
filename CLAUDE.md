@@ -51,18 +51,18 @@ flake.nix                    # Entry point, declares all inputs
 
 - **packs/**: Autowired collections — import a pack, get everything in it
 - **mixins/**: Opt-in configuration pieces (services, hardware, versions)
-- **home/**: Base Home Manager configs (`yjpark.nix`, `yj.nix`)
+- **home/**: Base Home Manager configs (`yjpark.nix` = `yjpark-cli.nix` + GUI pack, `yj.nix`)
 - **nixos/**: Per-host and per-container NixOS configs
 
 ### Home Manager Activation
 
 Two user profiles exist:
-- `yjpark`: used on physical hosts; base config (`home/yjpark.nix`) sets `stateVersion = "25.05"`
+- `yjpark`: used on physical hosts; base config (`home/yjpark.nix`) sets `stateVersion = "25.05"` (via `home/yjpark-cli.nix`, the headless part)
 - `yj`: used in containers; base config (`home/yj.nix`) sets `stateVersion = "26.05"`
 
 Host/container mixins live in `mixins/home/hosts/` and `mixins/home/containers/` — adding a `.nix` file there registers a new host/container automatically.
 
-`flake/activate-home.nix`: The `mise run _activate-home` command matches the current hostname against known hosts (→ `yjpark@<host>`) then containers (→ `yj@<host>`), falling back to bare `<username>` for unknown hosts.
+`flake/activate-home.nix`: The `mise run _activate-home` command matches the current hostname against known hosts (→ `yjpark@<host>`) then containers (→ `yj@<host>`), then WSL (`$WSL_DISTRO_NAME` set → `yjpark@wsl`, headless `home/yjpark-cli.nix`), falling back to bare `<username>` for unknown hosts.
 
 `flake/home-configs.nix`: Generates `username@host` entries for each host/container mixin plus a bare `username` fallback (without host suffix).
 

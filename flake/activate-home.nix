@@ -31,6 +31,9 @@
               if [ "$_host" = "$h" ]; then _key="yj@$_host"; break; fi
             done
           fi
+          if [ -z "$_key" ] && [ -n "''${WSL_DISTRO_NAME:-}" ]; then
+            _key="yjpark@wsl"
+          fi
           if [ -z "$_key" ]; then
             _user="$(id -un)"
             echo "Host '$_host' not in known hosts, using fallback config '$_user'"

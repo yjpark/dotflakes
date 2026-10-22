@@ -7,8 +7,10 @@ priority: normal
 tags:
     - mcp
 created_at: 2026-07-03T00:21:01Z
-updated_at: 2026-10-22T14:54:10Z
+updated_at: 2026-10-22T15:21:35Z
 parent: flakes-mqe9
+blocked_by:
+    - flakes-i4ol
 ---
 
 WSL/Windows (Case 2) side of flakes-mqe9. Chain: Windows → WSL (Ubuntu, home-manager-managed) → `ssh host` → `incus exec` → container. Fully declarative because WSL is managed by this repo; `wslview` (wslu) / `cmd.exe /c start` opens the Windows default browser from WSL.
