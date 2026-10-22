@@ -1,4 +1,4 @@
-{ flake, ... }:
+{ flake, config, ... }:
 let
   mirror = "s3://kudo-contexts/contexts";
   r2Env = "-%h/.config/kudo/r2.env";
@@ -49,6 +49,30 @@ in
       EnvironmentFile = [ r2Env ];
       Restart = "on-failure";
       RestartSec = 5;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
+
+  # The waker: once a minute, a context whose check came due and that runs no
+  # worker gets one on its wake node (kudo docs: "Due items and checks"). One
+  # waker only, so it sits beside the console, on pc's yolo.
+  systemd.user.services.kudo-waker = {
+    Unit = {
+      Description = "kudo waker (wakes a worker when a check comes due)";
+      After = [ "kudo-node.service" ];
+      ConditionPathExists = "%h/agents/edger/kudo/target/dx/kudo-console/release/web/server";
+    };
+    Service = {
+      ExecStart = "${config.services.kudo-node.package}/bin/kudo-shim waker";
+      Environment = [
+        "KUDO_HUB_ADDR=10.100.0.1:15400"
+        "KUDO_CONSOLE_WORKER_NODES=yolo,edger::yolo"
+        "KUDO_CONTEXT_MIRROR=${mirror}"
+        "AWS_REGION=auto"
+      ];
+      EnvironmentFile = [ r2Env ];
+      Restart = "on-failure";
+      RestartSec = 30;
     };
     Install.WantedBy = [ "default.target" ];
   };
