@@ -7,7 +7,7 @@ priority: normal
 tags:
     - mcp
 created_at: 2026-07-03T00:21:01Z
-updated_at: 2026-10-22T15:21:35Z
+updated_at: 2026-10-22T15:37:09Z
 parent: flakes-mqe9
 blocked_by:
     - flakes-i4ol
@@ -18,7 +18,7 @@ WSL/Windows (Case 2) side of flakes-mqe9. Chain: Windows → WSL (Ubuntu, home-m
 ## Callback (needed for Phase A too)
 - [x] `programs.ssh.matchBlocks.mcp-oauth-pc` (`Host pc pc.* desktop desktop.* 172.22.1.9`, `LocalForward 3118 10.100.0.100:3118`) in `packs/home/host/common/mcp-oauth-forward.nix` — host profiles only (in containers CC itself listens on 3118). Windows `localhost:3118/callback` → WSL localhost forwarding → WSL ssh -L → pc → yolo `mcp-oauth-bridge` (socat eth0:3118 → 127.0.0.1:3118) → CC.
 - [x] Verified: generated ssh config for `yjpark` has the LocalForward, `yj@yolo` does not; in yolo, `curl 10.100.0.100:3118/callback?...` reaches a stand-in `127.0.0.1:3118` listener through the bridge.
-- [ ] Activate home in WSL, then do a real MCP OAuth from yolo (e.g. Cloudflare, flakes-pbel) via Windows → WSL → ssh pc → incus yolo, one click on the printed link. (Confirms WSL2 localhost forwarding of the 127.0.0.1-bound ssh -L, and that the ssh host alias used from WSL matches the Host patterns.)
+- [x] (2026-10-22: Cloudflare sign-in from the x1 worked end to end with a manual `ssh -L 3118:10.100.0.100:3118`; still to see with the managed config once flakes-tnjz is done) Activate home in WSL, then do a real MCP OAuth from yolo (e.g. Cloudflare, flakes-pbel) via Windows → WSL → ssh pc → incus yolo, one click on the printed link. (Confirms WSL2 localhost forwarding of the 127.0.0.1-bound ssh -L, and that the ssh host alias used from WSL matches the Host patterns.)
 - [ ] Direct Windows OpenSSH (unmanaged): add the same block to `%USERPROFILE%\.ssh\config` by hand:
   ```
   Host pc pc.* desktop desktop.* 172.22.1.9
