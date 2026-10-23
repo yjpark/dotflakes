@@ -601,11 +601,11 @@
         "jig": "jig_3"
       },
       "locked": {
-        "lastModified": 1792764930,
-        "narHash": "sha256-xVaE3QiCV9kgL+QEU628+b8W30tFCvQny3jgG7wzQTA=",
+        "lastModified": 1792766034,
+        "narHash": "sha256-R3rgqcEzIersdIq/gtG+ls36z8a3/frLWmffzDCHsvQ=",
         "owner": "edger-dev",
         "repo": "kudo",
-        "rev": "35e93c3cc58d49c1b3595b71676ed75d2f9f155f",
+        "rev": "fbb12e295207f1b9d470f73cb44f404253d94533",
         "type": "github"
       },
       "original": {
