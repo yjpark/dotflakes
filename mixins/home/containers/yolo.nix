@@ -10,6 +10,10 @@ in
   # workers run their agent CLI bypassing permissions. Only here.
   services.kudo-node.environment.KUDO_WORKER_BYPASS = "1";
 
+  # Workers here need only kudo's MCP server: the user's own servers add
+  # first-run prompts and nothing a check reads.
+  services.kudo-node.environment.KUDO_WORKER_STRICT_MCP = "1";
+
   # The context store's mirror, shared by every host's yolo: the bucket and
   # region here, the key in ~/.config/kudo/r2.env (pushed by the host,
   # mixins/nixos/services/kudo-r2.nix; absent until then, and the store stays
