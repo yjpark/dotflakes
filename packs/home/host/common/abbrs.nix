@@ -6,6 +6,7 @@
     ch = "claude --allow-dangerously-skip-permissions --model haiku";
     cn = "claude --allow-dangerously-skip-permissions --model opusplan";
     x = "codex";
+    k = "kimi --auto";
   };
 }
 

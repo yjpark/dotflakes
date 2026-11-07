@@ -6,5 +6,6 @@
     ch = "claude --dangerously-skip-permissions --model haiku";
     cn = "claude --dangerously-skip-permissions --model opusplan";
     x = "codex --dangerously-bypass-approvals-and-sandbox";
+    k = "kimi --yolo";
   };
 }
