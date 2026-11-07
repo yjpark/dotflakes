@@ -9,6 +9,11 @@
     ".claude.ai"
     "claude.com"
     ".claude.com"
+    # Same reason as Anthropic: the kimi.com subscription login lives on the
+    # agent itself (api.kimi.com/coding), and OneCLI's managed Kimi credential
+    # is for the overseas platform, so injecting it would bill the wrong account.
+    "kimi.com"
+    ".kimi.com"
   ];
 in {
   # Route agent HTTPS traffic through OneCLI for credential injection.
