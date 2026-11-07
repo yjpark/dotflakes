@@ -42,6 +42,7 @@
     # AI Tools
     llm-agents.url = "github:numtide/llm-agents.nix";
     claude-desktop.url = "github:aaddrick/claude-desktop-debian/218934d14dd19637520a000bd807cb8db3e074cd"; # pinned: newer versions have node-pty permission bug
+    kimi-code.url = "github:MoonshotAI/kimi-code";
 
     # https://github.com/jacopone/antigravity-nix
     antigravity.url = "github:jacopone/antigravity-nix";
