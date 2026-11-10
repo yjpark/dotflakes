@@ -9,6 +9,7 @@ in
   # yolo is sandboxed (outbound traffic goes through OneCLI): its kudo
   # workers run their agent CLI bypassing permissions. Only here.
   services.kudo-node.environment.KUDO_WORKER_BYPASS = "1";
+  services.kudo-node.environment.KUDO_AGENT_HARNESS = "kimi";
 
   # Workers here need only kudo's MCP server: the user's own servers add
   # first-run prompts and nothing a check reads.
@@ -28,34 +29,36 @@ in
   #   dx build -p kudo-console --web --fullstack --release
   # then `systemctl --user restart kudo-console`. No login: it listens on
   # 127.0.0.1 only, and starts workers only on the yolos (pc's and edger's).
-  systemd.user.services.kudo-console = let
-    web = "%h/agents/edger/kudo/target/dx/kudo-console/release/web";
-  in {
-    Unit = {
-      Description = "kudo console (the release build in the kudo checkout)";
-      After = [ "kudo-node.service" ];
-      # Only where the console is built (yolo's config is shared by every
-      # host's yolo; the console runs on pc's).
-      ConditionPathExists = "${web}/server";
+  systemd.user.services.kudo-console =
+    let
+      web = "%h/agents/edger/kudo/target/dx/kudo-console/release/web";
+    in
+    {
+      Unit = {
+        Description = "kudo console (the release build in the kudo checkout)";
+        After = [ "kudo-node.service" ];
+        # Only where the console is built (yolo's config is shared by every
+        # host's yolo; the console runs on pc's).
+        ConditionPathExists = "${web}/server";
+      };
+      Service = {
+        WorkingDirectory = web;
+        ExecStart = "${web}/server";
+        Environment = [
+          "PORT=8080"
+          "KUDO_HUB_ADDR=10.100.0.1:15400"
+          "KUDO_CONSOLE_WORKER_NODES=yolo,edger::yolo"
+          "KUDO_CONSOLE_HOSTS=8080.yolo.incus"
+          "KUDO_CONSOLE_ORIGINS=https://yolo-8080.pc.yjpark.org"
+          "KUDO_CONTEXT_MIRROR=${mirror}"
+          "AWS_REGION=auto"
+        ];
+        EnvironmentFile = [ r2Env ];
+        Restart = "on-failure";
+        RestartSec = 5;
+      };
+      Install.WantedBy = [ "default.target" ];
     };
-    Service = {
-      WorkingDirectory = web;
-      ExecStart = "${web}/server";
-      Environment = [
-        "PORT=8080"
-        "KUDO_HUB_ADDR=10.100.0.1:15400"
-        "KUDO_CONSOLE_WORKER_NODES=yolo,edger::yolo"
-        "KUDO_CONSOLE_HOSTS=8080.yolo.incus"
-        "KUDO_CONSOLE_ORIGINS=https://yolo-8080.pc.yjpark.org"
-        "KUDO_CONTEXT_MIRROR=${mirror}"
-        "AWS_REGION=auto"
-      ];
-      EnvironmentFile = [ r2Env ];
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
-    Install.WantedBy = [ "default.target" ];
-  };
 
   # The waker: once a minute, a context whose check came due and that runs no
   # worker gets one on its wake node (kudo docs: "Due items and checks"). One
