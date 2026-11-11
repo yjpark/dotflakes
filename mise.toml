@@ -62,6 +62,9 @@ SYSTEM_PATH=$(readlink -f result)
 rm -f result
 sudo nix-env -p /nix/var/nix/profiles/system --set "$SYSTEM_PATH"
 sudo "$SYSTEM_PATH/bin/switch-to-configuration" switch
+if [ "$(hostname)" = "pc" ]; then
+    cloudflared tunnel route dns 829deb72-9870-4b61-9120-bf748d85fbd2 kudo_pc.yjpark.org
+fi
 """
 
 [tasks.restart-onecli]
