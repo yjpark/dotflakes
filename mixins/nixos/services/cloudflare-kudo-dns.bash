@@ -5,7 +5,9 @@ hostname=kudo_pc.yjpark.org
 tunnel=829deb72-9870-4b61-9120-bf748d85fbd2
 secret=mixins/nixos/services/secrets/cloudflare-caddy.txt
 
-eval "$(sops -d --output-type dotenv "$secret")"
+CLOUDFLARE_API_TOKEN="$(sops -d "$secret")"
+CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN#CLOUDFLARE_API_TOKEN=}"
+export CLOUDFLARE_API_TOKEN
 
 zone_id=$(curl -fsS \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
