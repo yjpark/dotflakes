@@ -4,16 +4,9 @@
     tunnels = {
       "829deb72-9870-4b61-9120-bf748d85fbd2" = {
         credentialsFile = "${config.sops.secrets."cloudflared.cred.json".path}";
-        ingress = {
-          "kudo_pc.yjpark.org" = {
-            service = "http://10.100.0.100:80";
-            originRequest.httpHostHeader = "8080.yolo.incus";
-          };
-          "yolo-8080.pc.yjpark.org" = {
-            service = "http://10.100.0.100:80";
-            originRequest.httpHostHeader = "8080.yolo.incus";
-          };
-        };
+        # This tunnel is remotely managed. Add kudo_pc.yjpark.org as a public
+        # hostname in Cloudflare Zero Trust with service http://10.100.0.100:80
+        # and HTTP Host header 8080.yolo.incus; local ingress is ignored.
         default = "http_status:404";
       };
     };
