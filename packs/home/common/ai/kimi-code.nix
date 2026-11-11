@@ -21,6 +21,25 @@ in
       kimi-code.default
     ];
 
+    # The same MCP servers Claude Code gets: host monitoring and Cloudflare's
+    # hosted API (OAuth on first use).
+    home.file.".kimi-code/mcp.json".text = builtins.toJSON {
+      mcpServers = {
+        victoriametrics = {
+          type = "http";
+          url = "http://${config.me.monitoringHub}:8430/mcp";
+        };
+        victorialogs = {
+          type = "http";
+          url = "http://${config.me.monitoringHub}:9430/mcp";
+        };
+        cloudflare = {
+          type = "http";
+          url = "https://mcp.cloudflare.com/mcp";
+        };
+      };
+    };
+
     home.activation.kimiCodeDefaults = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       export PATH="${lib.makeBinPath [ pkgs.coreutils pkgs.gawk ]}:$PATH"
       _kimi_config="${config.home.homeDirectory}/.kimi-code/config.toml"
