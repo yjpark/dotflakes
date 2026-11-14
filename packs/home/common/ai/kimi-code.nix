@@ -21,8 +21,7 @@ in
       kimi-code.default
     ];
 
-    # The same MCP servers Claude Code gets: host monitoring and Cloudflare's
-    # hosted API (OAuth on first use).
+    # Host monitoring, Cloudflare's hosted API, and Gmail (OAuth on first use).
     home.file.".kimi-code/mcp.json".text = builtins.toJSON {
       mcpServers = {
         victoriametrics = {
@@ -36,6 +35,10 @@ in
         cloudflare = {
           type = "http";
           url = "https://mcp.cloudflare.com/mcp";
+        };
+        gmail = {
+          command = "npx";
+          args = [ "@gongrzhe/server-gmail-autoauth-mcp" ];
         };
       };
     };
