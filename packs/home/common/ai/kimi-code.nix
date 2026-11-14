@@ -6,6 +6,14 @@
 }:
 let
   kimi-code = flake.inputs.kimi-code.packages.${pkgs.stdenv.hostPlatform.system};
+  workspaceHome = "${config.home.homeDirectory}/.gemini/extensions/google-workspace";
+  workspaceReadOnly = "docs.write:off,drive.write:off,calendar.write:off,chat.write:off,gmail.write:off";
+  workspaceLibraryPath = lib.makeLibraryPath [ pkgs.libsecret pkgs.glib pkgs.stdenv.cc.cc.lib ];
+  google-workspace-auth = pkgs.writeShellScriptBin "google-workspace-auth" ''
+    export LD_LIBRARY_PATH="${workspaceLibraryPath}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    export WORKSPACE_FEATURE_OVERRIDES="${workspaceReadOnly}"
+    exec ${pkgs.nodejs}/bin/node ${workspaceHome}/scripts/auth-utils.js "$@"
+  '';
 in
 {
   options.kimiCode.defaultPermissionMode = lib.mkOption {
@@ -19,9 +27,10 @@ in
     # mcpServers is set), so it is not listed again here.
     home.packages = [
       kimi-code.default
+      google-workspace-auth
     ];
 
-    # Host monitoring, Cloudflare's hosted API, and Gmail (OAuth on first use).
+    # Host monitoring, Cloudflare's hosted API, and read-only Google Workspace.
     home.file.".kimi-code/mcp.json".text = builtins.toJSON {
       mcpServers = {
         victoriametrics = {
@@ -36,9 +45,14 @@ in
           type = "http";
           url = "https://mcp.cloudflare.com/mcp";
         };
-        gmail = {
-          command = "npx";
-          args = [ "@gongrzhe/server-gmail-autoauth-mcp" ];
+        google-workspace = {
+          command = "${pkgs.nodejs}/bin/node";
+          args = [ "${workspaceHome}/workspace-server/dist/index.js" ];
+          cwd = workspaceHome;
+          env = {
+            LD_LIBRARY_PATH = workspaceLibraryPath;
+            WORKSPACE_FEATURE_OVERRIDES = workspaceReadOnly;
+          };
         };
       };
     };

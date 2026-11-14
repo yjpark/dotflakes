@@ -1,10 +1,9 @@
-{
-  flake,
-  pkgs,
-  ...
+{ flake
+, pkgs
+, ...
 }:
 let
-    /*
+  /*
     dolt-version = "1.83.5";
     dolt = pkgs.dolt.overrideAttrs (old: {
       version = dolt-version;
@@ -55,9 +54,9 @@ let
       doCheck = false;
     };
     */
-    llm-agents = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+  llm-agents = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
 
-    /*
+  /*
     # Re-wrap beads so bd finds our pinned dolt instead of the bundled 1.81.2
     beads = pkgs.runCommand "beads-custom-dolt" {
       nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -77,13 +76,13 @@ in
     llm-agents.agent-browser
     llm-agents.opencode
     llm-agents.codex
+    llm-agents.gemini-cli
 
     /*
-    llm-agents.gemini-cli
-    dolt
-    beads
-    gastown
-    perles
+      dolt
+      beads
+      gastown
+      perles
     */
   ];
 }
