@@ -62,9 +62,10 @@ SYSTEM_PATH=$(readlink -f result)
 rm -f result
 sudo nix-env -p /nix/var/nix/profiles/system --set "$SYSTEM_PATH"
 sudo "$SYSTEM_PATH/bin/switch-to-configuration" switch
-if [ "$(hostname)" = "pc" ]; then
-    bash mixins/nixos/services/cloudflare-kudo-dns.bash
-fi
+# Disabled: the Cloudflare token lacks account-level Access/Tunnel permissions.
+# if [ "$(hostname)" = "pc" ] || [ "$(hostname)" = "edger" ]; then
+#     bash mixins/nixos/services/cloudflare-kudo.bash
+# fi
 """
 
 [tasks.restart-onecli]

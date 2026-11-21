@@ -23,8 +23,9 @@ in
   services.kudo-node.environment.AWS_REGION = "auto";
   systemd.user.services.kudo-node.Service.EnvironmentFile = [ r2Env ];
 
-  # The kudo console, reached at https://yolo-8080.pc.yjpark.org through the
-  # ingress. It runs the release build in the kudo checkout (run by hand until
+  # The kudo console, reached through either host's ingress or the kudo_pc /
+  # kudo_edger Cloudflare Access hostnames. It runs the release build in the
+  # kudo checkout (run by hand until
   # its views settle): rebuild with
   #   dx build -p kudo-console --web --fullstack --release
   # then `systemctl --user restart kudo-console`. No login: it listens on
@@ -49,7 +50,7 @@ in
           "KUDO_HUB_ADDR=10.100.0.1:15400"
           "KUDO_CONSOLE_WORKER_NODES=yolo,edger::yolo"
           "KUDO_CONSOLE_HOSTS=8080.yolo.incus"
-          "KUDO_CONSOLE_ORIGINS=https://yolo-8080.pc.yjpark.org"
+          "KUDO_CONSOLE_ORIGINS=https://yolo-8080.pc.yjpark.org,https://yolo-8080.edger.yjpark.org,https://kudo_pc.yjpark.org,https://kudo_edger.yjpark.org"
           "KUDO_CONTEXT_MIRROR=${mirror}"
           "AWS_REGION=auto"
         ];

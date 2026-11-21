@@ -1,9 +1,11 @@
-{config, ...}: {
+{ config, ... }: {
   services.cloudflared = {
     enable = true;
     tunnels = {
       "f62c3a91-d7b5-48c3-921d-f22e0f0cd0e9" = {
         credentialsFile = "${config.sops.secrets."cloudflared.cred.json".path}";
+        # This tunnel is remotely managed. cloudflare-kudo.bash documents its
+        # kudo settings; automatic reconciliation is disabled.
         default = "http_status:404";
       };
     };
