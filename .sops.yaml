@@ -5,6 +5,7 @@ keys:
   - &g1_host age1kndmmujxnm43k85grj9qajpyx4k7l47crf7fd66ez56nn4u5rp5qdmwu8e
   - &pc_host age1yvux7svkagtk2cpjzedv87qec3a602hlk3a38weemfcj2vsyt4sssa2xwt
   - &p2_host age1vsyyrt3w8t67ful3t7722jslt99dz0tdh8v8p0ayrw37mxmdkgaqgfm5sh
+  - &hub_host age163wrdz7pkq0fcu8jcehs785rakrzrkdacajkce29u0wcrldjsa9qst9fu8
 creation_rules:
   - path_regex: \/secrets\/.+\.(yaml|json|md|txt|fish)$
     key_groups:
@@ -15,6 +16,7 @@ creation_rules:
         - *g1_host
         - *pc_host
         - *p2_host
+        - *hub_host
   - path_regex: \/secret\..+\.(yaml|json|md|txt|fish)$
     key_groups:
       - age:
@@ -24,4 +26,5 @@ creation_rules:
         - *g1_host
         - *pc_host
         - *p2_host
+        - *hub_host
 
