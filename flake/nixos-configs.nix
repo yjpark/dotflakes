@@ -12,7 +12,7 @@ let
       modules = [ (inputs.self + /nixos/${dir}/${name}) ];
     };
 
-  hosts = [ "edger" "a13" "g1" "p2" "pc" ];
+  hosts = [ "edger" "a13" "g1" "p2" "pc" "hub" ];
   containers = [ "yolo" "onecli" "searxng" ];
 
   hostConfigs = builtins.listToAttrs (map (name: {

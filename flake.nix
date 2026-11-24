@@ -20,6 +20,8 @@
     jig.url = "github:edger-dev/jig";
     hub.url = "github:edger-dev/hub";
     kudo.url = "github:edger-dev/kudo";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
 
     # Software inputs
     ## https://github.com/Mic92/sops-nix
