@@ -7,6 +7,16 @@ keys:
   - &p2_host age1vsyyrt3w8t67ful3t7722jslt99dz0tdh8v8p0ayrw37mxmdkgaqgfm5sh
   - &hub_host age163wrdz7pkq0fcu8jcehs785rakrzrkdacajkce29u0wcrldjsa9qst9fu8
 creation_rules:
+  - path_regex: nixos/hosts/hub/secrets/.+\.(yaml|json|md|txt|fish)$
+    key_groups:
+      - age:
+        - *edger_2022-09-01
+        - *edger_host
+        - *a13_host
+        - *g1_host
+        - *pc_host
+        - *p2_host
+        - *hub_host
   - path_regex: \/secrets\/.+\.(yaml|json|md|txt|fish)$
     key_groups:
       - age:
@@ -16,7 +26,6 @@ creation_rules:
         - *g1_host
         - *pc_host
         - *p2_host
-        - *hub_host
   - path_regex: \/secret\..+\.(yaml|json|md|txt|fish)$
     key_groups:
       - age:
@@ -26,5 +35,4 @@ creation_rules:
         - *g1_host
         - *pc_host
         - *p2_host
-        - *hub_host
 
