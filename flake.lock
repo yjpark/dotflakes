@@ -502,11 +502,11 @@
         "jig": "jig"
       },
       "locked": {
-        "lastModified": 1795672691,
-        "narHash": "sha256-ac9rIoZp2qVxDcFSI23eB/EO7AcU54x9PRQIDxsnxeI=",
+        "lastModified": 1795702415,
+        "narHash": "sha256-1+IjEBAfeCSfjq5bzIu5WQA5xljZbGXzjchjDdx4sy4=",
         "owner": "edger-dev",
         "repo": "hub",
-        "rev": "85e38a91c2804ed2fda0d71439825054549ab685",
+        "rev": "25893c4a7d3d7e94d089fdfa4f7019ba6cfd37eb",
         "type": "github"
       },
       "original": {
