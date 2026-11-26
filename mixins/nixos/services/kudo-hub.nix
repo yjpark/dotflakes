@@ -31,7 +31,7 @@ in
     environmentFile = config.sops.secrets."hub.env".path;
     name = me;
     peers = lib.mapAttrs (_: ip: "${ip}:15400") (removeAttrs hubs [ me ]) // {
-      hub = "wss://hub.yjpark.org";
+      hub = "ws://127.0.0.1:15401";
     };
   };
 

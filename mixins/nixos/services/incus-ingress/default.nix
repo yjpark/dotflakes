@@ -127,6 +127,15 @@ let
       }
     }
 
+    ${lib.optionalString (config.services ? hub && config.services.hub.enable) ''
+      # Use Caddy's Go TLS stack for the public hub's WSS hop.
+      http://127.0.0.1:15401 {
+        reverse_proxy https://hub.yjpark.org {
+          header_up Host hub.yjpark.org
+        }
+      }
+    ''}
+
     # HTTPS with Let's Encrypt wildcard cert via Cloudflare DNS-01
     *.${zone} {
       tls {

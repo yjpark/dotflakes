@@ -13,6 +13,8 @@ Relevant revisions:
 - Kudo dependency pin: `d403c91`.
 - Kudo intake documentation: `9706a54`.
 - Flakes hub input update: `898ab1b`; `flake.lock` pins hub `3dadb9e`.
+- Flakes must also pin Kudo `9706a54` or newer; older Kudo inputs have an
+  incompatible hub protocol.
 
 The full hub and Kudo test suites, zero-warning clippy, Kudo `nix flake check`,
 and the `hub.yjpark.org` NixOS build passed. Independent lifecycle review was
@@ -25,13 +27,14 @@ or handover-only change.
 
 ## Intended topology
 
-`mixins/nixos/services/kudo-hub.nix` already configures both private hubs to
-dial `wss://hub.yjpark.org`. The public hub intentionally has no peer entries.
-This is now sufficient:
+`mixins/nixos/services/kudo-hub.nix` configures both private hubs to dial the
+public hub through their local Caddy listener on `127.0.0.1:15401`. Caddy uses
+its Go TLS stack for the public WSS hop. The public hub intentionally has no
+peer entries. This is now sufficient:
 
 ```text
-pc    --- authenticated WSS ---> hub.yjpark.org
-edger --- authenticated WSS ---> hub.yjpark.org
+pc    --- WS ---> local Caddy --- authenticated WSS ---> hub.yjpark.org:443
+edger --- WS ---> local Caddy --- authenticated WSS ---> hub.yjpark.org:443
 ```
 
 Each private hub authenticates and registers its `services.hub.name` through
@@ -89,7 +92,9 @@ Do not print environment files or secrets while inspecting failures.
 Configure an agent's existing `kudo-shim` MCP server with:
 
 ```sh
-KUDO_HUB_ADDR=wss://hub.yjpark.org
+# On pc or edger:
+KUDO_HUB_ADDR=ws://127.0.0.1:15401
+# Elsewhere, use wss://hub.yjpark.org:443 instead.
 HUB_AUTH_TOKEN=<shared-token>
 KUDO_INTAKE_MACHINE=work
 ```
@@ -139,7 +144,7 @@ the reason.
   role without printing it. Reverse `ConsumerApi` authentication is required
   as well as `PeerIngress` authentication.
 - **WSS connection fails:** check Caddy and the public WebSocket listener on
-  `127.0.0.1:15401`; the public endpoint is `wss://hub.yjpark.org`.
+  `127.0.0.1:15401`; the public endpoint is `wss://hub.yjpark.org:443`.
 - **Topology appears but calls fail:** verify the target has exactly one peer
   qualifier, such as `edger::yolo`, and that the node is connected to edger's
   local hub.
