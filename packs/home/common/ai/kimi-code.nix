@@ -13,6 +13,7 @@ let
     kudo = {
       command = "${config.home.profileDirectory}/bin/kudo-mcp";
       args = [ ];
+      env.KUDO_AGENT_HARNESS = "kimi";
     };
   };
   google-workspace-auth = pkgs.writeShellScriptBin "google-workspace-auth" ''

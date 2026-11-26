@@ -5,7 +5,13 @@ let
   cfg = config.services.kudo-node;
   kudo-mcp = pkgs.writeShellApplication {
     name = "kudo-mcp";
+    runtimeInputs = [ pkgs.coreutils pkgs.gawk ];
     text = ''
+      if [ -z "''${KUDO_SESSION_ID:-}" ]; then
+        parent_start=$(awk '{print $22}' "/proc/$PPID/stat")
+        KUDO_SESSION_ID=$(printf '%s' "$PPID:$parent_start:$PWD" | sha256sum | cut -d ' ' -f1)
+        export KUDO_SESSION_ID
+      fi
       set -a
       for env_file in "$HOME/.config/kudo/hub.env" /run/secrets/kudo-hub-user.env; do
         if [ -r "$env_file" ]; then
@@ -27,6 +33,7 @@ in
     kudo = {
       command = "${kudo-mcp}/bin/kudo-mcp";
       args = [ ];
+      env.KUDO_AGENT_HARNESS = "claude";
     };
   };
 
