@@ -68,6 +68,11 @@ sudo "$SYSTEM_PATH/bin/switch-to-configuration" switch
 # fi
 """
 
+[tasks.update-hub]
+description = "Update hub.yjpark.org"
+depends = ["vcs-status"]
+run = "nixos-rebuild switch --flake .#hub.yjpark.org --target-host root@hub.yjpark.org"
+
 [tasks.restart-onecli]
 description = "Restart OneCLI inside its incus container and reseed"
 run = """

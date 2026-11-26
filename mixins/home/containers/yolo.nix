@@ -2,6 +2,7 @@
 let
   mirror = "s3://kudo-contexts/contexts";
   r2Env = "-%h/.config/kudo/r2.env";
+  hubEnv = "-%h/.config/kudo/hub.env";
 in
 {
   imports = [ (flake.inputs.self + /mixins/home/settings/kudo-node.nix) ];
@@ -54,7 +55,7 @@ in
           "KUDO_CONTEXT_MIRROR=${mirror}"
           "AWS_REGION=auto"
         ];
-        EnvironmentFile = [ r2Env ];
+        EnvironmentFile = [ r2Env hubEnv ];
         Restart = "on-failure";
         RestartSec = 5;
       };
@@ -78,7 +79,7 @@ in
         "KUDO_CONTEXT_MIRROR=${mirror}"
         "AWS_REGION=auto"
       ];
-      EnvironmentFile = [ r2Env ];
+      EnvironmentFile = [ r2Env hubEnv ];
       Restart = "on-failure";
       RestartSec = 30;
     };
