@@ -1,7 +1,9 @@
-{flake, ...}: let
+{ flake, ... }:
+let
   inherit (flake) inputs;
   inherit (inputs) self;
-in {
+in
+{
   imports = [
     (self + /packs/nixos/host)
     (self + /packs/nixos/gui)
@@ -11,6 +13,7 @@ in {
     (self + /mixins/nixos/cn)
     (self + /mixins/nixos/services/incus-ingress)
     (self + /mixins/nixos/services/kudo-hub.nix)
+    (self + /mixins/nixos/services/ssh-reverse-hub.nix)
     (self + /mixins/nixos/services/kudo-r2.nix)
     (self + /mixins/nixos/services/onecli)
     (self + /mixins/nixos/services/monitoring)

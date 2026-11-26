@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 let
   authorizedKeys = [
@@ -24,14 +24,58 @@ in
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
+  programs.mosh.enable = true;
+
   services.logrotate.checkConfig = false;
 
   services.zerotierone.enable = true;
 
   services.openssh = {
     enable = true;
-    settings.PasswordAuthentication = false;
+    settings.PasswordAuthentication = true;
+    extraConfig = ''
+      Match User tunnel
+        AllowAgentForwarding no
+        AllowTcpForwarding remote
+        PasswordAuthentication no
+        PermitTTY no
+        PermitTunnel no
+        PermitUserRC no
+        X11Forwarding no
+    '';
   };
+
+  programs.ssh = {
+    extraConfig = ''
+      Host pc
+        HostName 127.0.0.1
+        HostKeyAlias pc
+        Port 22022
+        User yjpark
+
+      Host edger
+        HostName 127.0.0.1
+        HostKeyAlias edger
+        Port 22023
+        User yjpark
+    '';
+    knownHosts.pc.publicKey =
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASBlQzc+1V8pUncXDIY/XqqCZdM/79LQc2ah+FDvQO2";
+    knownHosts.edger.publicKey =
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDhXHLx+WkKlMJ1yHQzSNZ2BJg2cSsrW2HfjfF7Dd2dW";
+  };
+
+  users.users.tunnel = {
+    isSystemUser = true;
+    group = "tunnel";
+    home = "/var/empty";
+    shell = pkgs.coreutils + /bin/false;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDhXHLx+WkKlMJ1yHQzSNZ2BJg2cSsrW2HfjfF7Dd2dW"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASBlQzc+1V8pUncXDIY/XqqCZdM/79LQc2ah+FDvQO2"
+    ];
+  };
+  users.groups.tunnel = { };
 
   users.users.yjpark = {
     isNormalUser = true;
