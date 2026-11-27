@@ -22,13 +22,17 @@ let
   incus = "${config.virtualisation.incus.package}/bin/incus";
 in
 {
-  imports = [ flake.inputs.hub.nixosModules.hub ];
+  imports = [
+    flake.inputs.hub.nixosModules.hub
+    (flake.inputs.self + /mixins/nixos/services/kudo-hub-keys.nix)
+  ];
 
   services.hub = {
     enable = true;
     address = "10.100.0.1:15400";
     extraAddresses = lib.optional (hubs ? ${me}) "${hubs.${me}}:15400";
     environmentFile = config.sops.secrets."hub.env".path;
+    privateKeyFile = config.sops.secrets."hub.key".path;
     name = me;
     peers = lib.mapAttrs (_: ip: "${ip}:15400") (removeAttrs hubs [ me ]) // {
       hub = "ws://127.0.0.1:15401";
@@ -38,6 +42,23 @@ in
   sops.secrets."hub.env" = hubSecret;
   sops.secrets."kudo-hub-user.env" = hubSecret // {
     owner = "yjpark";
+  };
+
+  sops.secrets."hub.key" = {
+    sopsFile = flake.inputs.self + "/nixos/hosts/${me}/secrets/hub.key";
+    format = "binary";
+    key = "";
+  };
+  sops.secrets."kudo-hub-user.key" = {
+    sopsFile = flake.inputs.self + "/nixos/hosts/${me}/secrets/hub.key";
+    format = "binary";
+    key = "";
+    owner = "yjpark";
+  };
+  sops.secrets."yolo-hub.key" = {
+    sopsFile = flake.inputs.self + "/nixos/hosts/${me}/secrets/yolo-hub.key";
+    format = "binary";
+    key = "";
   };
 
   # Containers reach the host only through the incus zone; open the hub there.
@@ -53,7 +74,11 @@ in
     after = [ "incus.service" "sops-install-secrets.service" ];
     wants = [ "incus.service" ];
     wantedBy = [ "multi-user.target" ];
-    restartTriggers = [ "${hubSecret.sopsFile}" ];
+    restartTriggers = [
+      "${hubSecret.sopsFile}"
+      "${config.sops.secrets."hub.key".sopsFile}"
+      "${config.sops.secrets."yolo-hub.key".sopsFile}"
+    ];
     startLimitIntervalSec = 0;
     serviceConfig = {
       Type = "oneshot";
@@ -67,6 +92,8 @@ in
       ${incus} exec yolo -- chown 1000:100 /home/yj/.config/kudo
       ${incus} file push --uid 1000 --gid 100 --mode 0400 \
         ${config.sops.secrets."hub.env".path} yolo/home/yj/.config/kudo/hub.env
+      ${incus} file push --uid 1000 --gid 100 --mode 0400 \
+        ${config.sops.secrets."yolo-hub.key".path} yolo/home/yj/.config/kudo/hub.key
       ${incus} exec yolo -- ${pkgs.util-linux}/bin/runuser -u yj -- \
         env XDG_RUNTIME_DIR=/run/user/1000 systemctl --user try-restart \
         kudo-node.service kudo-console.service kudo-waker.service || true

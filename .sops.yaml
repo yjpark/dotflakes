@@ -7,6 +7,21 @@ keys:
   - &p2_host age1vsyyrt3w8t67ful3t7722jslt99dz0tdh8v8p0ayrw37mxmdkgaqgfm5sh
   - &hub_host age163wrdz7pkq0fcu8jcehs785rakrzrkdacajkce29u0wcrldjsa9qst9fu8
 creation_rules:
+  - path_regex: nixos/hosts/hub\.yjpark\.org/secrets/hub\.key
+    key_groups:
+      - age:
+        - *edger_2022-09-01
+        - *hub_host
+  - path_regex: nixos/hosts/edger/secrets/(hub|yolo-hub)\.key
+    key_groups:
+      - age:
+        - *edger_2022-09-01
+        - *edger_host
+  - path_regex: nixos/hosts/pc/secrets/(hub|yolo-hub)\.key
+    key_groups:
+      - age:
+        - *edger_2022-09-01
+        - *pc_host
   - path_regex: nixos/hosts/hub\.yjpark\.org/secrets/.+\.(yaml|json|md|txt|fish)$
     key_groups:
       - age:

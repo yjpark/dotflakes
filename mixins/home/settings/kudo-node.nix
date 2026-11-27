@@ -21,6 +21,9 @@ let
       done
       set +a
       export KUDO_HUB_ADDR="''${KUDO_HUB_ADDR:-${cfg.hubAddr}}"
+      ${lib.optionalString (cfg.privateKeyFile != null) ''
+        export HUB_PRIVATE_KEY_FILE="''${HUB_PRIVATE_KEY_FILE:-${cfg.privateKeyFile}}"
+      ''}
       exec ${cfg.package}/bin/kudo-shim "$@"
     '';
   };
@@ -40,6 +43,10 @@ in
   services.kudo-node = {
     enable = true;
     hubAddr = "10.100.0.1:15400";
+    privateKeyFile =
+      if config.home.username == "yj"
+      then "${config.home.homeDirectory}/.config/kudo/hub.key"
+      else "/run/secrets/kudo-hub-user.key";
     # Every node runs governed: these argvs run without asking; anything else
     # waits for a verdict in the console (30 minutes, then denied).
     environment.KUDO_NODE_RULES = "${./kudo-node-rules.styx}";

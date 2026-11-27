@@ -1,13 +1,17 @@
 # The public hub for Kudo nodes and shims, with TLS terminated by Caddy.
 { flake, config, ... }:
 {
-  imports = [ flake.inputs.hub.nixosModules.hub ];
+  imports = [
+    flake.inputs.hub.nixosModules.hub
+    (flake.inputs.self + /mixins/nixos/services/kudo-hub-keys.nix)
+  ];
 
   services.hub = {
     enable = true;
     address = "127.0.0.1:15400";
     websocketAddress = "127.0.0.1:15401";
     environmentFile = config.sops.secrets."hub.env".path;
+    privateKeyFile = config.sops.secrets."hub.key".path;
     name = "hub";
   };
 
@@ -18,6 +22,12 @@
   sops.secrets."hub.env" = {
     sopsFile = ./secrets/hub.env.txt;
     format = "dotenv";
+    key = "";
+  };
+
+  sops.secrets."hub.key" = {
+    sopsFile = ./secrets/hub.key;
+    format = "binary";
     key = "";
   };
 

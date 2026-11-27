@@ -49,6 +49,7 @@ in
         Environment = [
           "PORT=8080"
           "KUDO_HUB_ADDR=10.100.0.1:15400"
+          "HUB_PRIVATE_KEY_FILE=${config.services.kudo-node.privateKeyFile}"
           "KUDO_CONSOLE_WORKER_NODES=yolo,edger::yolo"
           "KUDO_CONSOLE_HOSTS=8080.yolo.incus"
           "KUDO_CONSOLE_ORIGINS=https://yolo-8080.pc.yjpark.org,https://yolo-8080.edger.yjpark.org,https://kudo_pc.yjpark.org,https://kudo_edger.yjpark.org"
