@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: let
+{ pkgs, lib, ... }:
+let
   noProxy = lib.concatStringsSep "," [
     "localhost"
     "127.0.0.1"
@@ -14,8 +15,14 @@
     # is for the overseas platform, so injecting it would bill the wrong account.
     "kimi.com"
     ".kimi.com"
+    # Antigravity also keeps its subscription login on the agent. Its Google
+    # OAuth and model traffic use the direct egress path through host clash.
+    "accounts.google.com"
+    "googleapis.com"
+    ".googleapis.com"
   ];
-in {
+in
+{
   # Route agent HTTPS traffic through OneCLI for credential injection.
   # OneCLI intercepts HTTPS, injects real API keys, and forwards — agents use placeholder keys.
   #

@@ -70,13 +70,16 @@ in
 {
   programs.claude-code.package = llm-agents.claude-code;
 
+  # Keep updates through the flake; the Nix store is read-only.
+  home.sessionVariables.AGY_CLI_DISABLE_AUTO_UPDATE = "true";
+
   # claude-code itself is installed by programs.claude-code (as a wrapper once
   # mcpServers is set), so it is not listed again here.
   home.packages = [
     llm-agents.agent-browser
+    llm-agents.antigravity-cli
     llm-agents.opencode
     llm-agents.codex
-    llm-agents.gemini-cli
 
     /*
       dolt
