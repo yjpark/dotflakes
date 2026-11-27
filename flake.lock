@@ -502,11 +502,11 @@
         "jig": "jig"
       },
       "locked": {
-        "lastModified": 1795788142,
-        "narHash": "sha256-Rw8mCtHHwUppeHRWm44R06tzQS1RgaHgaP0G7rjXxJ8=",
+        "lastModified": 1795795766,
+        "narHash": "sha256-2OPLUA1NNNnqGLiLZnzy0bDBQ2n9W2wTvW/ektQ9Z2U=",
         "owner": "edger-dev",
         "repo": "hub",
-        "rev": "9946893b5391876015e54b274636371016df5b89",
+        "rev": "87decb3cae45c5ef01210764658f4b488a0c2b06",
         "type": "github"
       },
       "original": {
@@ -676,11 +676,11 @@
         "nixpkgs-dioxus074": "nixpkgs-dioxus074"
       },
       "locked": {
-        "lastModified": 1795787608,
-        "narHash": "sha256-5kyQAUBQgV0v034kk1bqCBDfjuc3DZxb8w6RIs34skE=",
+        "lastModified": 1795795874,
+        "narHash": "sha256-W2qC3MFPPQBmC12LaoZRVOykXmES/onApAhBGip68p4=",
         "owner": "edger-dev",
         "repo": "kudo",
-        "rev": "76b125dc062f5c019064f4840b6e8d38e98940a7",
+        "rev": "59324225e28dda5b61dd76b420ca76cb26a506b0",
         "type": "github"
       },
       "original": {
