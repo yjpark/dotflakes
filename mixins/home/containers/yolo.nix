@@ -1,6 +1,7 @@
 { flake, config, ... }:
 let
   mirror = "s3://kudo-contexts/contexts";
+  mirrorProxy = "http://10.100.0.1:21102";
   r2Env = "-%h/.config/kudo/r2.env";
   hubEnv = "-%h/.config/kudo/hub.env";
 in
@@ -21,6 +22,7 @@ in
   # mixins/nixos/services/kudo-r2.nix; absent until then, and the store stays
   # local).
   services.kudo-node.environment.KUDO_CONTEXT_MIRROR = mirror;
+  services.kudo-node.environment.KINORA_MIRROR_PROXY = mirrorProxy;
   services.kudo-node.environment.AWS_REGION = "auto";
   systemd.user.services.kudo-node.Service.EnvironmentFile = [ r2Env ];
 
@@ -54,6 +56,7 @@ in
           "KUDO_CONSOLE_HOSTS=8080.yolo.incus"
           "KUDO_CONSOLE_ORIGINS=https://yolo-8080.pc.yjpark.org,https://yolo-8080.edger.yjpark.org,https://kudo_pc.yjpark.org,https://kudo_edger.yjpark.org"
           "KUDO_CONTEXT_MIRROR=${mirror}"
+          "KINORA_MIRROR_PROXY=${mirrorProxy}"
           "AWS_REGION=auto"
         ];
         EnvironmentFile = [ r2Env hubEnv ];
