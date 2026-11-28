@@ -81,6 +81,7 @@ in
         "KUDO_HUB_ADDR=10.100.0.1:15400"
         "KUDO_CONSOLE_WORKER_NODES=yolo,edger::yolo"
         "KUDO_CONTEXT_MIRROR=${mirror}"
+        "KINORA_MIRROR_PROXY=${mirrorProxy}"
         "AWS_REGION=auto"
       ];
       EnvironmentFile = [ r2Env hubEnv ];
