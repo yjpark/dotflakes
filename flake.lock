@@ -676,11 +676,11 @@
         "nixpkgs-dioxus074": "nixpkgs-dioxus074"
       },
       "locked": {
-        "lastModified": 1795831824,
-        "narHash": "sha256-+iM6UVf00WCV4FlIDPIDncVq1i5DwUFFtznYaUtFMsk=",
+        "lastModified": 1795867939,
+        "narHash": "sha256-TVre6CWLPdzCvSh+pvXIStdGO95hSYzo+rkjicQKd5I=",
         "owner": "edger-dev",
         "repo": "kudo",
-        "rev": "8d5e4c5865ccaabda0896227677f99dcf0ac4d50",
+        "rev": "fe899ae521a6305a250ddd8edaa880d8f7246c58",
         "type": "github"
       },
       "original": {
